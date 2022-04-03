@@ -62,7 +62,7 @@ system.mem_ctrl.dram.range = system.mem_ranges[0]
 system.mem_ctrl.port = system.membus.mem_side_ports
 
 
-binary = "tests/test-progs/threads/bin/x86/linux/threads"
+binary = "tests/test-progs/hello/bin/x86/linux/hello"
 
 # for gem5 V21 and beyond
 system.workload = SEWorkload.init_compatible(binary)
