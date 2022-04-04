@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2002-2005 The Regents of The University of Michigan
- * Copyright (c) 2007 MIPS Technologies, Inc.
+ * Copyright (c) 2015 RISC-V Foundation
+ * Copyright (c) 2017 The University of Virginia
  * Copyright (c) 2020 Barkhausen Institut
  * All rights reserved.
  *
@@ -28,9 +28,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "arch/straight/pagetable.hh"
+#include "arch/straight/insts/standard.hh"
 
-#include "sim/serialize.hh"
+#include <sstream>
+#include <string>
+
+#include "arch/straight/insts/static_inst.hh"
+#include "arch/straight/regs/misc.hh"
+#include "arch/straight/utility.hh"
+#include "cpu/static_inst.hh"
 
 namespace gem5
 {
@@ -38,26 +44,47 @@ namespace gem5
 namespace StraightISA
 {
 
-void
-TlbEntry::serialize(CheckpointOut &cp) const
+std::string
+RegOp::generateDisassembly(Addr pc, const loader::SymbolTable *symtab) const
 {
-    SERIALIZE_SCALAR(paddr);
-    SERIALIZE_SCALAR(vaddr);
-    SERIALIZE_SCALAR(logBytes);
-    SERIALIZE_SCALAR(asid);
-    SERIALIZE_SCALAR(pte);
-    SERIALIZE_SCALAR(lruSeq);
+    std::stringstream ss;
+    ss << mnemonic << ' ' << registerName(destRegIdx(0)) << ", " <<
+        registerName(srcRegIdx(0));
+    if (_numSrcRegs >= 2)
+        ss << ", " << registerName(srcRegIdx(1));
+    if (_numSrcRegs >= 3)
+        ss << ", " << registerName(srcRegIdx(2));
+    return ss.str();
 }
 
-void
-TlbEntry::unserialize(CheckpointIn &cp)
+std::string
+CSROp::generateDisassembly(Addr pc, const loader::SymbolTable *symtab) const
 {
-    UNSERIALIZE_SCALAR(paddr);
-    UNSERIALIZE_SCALAR(vaddr);
-    UNSERIALIZE_SCALAR(logBytes);
-    UNSERIALIZE_SCALAR(asid);
-    UNSERIALIZE_SCALAR(pte);
-    UNSERIALIZE_SCALAR(lruSeq);
+    std::stringstream ss;
+    ss << mnemonic << ' ' << registerName(destRegIdx(0)) << ", ";
+    auto data = CSRData.find(csr);
+    if (data != CSRData.end())
+        ss << data->second.name;
+    else
+        ss << "?? (" << std::hex << "0x" << csr << std::dec << ")";
+    if (_numSrcRegs > 0)
+        ss << ", " << registerName(srcRegIdx(0));
+    else
+        ss << uimm;
+    return ss.str();
+}
+
+std::string
+SystemOp::generateDisassembly(Addr pc, const loader::SymbolTable *symtab) const
+{
+    if (strcmp(mnemonic, "fence_vma") == 0) {
+        std::stringstream ss;
+        ss << mnemonic << ' ' << registerName(srcRegIdx(0)) << ", " <<
+            registerName(srcRegIdx(1));
+        return ss.str();
+    }
+
+    return mnemonic;
 }
 
 } // namespace StraightISA

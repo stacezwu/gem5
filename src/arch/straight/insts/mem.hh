@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2004-2005 The Regents of The University of Michigan
+ * Copyright (c) 2015 RISC-V Foundation
+ * Copyright (c) 2017 The University of Virginia
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,23 +27,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __KERN_STRAIGHT_IDLE_EVENT_HH__
-#define __KERN_STRAIGHT_IDLE_EVENT_HH__
+#ifndef __ARCH_STRAIGHT_INST_MEM_HH__
+#define __ARCH_STRAIGHT_INST_MEM_HH__
 
-#include "cpu/pc_event.hh"
+#include <string>
+
+#include "arch/straight/insts/static_inst.hh"
+#include "cpu/exec_context.hh"
+#include "cpu/static_inst.hh"
 
 namespace gem5
 {
 
-class IdleStartEvent : public PCEvent
+namespace StraightISA
 {
-  public:
-    IdleStartEvent(PCEventScope *s, const std::string &desc, Addr addr)
-        : PCEvent(s, desc, addr)
+
+class MemInst : public StraightStaticInst
+{
+  protected:
+    int64_t offset;
+    Request::Flags memAccessFlags;
+
+    MemInst(const char *mnem, ExtMachInst _machInst, OpClass __opClass)
+        : StraightStaticInst(mnem, _machInst, __opClass), offset(0)
     {}
-    virtual void process(ThreadContext *tc);
 };
 
+class Load : public MemInst
+{
+  protected:
+    using MemInst::MemInst;
+
+    std::string generateDisassembly(
+        Addr pc, const loader::SymbolTable *symtab) const override;
+};
+
+class Store : public MemInst
+{
+  protected:
+    using MemInst::MemInst;
+
+    std::string generateDisassembly(
+        Addr pc, const loader::SymbolTable *symtab) const override;
+};
+
+} // namespace StraightISA
 } // namespace gem5
 
-#endif // __KERN_STRAIGHT_IDLE_EVENT_HH__
+#endif // __ARCH_STRAIGHT_INST_MEM_HH__

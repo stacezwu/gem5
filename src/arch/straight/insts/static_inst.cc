@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2004-2005 The Regents of The University of Michigan
+ * Copyright (c) 2015 RISC-V Foundation
+ * Copyright (c) 2016 The University of Virginia
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,23 +27,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __KERN_STRAIGHT_IDLE_EVENT_HH__
-#define __KERN_STRAIGHT_IDLE_EVENT_HH__
+#include "arch/straight/insts/static_inst.hh"
 
-#include "cpu/pc_event.hh"
+#include "arch/straight/pcstate.hh"
+#include "arch/straight/types.hh"
+#include "cpu/static_inst.hh"
 
 namespace gem5
 {
 
-class IdleStartEvent : public PCEvent
+namespace StraightISA
 {
-  public:
-    IdleStartEvent(PCEventScope *s, const std::string &desc, Addr addr)
-        : PCEvent(s, desc, addr)
-    {}
-    virtual void process(ThreadContext *tc);
-};
 
+void
+StraightMicroInst::advancePC(PCStateBase &pcState) const
+{
+    auto &rpc = pcState.as<PCState>();
+    if (flags[IsLastMicroop]) {
+        rpc.uEnd();
+    } else {
+        rpc.uAdvance();
+    }
+}
+
+void
+StraightMicroInst::advancePC(ThreadContext *tc) const
+{
+    PCState pc = tc->pcState().as<PCState>();
+    if (flags[IsLastMicroop]) {
+        pc.uEnd();
+    } else {
+        pc.uAdvance();
+    }
+    tc->pcState(pc);
+}
+
+} // namespace StraightISA
 } // namespace gem5
-
-#endif // __KERN_STRAIGHT_IDLE_EVENT_HH__

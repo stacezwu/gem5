@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2004-2005 The Regents of The University of Michigan
+ * Copyright (c) 2015 RISC-V Foundation
+ * Copyright (c) 2017 The University of Virginia
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,23 +27,39 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __KERN_STRAIGHT_IDLE_EVENT_HH__
-#define __KERN_STRAIGHT_IDLE_EVENT_HH__
+#include "arch/straight/insts/mem.hh"
 
-#include "cpu/pc_event.hh"
+#include <sstream>
+#include <string>
+
+#include "arch/straight/insts/bitfields.hh"
+#include "arch/straight/insts/static_inst.hh"
+#include "arch/straight/utility.hh"
+#include "cpu/static_inst.hh"
 
 namespace gem5
 {
 
-class IdleStartEvent : public PCEvent
+namespace StraightISA
 {
-  public:
-    IdleStartEvent(PCEventScope *s, const std::string &desc, Addr addr)
-        : PCEvent(s, desc, addr)
-    {}
-    virtual void process(ThreadContext *tc);
-};
 
+std::string
+Load::generateDisassembly(Addr pc, const loader::SymbolTable *symtab) const
+{
+    std::stringstream ss;
+    ss << mnemonic << ' ' << registerName(destRegIdx(0)) << ", " <<
+        offset << '(' << registerName(srcRegIdx(0)) << ')';
+    return ss.str();
+}
+
+std::string
+Store::generateDisassembly(Addr pc, const loader::SymbolTable *symtab) const
+{
+    std::stringstream ss;
+    ss << mnemonic << ' ' << registerName(srcRegIdx(1)) << ", " <<
+        offset << '(' << registerName(srcRegIdx(0)) << ')';
+    return ss.str();
+}
+
+} // namespace StraightISA
 } // namespace gem5
-
-#endif // __KERN_STRAIGHT_IDLE_EVENT_HH__

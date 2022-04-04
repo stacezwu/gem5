@@ -4,6 +4,7 @@
  * Copyright (c) 2014 Sven Karlsson
  * Copyright (c) 2016 RISC-V Foundation
  * Copyright (c) 2016 The University of Virginia
+ * Copyright (c) 2020 Barkhausen Institut
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,110 +29,94 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Authors: Gabe Black
- *          Timothy M. Jones
- *          Sven Karlsson
- *          Alec Roelke
  */
 
 #ifndef __ARCH_STRAIGHT_ISA_HH__
 #define __ARCH_STRAIGHT_ISA_HH__
 
-#include <map>
-#include <string>
+#include <vector>
 
-#include "arch/straight/registers.hh"
+#include "arch/generic/isa.hh"
+#include "arch/straight/pcstate.hh"
 #include "arch/straight/types.hh"
-#include "base/logging.hh"
-#include "cpu/reg_class.hh"
-#include "sim/sim_object.hh"
+#include "base/types.hh"
+
+namespace gem5
+{
 
 struct StraightISAParams;
-class ThreadContext;
 class Checkpoint;
-class EventManager;
 
 namespace StraightISA
 {
 
-class ISA : public SimObject
+enum PrivilegeMode
+{
+    PRV_U = 0,
+    PRV_S = 1,
+    PRV_M = 3
+};
+
+enum FPUStatus
+{
+    OFF = 0,
+    INITIAL = 1,
+    CLEAN = 2,
+    DIRTY = 3,
+};
+
+class ISA : public BaseISA
 {
   protected:
-    std::vector<MiscReg> miscRegFile;
+    std::vector<RegVal> miscRegFile;
+
+    bool hpmCounterEnabled(int counter) const;
 
   public:
-    typedef StraightISAParams Params;
+    using Params = StraightISAParams;
 
-    void
-    clear();
+    void clear();
 
-    MiscReg
-    readMiscRegNoEffect(int misc_reg) const;
-
-    MiscReg
-    readMiscReg(int misc_reg, ThreadContext *tc);
-
-    void
-    setMiscRegNoEffect(int misc_reg, const MiscReg &val);
-
-    void
-    setMiscReg(int misc_reg, const MiscReg &val, ThreadContext *tc);
-
-    RegId
-    flattenRegId(const RegId &regId) const
+    PCStateBase *
+    newPCState(Addr new_inst_addr=0) const override
     {
-        return regId;
+        return new PCState(new_inst_addr);
     }
 
-    int
-    flattenIntIndex(int reg) const
-    {
-        return reg;
-    }
+  public:
+    RegVal readMiscRegNoEffect(int misc_reg) const;
+    RegVal readMiscReg(int misc_reg);
+    void setMiscRegNoEffect(int misc_reg, RegVal val);
+    void setMiscReg(int misc_reg, RegVal val);
 
-    int
-    flattenFloatIndex(int reg) const
-    {
-        return reg;
-    }
+    RegId flattenRegId(const RegId &regId) const { return regId; }
+    int flattenIntIndex(int reg) const { return reg; }
+    int flattenFloatIndex(int reg) const { return reg; }
+    int flattenVecIndex(int reg) const { return reg; }
+    int flattenVecElemIndex(int reg) const { return reg; }
+    int flattenVecPredIndex(int reg) const { return reg; }
+    int flattenCCIndex(int reg) const { return reg; }
+    int flattenMiscIndex(int reg) const { return reg; }
 
-    int
-    flattenVecIndex(int reg) const
-    {
-        return reg;
-    }
+    bool inUserMode() const override;
+    void copyRegsFrom(ThreadContext *src) override;
 
-    int
-    flattenVecElemIndex(int reg) const
-    {
-        return reg;
-    }
+    void serialize(CheckpointOut &cp) const override;
+    void unserialize(CheckpointIn &cp) override;
 
-    // dummy
-    int
-    flattenCCIndex(int reg) const
-    {
-        return reg;
-    }
+    ISA(const Params &p);
 
-    int
-    flattenMiscIndex(int reg) const
-    {
-        return reg;
-    }
+    void handleLockedRead(const RequestPtr &req) override;
 
-    void startup(ThreadContext *tc) {}
+    bool handleLockedWrite(const RequestPtr &req,
+            Addr cacheBlockMask) override;
 
-    /// Explicitly import the otherwise hidden startup
-    using SimObject::startup;
+    void handleLockedSnoop(PacketPtr pkt, Addr cacheBlockMask) override;
 
-    const Params *
-    params() const;
-
-    ISA(Params *p);
+    void globalClearExclusive() override;
 };
 
 } // namespace StraightISA
+} // namespace gem5
 
 #endif // __ARCH_STRAIGHT_ISA_HH__

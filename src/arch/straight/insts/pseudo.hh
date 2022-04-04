@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2005 The Regents of The University of Michigan
+ * Copyright (c) 2020 Barkhausen Institut
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,23 +26,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __KERN_STRAIGHT_IDLE_EVENT_HH__
-#define __KERN_STRAIGHT_IDLE_EVENT_HH__
+#ifndef __ARCH_STRAIGHT_INSTS_PSEUDO_HH__
+#define __ARCH_STRAIGHT_INSTS_PSEUDO_HH__
 
-#include "cpu/pc_event.hh"
+#include <string>
+
+#include "arch/straight/insts/static_inst.hh"
 
 namespace gem5
 {
 
-class IdleStartEvent : public PCEvent
+namespace StraightISA
 {
-  public:
-    IdleStartEvent(PCEventScope *s, const std::string &desc, Addr addr)
-        : PCEvent(s, desc, addr)
-    {}
-    virtual void process(ThreadContext *tc);
+
+class PseudoOp : public StraightStaticInst
+{
+  protected:
+    using StraightStaticInst::StraightStaticInst;
+
+    std::string generateDisassembly(
+        Addr pc, const loader::SymbolTable *symtab) const override
+    {
+        return mnemonic;
+    }
 };
 
+} // namespace StraightISA
 } // namespace gem5
 
-#endif // __KERN_STRAIGHT_IDLE_EVENT_HH__
+#endif // __ARCH_STRAIGHT_INSTS_PSEUDO_HH__

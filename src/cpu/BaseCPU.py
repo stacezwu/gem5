@@ -86,6 +86,12 @@ elif buildEnv['TARGET_ISA'] == 'riscv':
     from m5.objects.RiscvInterrupts import RiscvInterrupts as ArchInterrupts
     from m5.objects.RiscvISA import RiscvISA as ArchISA
     from m5.objects.RiscvDecoder import RiscvDecoder as ArchDecoder
+elif buildEnv['TARGET_ISA'] == 'straight':
+    from m5.objects.StraightMMU import StraightMMU as ArchMMU
+    from m5.objects.StraightInterrupts import (
+        StraightInterrupts as ArchInterrupts )
+    from m5.objects.StraightISA import StraightISA as ArchISA
+    from m5.objects.StraightDecoder import StraightDecoder as ArchDecoder
 else:
     print("Don't know what object types to use for ISA %s" %
             buildEnv['TARGET_ISA'])

@@ -1,5 +1,22 @@
 /*
- * Copyright (c) 2004-2005 The Regents of The University of Michigan
+ * Copyright (c) 2013 ARM Limited
+ * Copyright (c) 2014-2015 Sven Karlsson
+ * Copyright (c) 2019 Yifei Liu
+ * Copyright (c) 2020 Barkhausen Institut
+ * Copyright (c) 2021 StreamComputing Corp
+ * All rights reserved
+ *
+ * The license below extends only to copyright in the software and shall
+ * not be construed as granting a license to any other intellectual
+ * property including but not limited to intellectual property relating
+ * to a hardware implementation of the functionality of the software
+ * licensed hereunder.  You may use the software subject to the license
+ * terms below provided that you ensure that this notice is replicated
+ * unmodified and in its entirety in all distributions of the software,
+ * modified or unmodified, in source code or in binary form.
+ *
+ * Copyright (c) 2016 RISC-V Foundation
+ * Copyright (c) 2016 The University of Virginia
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,23 +43,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __KERN_STRAIGHT_IDLE_EVENT_HH__
-#define __KERN_STRAIGHT_IDLE_EVENT_HH__
+#ifndef __ARCH_STRAIGHT_VECREGS_HH__
+#define __ARCH_STRAIGHT_VECREGS_HH__
 
-#include "cpu/pc_event.hh"
+#include <cstdint>
+
+#include "arch/generic/vec_pred_reg.hh"
+#include "arch/generic/vec_reg.hh"
 
 namespace gem5
 {
 
-class IdleStartEvent : public PCEvent
+namespace StraightISA
 {
-  public:
-    IdleStartEvent(PCEventScope *s, const std::string &desc, Addr addr)
-        : PCEvent(s, desc, addr)
-    {}
-    virtual void process(ThreadContext *tc);
-};
 
+// Not applicable to RISC-V
+using VecElem = ::gem5::DummyVecElem;
+using VecRegContainer = ::gem5::DummyVecRegContainer;
+constexpr unsigned NumVecElemPerVecReg = ::gem5::DummyNumVecElemPerVecReg;
+
+// Not applicable to RISC-V
+using VecPredRegContainer = ::gem5::DummyVecPredRegContainer;
+
+} // namespace StraightISA
 } // namespace gem5
 
-#endif // __KERN_STRAIGHT_IDLE_EVENT_HH__
+#endif // __ARCH_STRAIGHT_VECREGS_HH__

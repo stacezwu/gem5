@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2004-2005 The Regents of The University of Michigan
+ * Copyright (c) 2015 RISC-V Foundation
+ * Copyright (c) 2017 The University of Virginia
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,23 +27,51 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __KERN_STRAIGHT_IDLE_EVENT_HH__
-#define __KERN_STRAIGHT_IDLE_EVENT_HH__
+#ifndef __ARCH_STRAIGHT_UNKNOWN_INST_HH__
+#define __ARCH_STRAIGHT_UNKNOWN_INST_HH__
 
-#include "cpu/pc_event.hh"
+#include <memory>
+#include <string>
+
+#include "arch/straight/faults.hh"
+#include "arch/straight/insts/bitfields.hh"
+#include "arch/straight/insts/static_inst.hh"
+#include "cpu/exec_context.hh"
+#include "cpu/static_inst.hh"
 
 namespace gem5
 {
 
-class IdleStartEvent : public PCEvent
+namespace StraightISA
+{
+
+/**
+ * Static instruction class for unknown (illegal) instructions.
+ * These cause simulator termination if they are executed in a
+ * non-speculative mode.  This is a leaf class.
+ */
+class Unknown : public StraightStaticInst
 {
   public:
-    IdleStartEvent(PCEventScope *s, const std::string &desc, Addr addr)
-        : PCEvent(s, desc, addr)
+    Unknown(MachInst _machInst)
+        : StraightStaticInst("unknown", _machInst, No_OpClass)
     {}
-    virtual void process(ThreadContext *tc);
+
+    Fault
+    execute(ExecContext *, Trace::InstRecord *) const override
+    {
+        return std::make_shared<UnknownInstFault>(machInst);
+    }
+
+    std::string
+    generateDisassembly(
+            Addr pc, const loader::SymbolTable *symtab) const override
+    {
+        return csprintf("unknown opcode %#02x", OPCODE);
+    }
 };
 
+} // namespace StraightISA
 } // namespace gem5
 
-#endif // __KERN_STRAIGHT_IDLE_EVENT_HH__
+#endif // __ARCH_STRAIGHT_UNKNOWN_INST_HH__

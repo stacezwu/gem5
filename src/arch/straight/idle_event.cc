@@ -32,8 +32,10 @@
 
 #include "arch/straight/idle_event.hh"
 
-#include "arch/straight/kernel_stats.hh"
 #include "cpu/thread_context.hh"
+
+namespace gem5
+{
 
 using namespace StraightISA;
 
@@ -42,3 +44,5 @@ IdleStartEvent::process(ThreadContext *tc)
 {
     fatal("Idle Start Event Not Defined for STRAIGHT ISA ");
 }
+
+} // namespace gem5

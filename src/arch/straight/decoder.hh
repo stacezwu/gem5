@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2012 Google
+ * Copyright (c) 2017 The University of Virginia
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,94 +25,64 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Authors: Gabe Black
  */
 
 #ifndef __ARCH_STRAIGHT_DECODER_HH__
 #define __ARCH_STRAIGHT_DECODER_HH__
 
 #include "arch/generic/decode_cache.hh"
+#include "arch/generic/decoder.hh"
 #include "arch/straight/types.hh"
 #include "base/logging.hh"
 #include "base/types.hh"
 #include "cpu/static_inst.hh"
+#include "debug/Decode.hh"
+#include "params/StraightDecoder.hh"
+
+namespace gem5
+{
 
 namespace StraightISA
 {
 
 class ISA;
-class Decoder
+class Decoder : public InstDecoder
 {
+  private:
+    decode_cache::InstMap<ExtMachInst> instMap;
+    bool aligned;
+    bool mid;
+
   protected:
     //The extended machine instruction being generated
     ExtMachInst emi;
-    bool instDone;
+    uint32_t machInst;
 
-  public:
-    Decoder(ISA* isa = nullptr) : instDone(false)
-    {}
-
-    void
-    process()
-    {
-    }
-
-    void
-    reset()
-    {
-        instDone = false;
-    }
-
-    //Use this to give data to the decoder. This should be used
-    //when there is control flow.
-    void
-    moreBytes(const PCState &pc, Addr fetchPC, MachInst inst)
-    {
-        emi = inst;
-        instDone = true;
-    }
-
-    bool
-    needMoreBytes()
-    {
-        return true;
-    }
-
-    bool
-    instReady()
-    {
-        return instDone;
-    }
-
-    void takeOverFrom(Decoder *old) {}
-
-  protected:
-    /// A cache of decoded instruction objects.
-    static GenericISA::BasicDecodeCache defaultCache;
-
-  public:
     StaticInstPtr decodeInst(ExtMachInst mach_inst);
 
     /// Decode a machine instruction.
     /// @param mach_inst The binary instruction to decode.
     /// @retval A pointer to the corresponding StaticInst object.
-    StaticInstPtr
-    decode(ExtMachInst mach_inst, Addr addr)
+    StaticInstPtr decode(ExtMachInst mach_inst, Addr addr);
+
+  public:
+    Decoder(const StraightDecoderParams &p) : InstDecoder(p, &machInst)
     {
-        return defaultCache.decode(this, mach_inst, addr);
+        reset();
     }
 
-    StaticInstPtr
-    decode(StraightISA::PCState &nextPC)
-    {
-        if (!instDone)
-            return NULL;
-        instDone = false;
-        return decode(emi, nextPC.instAddr());
-    }
+    void reset() override;
+
+    inline bool compressed(ExtMachInst inst) { return (inst & 0x3) < 0x3; }
+
+    //Use this to give data to the decoder. This should be used
+    //when there is control flow.
+    void moreBytes(const PCStateBase &pc, Addr fetchPC) override;
+
+    StaticInstPtr decode(PCStateBase &nextPC) override;
 };
 
 } // namespace StraightISA
+} // namespace gem5
 
 #endif // __ARCH_STRAIGHT_DECODER_HH__
