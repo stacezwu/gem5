@@ -39,7 +39,7 @@
 #include "arch/straight/pagetable.hh"
 #include "arch/straight/pma_checker.hh"
 
-// #include "arch/straight/regs/misc.hh"
+#include "arch/straight/regs/misc.hh"
 #include "arch/straight/utility.hh"
 #include "base/statistics.hh"
 #include "mem/request.hh"

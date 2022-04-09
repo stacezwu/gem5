@@ -2,6 +2,7 @@
 
 // Copyright (c) 2015 RISC-V Foundation
 // Copyright (c) 2016 The University of Virginia
+// Copyright (c) 2020 Barkhausen Institut
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,9 +27,6 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-// Authors: Maxwell Walter
-//          Alec Roelke
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -42,9 +40,15 @@ output header {{
 #include <tuple>
 #include <vector>
 
+/* straight softfloat library */
+#include <internals.h>
+#include <softfloat.h>
+#include <specialize.h>
+
 #include "arch/straight/insts/amo.hh"
 #include "arch/straight/insts/compressed.hh"
 #include "arch/straight/insts/mem.hh"
+#include "arch/straight/insts/pseudo.hh"
 #include "arch/straight/insts/standard.hh"
 #include "arch/straight/insts/static_inst.hh"
 #include "arch/straight/insts/unknown.hh"
@@ -62,7 +66,7 @@ output decoder {{
 
 #include "arch/straight/decoder.hh"
 #include "arch/straight/faults.hh"
-#include "arch/straight/tlb.hh"
+#include "arch/straight/mmu.hh"
 #include "base/cprintf.hh"
 #include "base/loader/symtab.hh"
 #include "cpu/thread_context.hh"
@@ -70,8 +74,10 @@ output decoder {{
 #include "mem/request.hh"
 #include "sim/full_system.hh"
 
+namespace gem5::StraightISAInst
+{
 using namespace StraightISA;
-using namespace std;
+} // namespace gem5::StraightISAInst
 }};
 
 output exec {{
@@ -82,20 +88,28 @@ output exec {{
 
 #include "arch/generic/memhelpers.hh"
 #include "arch/straight/faults.hh"
-#include "arch/straight/registers.hh"
+// #include "arch/straight/fp_inst.hh"
+#include "arch/straight/mmu.hh"
+// #include "arch/straight/reg_abi.hh"
+#include "arch/straight/regs/float.hh"
+#include "arch/straight/regs/misc.hh"
 #include "arch/straight/utility.hh"
 #include "base/condcodes.hh"
 #include "cpu/base.hh"
 #include "cpu/exetrace.hh"
+#include "debug/StraightMisc.hh"
 #include "mem/packet.hh"
 #include "mem/packet_access.hh"
 #include "mem/request.hh"
 #include "sim/eventq.hh"
 #include "sim/full_system.hh"
+#include "sim/pseudo_inst.hh"
 #include "sim/sim_events.hh"
 #include "sim/sim_exit.hh"
 #include "sim/system.hh"
 
+namespace gem5::StraightISAInst
+{
 using namespace StraightISA;
-using namespace std;
+} // namespace gem5::StraightISAInst
 }};

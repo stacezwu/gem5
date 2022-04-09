@@ -45,11 +45,14 @@ def operand_types {{
 
 def operands {{
 #General Purpose Integer Reg Operands
-    'Rd': ('IntReg', 'ud', 'RD', 'IsInteger', 1),
-    'Rs1_lo': ('IntReg', 'ud', 'RS1_LO', 'IsInteger', 2),
-    'Rs1_hi': ('IntReg', 'ud', 'RS1_HI', 'IsInteger', 2),
-    'Rs2_lo': ('IntReg', 'ud', 'RS2_LO', 'IsInteger', 3),
-    'Rs2_hi': ('IntReg', 'ud', 'RS2_HI', 'IsInteger', 3),
+    'Rp': ('IntReg', 'ud', 'RP', 'IsInteger', 1),
+#    'Rd': ('IntReg', 'ud', 'RD', 'IsInteger', 1),
+    'Rs1': ('IntReg', 'ud', 'RS1', 'IsInteger', 2),
+    'Rs2': ('IntReg', 'ud', 'RS2', 'IsInteger', 3),
+#    'Rs1_lo': ('IntReg', 'ud', 'RS1_LO', 'IsInteger', 2),
+#    'Rs1_hi': ('IntReg', 'ud', 'RS1_HI', 'IsInteger', 2),
+#    'Rs2_lo': ('IntReg', 'ud', 'RS2_LO', 'IsInteger', 3),
+#    'Rs2_hi': ('IntReg', 'ud', 'RS2_HI', 'IsInteger', 3),
 
 #Below is not used in STRAIGHT
     'Rt': ('IntReg', 'ud', 'AMOTempReg', 'IsInteger', 4),
@@ -82,5 +85,5 @@ def operands {{
 #Program Counter Operands
     'PC': ('PCState', 'ud', 'pc', (None, None, 'IsControl'), 7),
     'NPC': ('PCState', 'ud', 'npc', (None, None, 'IsControl'), 8),
-    'RP': ('IntReg', 'ud', 'rp', 'IsInteger', 9),
+    
 }};

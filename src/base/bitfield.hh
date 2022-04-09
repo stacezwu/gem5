@@ -92,7 +92,7 @@ bits(T val, int first_front, int last_front, int first_back, int last_back)
 {
     int nbits_front = first_front - last_front + 1;
     int nbits_back = first_back - last_back + 1;
-    return (val >> last_front) & mask(nbits_front) << nbits_front | (val >> last_back & mask(nbits_back));
+    return (((val >> last_front) & mask(nbits_front)) << nbits_front) | ((val >> last_back) & mask(nbits_back));
 }
 
 /**

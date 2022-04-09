@@ -24,84 +24,171 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Authors: Gabe Black
  */
 
 #ifndef __ARCH_STRAIGHT_INTERRUPT_HH__
 #define __ARCH_STRAIGHT_INTERRUPT_HH__
 
+#include <bitset>
+#include <memory>
+
+#include "arch/generic/interrupts.hh"
+#include "arch/straight/faults.hh"
+#include "arch/straight/regs/misc.hh"
 #include "base/logging.hh"
+#include "cpu/thread_context.hh"
+#include "debug/Interrupt.hh"
 #include "params/StraightInterrupts.hh"
 #include "sim/sim_object.hh"
+
+namespace gem5
+{
 
 class BaseCPU;
 class ThreadContext;
 
 namespace StraightISA {
 
-class Interrupts : public SimObject
+/*
+ * This is based on version 1.10 of the RISC-V privileged ISA reference,
+ * chapter 3.1.14.
+ */
+class Interrupts : public BaseInterrupts
 {
   private:
-    BaseCPU * cpu;
+    std::bitset<NumInterruptTypes> ip;
+    std::bitset<NumInterruptTypes> ie;
 
   public:
-    typedef StraightInterruptsParams Params;
+    using Params = StraightInterruptsParams;
 
-    const Params *
-    params() const
+    Interrupts(const Params &p) : BaseInterrupts(p), ip(0), ie(0) {}
+
+    std::bitset<NumInterruptTypes>
+    globalMask() const
     {
-        return dynamic_cast<const Params *>(_params);
+        INTERRUPT mask = 0;
+        STATUS status = tc->readMiscReg(MISCREG_STATUS);
+        INTERRUPT mideleg = tc->readMiscReg(MISCREG_MIDELEG);
+        INTERRUPT sideleg = tc->readMiscReg(MISCREG_SIDELEG);
+        PrivilegeMode prv = (PrivilegeMode)tc->readMiscReg(MISCREG_PRV);
+        switch (prv) {
+            case PRV_U:
+                mask.mei = (!sideleg.mei) | (sideleg.mei & status.uie);
+                mask.mti = (!sideleg.mti) | (sideleg.mti & status.uie);
+                mask.msi = (!sideleg.msi) | (sideleg.msi & status.uie);
+                mask.sei = (!sideleg.sei) | (sideleg.sei & status.uie);
+                mask.sti = (!sideleg.sti) | (sideleg.sti & status.uie);
+                mask.ssi = (!sideleg.ssi) | (sideleg.ssi & status.uie);
+                if (status.uie)
+                    mask.uei = mask.uti = mask.usi = 1;
+                break;
+            case PRV_S:
+                mask.mei = (!mideleg.mei) | (mideleg.mei & status.sie);
+                mask.mti = (!mideleg.mti) | (mideleg.mti & status.sie);
+                mask.msi = (!mideleg.msi) | (mideleg.msi & status.sie);
+                if (status.sie)
+                    mask.sei = mask.sti = mask.ssi = 1;
+                mask.uei = mask.uti = mask.usi = 0;
+                break;
+            case PRV_M:
+                if (status.mie)
+                     mask.mei = mask.mti = mask.msi = 1;
+                mask.sei = mask.sti = mask.ssi = 0;
+                mask.uei = mask.uti = mask.usi = 0;
+                break;
+            default:
+                panic("Unknown privilege mode %d.", prv);
+                break;
+        }
+
+        return std::bitset<NumInterruptTypes>(mask);
     }
 
-    Interrupts(Params * p) : SimObject(p), cpu(nullptr)
-    {}
-
-    void
-    setCPU(BaseCPU * _cpu)
+    bool
+    checkNonMaskableInterrupt() const
     {
-        cpu = _cpu;
+        return tc->readMiscReg(MISCREG_NMIP) & tc->readMiscReg(MISCREG_NMIE);
     }
+
+    bool checkInterrupt(int num) const { return ip[num] && ie[num]; }
+    bool checkInterrupts() const
+    {
+        return checkNonMaskableInterrupt() || (ip & ie & globalMask()).any();
+    }
+
+    Fault
+    getInterrupt()
+    {
+        assert(checkInterrupts());
+        if (checkNonMaskableInterrupt())
+            return std::make_shared<NonMaskableInterruptFault>();
+        std::bitset<NumInterruptTypes> mask = globalMask();
+        const std::vector<int> interrupt_order {
+            INT_EXT_MACHINE, INT_TIMER_MACHINE, INT_SOFTWARE_MACHINE,
+            INT_EXT_SUPER, INT_TIMER_SUPER, INT_SOFTWARE_SUPER,
+            INT_EXT_USER, INT_TIMER_USER, INT_SOFTWARE_USER
+        };
+        for (const int &id : interrupt_order)
+            if (checkInterrupt(id) && mask[id])
+                return std::make_shared<InterruptFault>(id);
+        return NoFault;
+    }
+
+    void updateIntrInfo() {}
 
     void
     post(int int_num, int index)
     {
-        panic("Interrupts::post not implemented.\n");
+        DPRINTF(Interrupt, "Interrupt %d:%d posted\n", int_num, index);
+        ip[int_num] = true;
     }
 
     void
     clear(int int_num, int index)
     {
-        panic("Interrupts::clear not implemented.\n");
+        DPRINTF(Interrupt, "Interrupt %d:%d cleared\n", int_num, index);
+        ip[int_num] = false;
     }
+
+    void postNMI() { tc->setMiscReg(MISCREG_NMIP, 1); }
+    void clearNMI() { tc->setMiscReg(MISCREG_NMIP, 0); }
 
     void
     clearAll()
     {
-        panic("Interrupts::clearAll not implemented.\n");
+        DPRINTF(Interrupt, "All interrupts cleared\n");
+        ip = 0;
+        clearNMI();
     }
 
-    bool
-    checkInterrupts(ThreadContext *tc) const
-    {
-        panic("Interrupts::checkInterrupts not implemented.\n");
-    }
+    uint64_t readIP() const { return (uint64_t)ip.to_ulong(); }
+    uint64_t readIE() const { return (uint64_t)ie.to_ulong(); }
+    void setIP(const uint64_t& val) { ip = val; }
+    void setIE(const uint64_t& val) { ie = val; }
 
-    Fault
-    getInterrupt(ThreadContext *tc)
+    void
+    serialize(CheckpointOut &cp) const
     {
-        assert(checkInterrupts(tc));
-        panic("Interrupts::getInterrupt not implemented.\n");
+        unsigned long ip_ulong = ip.to_ulong();
+        unsigned long ie_ulong = ie.to_ulong();
+        SERIALIZE_SCALAR(ip_ulong);
+        SERIALIZE_SCALAR(ie_ulong);
     }
 
     void
-    updateIntrInfo(ThreadContext *tc)
+    unserialize(CheckpointIn &cp)
     {
-        panic("Interrupts::updateIntrInfo not implemented.\n");
+        unsigned long ip_ulong;
+        unsigned long ie_ulong;
+        UNSERIALIZE_SCALAR(ip_ulong);
+        ip = ip_ulong;
+        UNSERIALIZE_SCALAR(ie_ulong);
+        ie = ie_ulong;
     }
 };
 
 } // namespace StraightISA
+} // namespace gem5
 
 #endif // __ARCH_STRAIGHT_INTERRUPT_HH__
-

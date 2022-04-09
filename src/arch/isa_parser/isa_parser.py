@@ -1041,10 +1041,10 @@ del wrap
     # 'def [signed] bitfield <ID> [<first>:<last>, <first>:<last>]'
     # This generates a preprocessor macro in the output file.
     def p_def_bitfield_2(self, t):
-        'def_bitfield : DEF opt_signed' \
-                'BITFIELD ID LESS LESS INTLIT COLON INTLIT COMMA' \
+        'def_bitfield : DEF opt_signed ' \
+                'BITFIELD ID LESS INTLIT COLON INTLIT COMMA ' \
                 'INTLIT COLON INTLIT GREATER SEMI'
-        expr = 'bits(machInst, %2d, %2d)' % (t[6], t[8], t[10], t[12])
+        expr = 'bits(machInst, %2d, %2d, %2d, %2d)' % (t[6], t[8], t[10], t[12])
         if (t[2] == 'signed'):
             expr = 'sext<%d>(%s)' % (t[6] - t[8] + 1, expr)
         hash_define = '#undef %s\n#define %s\t%s\n' % (t[4], t[4], expr)
