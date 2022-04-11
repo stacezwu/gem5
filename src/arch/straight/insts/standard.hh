@@ -51,10 +51,22 @@ namespace StraightISA
 class RegOp : public StraightStaticInst
 {
   protected:
+    // RegId _rp_tmp;
+    RegIndex _RS1_cache;
+    RegIndex _RS2_cache;
+
     using StraightStaticInst::StraightStaticInst;
 
     std::string generateDisassembly(
         Addr pc, const loader::SymbolTable *symtab) const override;
+
+  public:
+    
+    virtual void 
+    translateSrcReg() override{
+        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp() - _RS1_cache));
+        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp() - _RS2_cache));
+    } 
 };
 
 /**

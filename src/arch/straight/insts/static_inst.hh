@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2015 RISC-V Foundation
  * Copyright (c) 2016 The University of Virginia
@@ -34,6 +35,7 @@
 
 #include "arch/straight/pcstate.hh"
 #include "arch/straight/types.hh"
+#include "arch/straight/rpstate.hh"
 #include "cpu/exec_context.hh"
 #include "cpu/static_inst.hh"
 #include "cpu/thread_context.hh"
@@ -51,6 +53,8 @@ namespace StraightISA
 class StraightStaticInst : public StaticInst
 {
   protected:
+    RPState *_rp_cache = 0; 
+
     StraightStaticInst(const char *_mnemonic, ExtMachInst _machInst,
             OpClass __opClass) :
         StaticInst(_mnemonic, __opClass), machInst(_machInst)
@@ -58,6 +62,31 @@ class StraightStaticInst : public StaticInst
 
   public:
     ExtMachInst machInst;
+
+    void 
+    advanceRP(RPState &rp) {
+        rp.advance();
+        _rp_cache = &rp;
+
+        translateDestReg();
+        translateSrcReg();
+    }
+
+    // const RegId &destRegIdx(int i) const {
+    //     return destRegIdx(i);
+    // }
+
+    void 
+    translateDestReg(){
+        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp()));
+    }
+
+    // const RegId &srcRegIdx(int i) const {
+    //     return srcRegIdx(i);
+    // }
+
+    virtual void 
+    translateSrcReg(){}
 
     void
     advancePC(PCStateBase &pc) const override
@@ -155,3 +184,4 @@ class StraightMicroInst : public StraightStaticInst
 } // namespace gem5
 
 #endif // __ARCH_STRAIGHT_STATIC_INST_HH__
+

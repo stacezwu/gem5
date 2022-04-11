@@ -44,8 +44,10 @@ class Operand(object):
     derived classes encapsulates the traits of a particular operand
     type (e.g., "32-bit integer register").'''
 
-    src_reg_constructor = '\n\tsetSrcRegIdx(_numSrcRegs++, RegId(%s, %s));'
-    dst_reg_constructor = '\n\tsetDestRegIdx(_numDestRegs++, RegId(%s, %s));'
+    # src_reg_constructor = '\n\tsetSrcRegIdx(_numSrcRegs++, RegId(%s, %s));'
+    src_reg_constructor = '\n\t _%s_cache = %s;'
+    dst_reg_constructor = ''
+    # dst_reg_constructor = '\n\tsetDestRegIdx(_numDestRegs++, RegId(%s, %s));'
 
     def buildReadCode(self, predRead, func=None):
         subst_dict = {"name": self.base_name,
@@ -184,13 +186,15 @@ class IntRegOperand(Operand):
         c_dest = ''
 
         if self.is_src:
-            c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            c_src = self.src_reg_constructor % (self.reg_spec, self.reg_spec)
             if self.hasReadPred():
                 c_src = '\n\tif (%s) {%s\n\t}' % \
                         (self.read_predicate, c_src)
 
         if self.is_dest:
-            c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            c_dest = self.dst_reg_constructor
             c_dest += '\n\t_numIntDestRegs++;'
             if self.hasWritePred():
                 c_dest = '\n\tif (%s) {%s\n\t}' % \
@@ -256,10 +260,12 @@ class FloatRegOperand(Operand):
         c_dest = ''
 
         if self.is_src:
-            c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            c_src = self.src_reg_constructor % (self.reg_spec, self.reg_spec)
 
         if self.is_dest:
-            c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            c_dest = self.dst_reg_constructor
             c_dest += '\n\t_numFPDestRegs++;'
 
         return c_src + c_dest
@@ -347,10 +353,12 @@ class VecRegOperand(Operand):
         numAccessNeeded = 1
 
         if self.is_src:
-            c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            c_src = self.src_reg_constructor % (self.reg_spec, self.reg_spec)
 
         if self.is_dest:
-            c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            c_dest = self.dest_reg_constructor
             c_dest += '\n\t_numVecDestRegs++;'
 
         return c_src + c_dest
@@ -528,10 +536,11 @@ class VecPredRegOperand(Operand):
         c_dest = ''
 
         if self.is_src:
-            c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
-
+            # c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            c_src = self.src_reg_constructor % (self.reg_spec, self.reg_spec)
         if self.is_dest:
-            c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            c_dest = self.dest_reg_constructor
             c_dest += '\n\t_numVecPredDestRegs++;'
 
         return c_src + c_dest
@@ -603,13 +612,15 @@ class CCRegOperand(Operand):
         c_dest = ''
 
         if self.is_src:
-            c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_src = self.src_reg_constructor % (self.reg_class, self.reg_spec)
+            c_src = self.src_reg_constructor % (self.reg_spec, self.reg_spec)
             if self.hasReadPred():
                 c_src = '\n\tif (%s) {%s\n\t}' % \
                         (self.read_predicate, c_src)
 
         if self.is_dest:
-            c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            # c_dest = self.dst_reg_constructor % (self.reg_class, self.reg_spec)
+            c_dest = self.dest_reg_constructor
             c_dest += '\n\t_numCCDestRegs++;'
             if self.hasWritePred():
                 c_dest = '\n\tif (%s) {%s\n\t}' % \

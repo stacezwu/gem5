@@ -45,7 +45,7 @@ output header {{
 #include <softfloat.h>
 #include <specialize.h>
 
-#include "arch/straight/insts/amo.hh"
+// #include "arch/straight/insts/amo.hh"
 #include "arch/straight/insts/compressed.hh"
 #include "arch/straight/insts/mem.hh"
 #include "arch/straight/insts/pseudo.hh"
@@ -67,6 +67,7 @@ output decoder {{
 #include "arch/straight/decoder.hh"
 #include "arch/straight/faults.hh"
 #include "arch/straight/mmu.hh"
+#include "arch/straight/rpstate.hh"
 #include "base/cprintf.hh"
 #include "base/loader/symtab.hh"
 #include "cpu/thread_context.hh"

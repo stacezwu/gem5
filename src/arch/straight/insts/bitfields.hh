@@ -11,7 +11,7 @@
 #define OPCODE  bits(machInst, 6, 0)
 
 #define AQ      bits(machInst, 26)
-#define RP      bits(machInst, 11, 7)
+// #define RP      bits(machInst, 11, 7)
 #define RL      bits(machInst, 25)
 #define RS1     bits(machInst, 36, 32, 19, 15)
 #define RS2     bits(machInst, 41, 37, 24, 20)
