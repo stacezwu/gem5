@@ -73,6 +73,19 @@ class StraightStaticInst : public StaticInst
         translateSrcReg();
     }
 
+    void
+    advanceRP(ThreadContext *tc) override
+    {
+        RPState rp = tc->rpState().as<RPState>();
+        rp.advance();
+        tc->rpState(rp);
+        
+        _rp_cache = &rp.as<RPState>();
+
+        translateDestReg();
+        translateSrcReg();
+    }
+
     // const RegId &destRegIdx(int i) const {
     //     return destRegIdx(i);
     // }
