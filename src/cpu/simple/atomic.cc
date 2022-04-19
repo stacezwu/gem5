@@ -680,6 +680,8 @@ AtomicSimpleCPU::tick()
             }
 
             preExecute();
+            if (fault != NoFault)
+                advanceRP(fault);
 
             Tick stall_ticks = 0;
             if (curStaticInst) {

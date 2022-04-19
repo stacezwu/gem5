@@ -141,6 +141,7 @@ class BaseSimpleCPU : public BaseCPU
     void preExecute();
     void postExecute();
     void advancePC(const Fault &fault);
+    void advanceRP(const Fault &fault);
 
     void haltContext(ThreadID thread_num) override;
 

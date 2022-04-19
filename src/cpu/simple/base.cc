@@ -497,4 +497,16 @@ BaseSimpleCPU::advancePC(const Fault &fault)
     }
 }
 
+void
+BaseSimpleCPU::advanceRP(const Fault &fault)
+{
+    SimpleExecContext &t_info = *threadInfo[curThread];
+    SimpleThread* thread = t_info.thread;
+
+    if (fault == NoFault) {
+        curStaticInst->advanceRP(thread);
+    } 
+
+}
+
 } // namespace gem5
