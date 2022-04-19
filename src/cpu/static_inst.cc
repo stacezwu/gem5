@@ -92,4 +92,12 @@ StaticInst::advancePC(ThreadContext *tc) const
     tc->pcState(*pc);
 }
 
+void 
+StaticInst::advanceRP(ThreadContext *tc)
+{
+    std::unique_ptr<RPStateBase> rp(tc->rpState().clone());
+    advanceRP(*rp);
+    tc->rpState(*rp);
+}
+
 } // namespace gem5

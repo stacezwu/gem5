@@ -43,6 +43,7 @@
 #include <vector>
 
 #include "arch/generic/pcstate.hh"
+#include "arch/generic/rpstate.hh"
 #include "cpu/reg_class.hh"
 #include "mem/packet.hh"
 #include "mem/request.hh"
@@ -68,6 +69,7 @@ class BaseISA : public SimObject
 
   public:
     virtual PCStateBase *newPCState(Addr new_inst_addr=0) const = 0;
+    virtual RPStateBase *newRPState(RegIndex new_reg_idx=0) const = 0;
     virtual void takeOverFrom(ThreadContext *new_tc, ThreadContext *old_tc) {}
     virtual void setThreadContext(ThreadContext *_tc) { tc = _tc; }
 

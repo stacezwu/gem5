@@ -42,14 +42,7 @@
 #ifndef __ARCH_STRAIGHT_RPSTATE_HH__
 #define __ARCH_STRAIGHT_RPSTATE_HH__
 
-#include <iostream>
-#include <memory>
-#include <type_traits>
-
-#include "base/compiler.hh"
-#include "base/trace.hh"
-#include "base/types.hh"
-#include "sim/serialize.hh"
+#include "arch/generic/rpstate.hh"
 
 namespace gem5
 {
@@ -57,30 +50,11 @@ namespace gem5
 namespace StraightISA
 {
 
-class RPState : public Serializable
+class RPState : public RPStateBase
 {
   protected:
-    RegIndex _rp = 0;
-    
-    RPState(const RPState &other) : _rp(other._rp) {}
-
-    RPState() {}
-
-
   public:
-    ~RPState() = default;
-
-    RPState &operator=(const RPState &other) = default;
-
-    RegIndex rp() const { return _rp; }
-    void rp(RegIndex val) { _rp = val; }
-
-    void advance() {}
-    RegIndex translate(RegIndex rs) {
-        return (_rp - rs);
-    }
-
-
+    using RPStateBase::RPStateBase;
 };
 
 } // namespace StraightISA

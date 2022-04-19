@@ -423,6 +423,12 @@ class CheckerCPU : public BaseCPU, public ExecContext
        set(newPCState, val);
     }
 
+    void 
+    recordRPChange(const RPStateBase &val){
+        changedRP = true;
+        set(newRPState, val);
+    }
+
     void
     demapPage(Addr vaddr, uint64_t asn) override
     {
@@ -512,8 +518,10 @@ class CheckerCPU : public BaseCPU, public ExecContext
     uint8_t *unverifiedMemData;
 
     bool changedPC;
+    bool changedRP;
     bool willChangePC;
     std::unique_ptr<PCStateBase> newPCState;
+    std::unique_ptr<RPStateBase> newRPState;
     bool exitOnError;
     bool updateOnError;
     bool warnOnlyOnLoadError;

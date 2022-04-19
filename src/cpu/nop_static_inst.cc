@@ -29,6 +29,7 @@
 #include "cpu/nop_static_inst.hh"
 
 #include "arch/generic/pcstate.hh"
+#include "arch/generic/rpstate.hh"
 #include "cpu/static_inst.hh"
 
 namespace gem5
@@ -52,6 +53,12 @@ class NopStaticInst : public StaticInst
     advancePC(PCStateBase &pc) const override
     {
         pc.advance();
+    }
+
+    void
+    advanceRP(RPStateBase &rp) override
+    {
+        rp.advance();
     }
 
     std::string

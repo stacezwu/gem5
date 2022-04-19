@@ -105,6 +105,7 @@ class SimpleThread : public ThreadState, public ThreadContext
     TheISA::ISA *const isa;    // one "instance" of the current ISA.
 
     std::unique_ptr<PCStateBase> _pcState;
+    std::unique_ptr<RPStateBase> _rpState;
 
     // hardware transactional memory
     std::unique_ptr<BaseHTMCheckpoint> _htmCheckpoint;
@@ -426,6 +427,15 @@ class SimpleThread : public ThreadState, public ThreadContext
     pcStateNoRecord(const PCStateBase &val) override
     {
         set(_pcState, val);
+    }
+
+    const RPStateBase &rpState() const override { return *_rpState; }
+
+    void rpState(const RPStateBase &val) override { set(_rpState, val); }
+
+    void rpStateNoRecord(const RPStateBase &val) override
+    {
+        set(_rpState, val);
     }
 
     bool readPredicate() const { return predicate; }

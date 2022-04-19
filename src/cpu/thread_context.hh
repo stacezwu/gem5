@@ -48,6 +48,7 @@
 #include "arch/generic/htm.hh"
 #include "arch/generic/isa.hh"
 #include "arch/generic/pcstate.hh"
+#include "arch/generic/rpstate.hh"
 #include "arch/vecregs.hh"
 #include "base/types.hh"
 #include "config/the_isa.hh"
@@ -235,6 +236,26 @@ class ThreadContext : public PCEventScope
     }
 
     virtual void pcStateNoRecord(const PCStateBase &val) = 0;
+
+    virtual const RPStateBase &rpState() const
+    {   
+        RPStateBase* rp = new RPStateBase(0);
+        return *rp;
+    }
+
+    virtual void rpState(const RPStateBase &val){
+        ;
+    }
+
+    void rpState(RegIndex regIdx)
+    {
+        std::unique_ptr<RPStateBase> new_rp(getIsaPtr()->newRPState(regIdx));
+        rpState(*new_rp);
+    }
+
+    virtual void rpStateNoRecord(const RPStateBase &val){
+        ;
+    }
 
     virtual RegVal readMiscRegNoEffect(RegIndex misc_reg) const = 0;
 

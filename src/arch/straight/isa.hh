@@ -38,6 +38,7 @@
 
 #include "arch/generic/isa.hh"
 #include "arch/straight/pcstate.hh"
+#include "arch/straight/rpstate.hh"
 #include "arch/straight/types.hh"
 #include "base/types.hh"
 
@@ -81,6 +82,12 @@ class ISA : public BaseISA
     newPCState(Addr new_inst_addr=0) const override
     {
         return new PCState(new_inst_addr);
+    }
+
+    RPStateBase *
+    newRPState(RegIndex new_reg_idx=0) const override 
+    {
+      return new RPState(new_reg_idx);
     }
 
   public:

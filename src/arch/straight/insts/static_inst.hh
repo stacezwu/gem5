@@ -64,9 +64,10 @@ class StraightStaticInst : public StaticInst
     ExtMachInst machInst;
 
     void 
-    advanceRP(RPState &rp) {
+    advanceRP(RPStateBase &rp) {
+
         rp.advance();
-        _rp_cache = &rp;
+        _rp_cache = &rp.as<RPState>();
 
         translateDestReg();
         translateSrcReg();

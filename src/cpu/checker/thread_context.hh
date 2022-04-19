@@ -340,6 +340,26 @@ class CheckerThreadContext : public ThreadContext
         return actualTC->pcState(val);
     }
 
+    /** Reads this thread's RP state. */
+    const RPStateBase &rpState() const override { return actualTC->rpState(); }
+
+    /** Sets this thread's RP state. */
+    void
+    rpState(const RPStateBase &val) override
+    {
+        // DPRINTF(Checker, "Changing RP to %s, old RP %s\n",
+        //                  val, checkerTC->rpState());
+        checkerTC->rpState(val);
+        checkerCPU->recordRPChange(val);
+        return actualTC->rpState(val);
+    }
+
+    void
+    rpStateNoRecord(const RPStateBase &val) override
+    {
+        return actualTC->rpState(val);
+    }
+
     RegVal
     readMiscRegNoEffect(RegIndex misc_reg) const override
     {

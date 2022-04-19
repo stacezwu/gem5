@@ -48,6 +48,7 @@
 #include <string>
 
 #include "arch/generic/pcstate.hh"
+#include "arch/generic/rpstate.hh"
 #include "base/logging.hh"
 #include "base/refcnt.hh"
 #include "cpu/op_class.hh"
@@ -327,6 +328,9 @@ class StaticInst : public RefCounted, public StaticInstFlags
     {
         panic("buildRetPC not defined!");
     }
+
+    virtual void advanceRP(RPStateBase &rp_state) = 0;
+    virtual void advanceRP(ThreadContext *tc);
 
     /**
      * Return the microop that goes with a particular micropc. This should
