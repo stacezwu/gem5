@@ -29,7 +29,7 @@
 #ifndef __DEV_LUPIO_LUPIO_TMR_HH__
 #define __DEV_LUPIO_LUPIO_TMR_HH__
 
-#include "arch/riscv/interrupts.hh"
+#include "arch/straight/interrupts.hh"
 #include "dev/io_device.hh"
 #include "dev/platform.hh"
 #include "params/LupioTMR.hh"

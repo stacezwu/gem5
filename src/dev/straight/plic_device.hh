@@ -1,6 +1,15 @@
 /*
- * Copyright (c) 2021 The Regents of the University of California
- * All rights reserved.
+ * Copyright (c) 2021 Huawei International
+ * All rights reserved
+ *
+ * The license below extends only to copyright in the software and shall
+ * not be construed as granting a license to any other intellectual
+ * property including but not limited to intellectual property relating
+ * to a hardware implementation of the functionality of the software
+ * licensed hereunder.  You may use the software subject to the license
+ * terms below provided that you ensure that this notice is replicated
+ * unmodified and in its entirety in all distributions of the software,
+ * modified or unmodified, in source code or in binary form.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,68 +35,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __DEV_LUPIO_LUPIO_IPI_HH__
-#define __DEV_LUPIO_LUPIO_IPI_HH__
+#ifndef __DEV_STRAIGHT_PLIC_DEVICE_HH__
+#define __DEV_STRAIGHT_PLIC_DEVICE_HH__
 
-#include "arch/straight/interrupts.hh"
 #include "dev/io_device.hh"
 #include "dev/platform.hh"
-#include "params/LupioIPI.hh"
+#include "params/PlicIntDevice.hh"
+#include "sim/system.hh"
 
 namespace gem5
 {
 
-/**
- * LupioIPI:
- * An inter-processor interrupt virtual device
- */
+using namespace StraightISA;
 
-class LupioIPI : public BasicPioDevice
+class PlicIntDevice : public BasicPioDevice
 {
-  private:
-    const ByteOrder byteOrder = ByteOrder::little;
+  protected:
     System *system;
-    int intType;
-
-    // Register map
-    enum
-    {
-        LUPIO_IPI_WORD,
-
-        // Max offset
-        LUPIO_IPI_MAX,
-    };
-
-    uint32_t nThread;
-    /**
-     * Set of registers corresponding to each CPU for sending
-     * inter-processor interrupts
-     */
-    std::vector<uint32_t> word;
-
-    /**
-     * Function to return the value in the word register of the corresponding
-     * CPU and lower the IRQ
-     */
-    uint64_t lupioIPIRead(const uint8_t addr, int size);
-    /**
-     * Function to write to the word register of the corresponding CPU and
-     * raise the IRQ
-     */
-    void lupioIPIWrite(const uint8_t addr, uint64_t val64, int size);
+    Platform *platform;
+    int _interruptID;
 
   public:
-    PARAMS(LupioIPI);
-    LupioIPI(const Params &params);
+    typedef PlicIntDeviceParams Params;
 
-    /**
-     * Implement BasicPioDevice virtual functions
-     */
-    Tick read(PacketPtr pkt) override;
-    Tick write(PacketPtr pkt) override;
+    const Params &
+    params() const
+    {
+        return dynamic_cast<const Params &>(_params);
+    }
+
+    PlicIntDevice(const Params &params);
+
+    const int &
+    id()
+    {
+      return _interruptID;
+    }
+
 };
 
 } // namespace gem5
 
-#endif // __DEV_LUPIO_LUPIO_IPI_HH
-
+#endif // __DEV_STRAIGHT_PLIC_DEVICE_HH__

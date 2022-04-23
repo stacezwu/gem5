@@ -1,6 +1,15 @@
 /*
- * Copyright (c) 2021 The Regents of the University of California
- * All rights reserved.
+ * Copyright (c) 2021 Huawei International
+ * All rights reserved
+ *
+ * The license below extends only to copyright in the software and shall
+ * not be construed as granting a license to any other intellectual
+ * property including but not limited to intellectual property relating
+ * to a hardware implementation of the functionality of the software
+ * licensed hereunder.  You may use the software subject to the license
+ * terms below provided that you ensure that this notice is replicated
+ * unmodified and in its entirety in all distributions of the software,
+ * modified or unmodified, in source code or in binary form.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,68 +35,57 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __DEV_LUPIO_LUPIO_IPI_HH__
-#define __DEV_LUPIO_LUPIO_IPI_HH__
+#include "dev/straight/hifive.hh"
 
-#include "arch/straight/interrupts.hh"
-#include "dev/io_device.hh"
-#include "dev/platform.hh"
-#include "params/LupioIPI.hh"
+#include "dev/straight/clint.hh"
+#include "dev/straight/plic.hh"
+#include "params/HiFive.hh"
+#include "sim/system.hh"
 
 namespace gem5
 {
 
-/**
- * LupioIPI:
- * An inter-processor interrupt virtual device
- */
+using namespace StraightISA;
 
-class LupioIPI : public BasicPioDevice
+HiFive::HiFive(const Params &params) :
+    Platform(params),
+    clint(params.clint), plic(params.plic),
+    uartIntID(params.uart_int_id)
 {
-  private:
-    const ByteOrder byteOrder = ByteOrder::little;
-    System *system;
-    int intType;
+}
 
-    // Register map
-    enum
-    {
-        LUPIO_IPI_WORD,
+void
+HiFive::postConsoleInt()
+{
+    plic->post(uartIntID);
+}
 
-        // Max offset
-        LUPIO_IPI_MAX,
-    };
+void
+HiFive::clearConsoleInt()
+{
+    plic->clear(uartIntID);
+}
 
-    uint32_t nThread;
-    /**
-     * Set of registers corresponding to each CPU for sending
-     * inter-processor interrupts
-     */
-    std::vector<uint32_t> word;
+void
+HiFive::postPciInt(int line)
+{
+    plic->post(line);
+}
 
-    /**
-     * Function to return the value in the word register of the corresponding
-     * CPU and lower the IRQ
-     */
-    uint64_t lupioIPIRead(const uint8_t addr, int size);
-    /**
-     * Function to write to the word register of the corresponding CPU and
-     * raise the IRQ
-     */
-    void lupioIPIWrite(const uint8_t addr, uint64_t val64, int size);
+void
+HiFive::clearPciInt(int line)
+{
+    plic->clear(line);
+}
 
-  public:
-    PARAMS(LupioIPI);
-    LupioIPI(const Params &params);
+void
+HiFive::serialize(CheckpointOut &cp) const
+{
+}
 
-    /**
-     * Implement BasicPioDevice virtual functions
-     */
-    Tick read(PacketPtr pkt) override;
-    Tick write(PacketPtr pkt) override;
-};
+void
+HiFive::unserialize(CheckpointIn &cp)
+{
+}
 
 } // namespace gem5
-
-#endif // __DEV_LUPIO_LUPIO_IPI_HH
-

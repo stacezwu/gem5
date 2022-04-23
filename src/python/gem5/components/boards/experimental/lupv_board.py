@@ -43,6 +43,7 @@ from m5.objects import (
     PMAChecker,
     RiscvLinux,
     RiscvRTC,
+    StraightRTC,
     AddrRange,
     IOXBar,
     Clint,

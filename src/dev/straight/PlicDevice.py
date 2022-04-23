@@ -1,6 +1,14 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2017 Jason Lowe-Power
+# Copyright (c) 2021 Huawei International
 # All rights reserved.
+#
+# The license below extends only to copyright in the software and shall
+# not be construed as granting a license to any other intellectual
+# property including but not limited to intellectual property relating
+# to a hardware implementation of the functionality of the software
+# licensed hereunder.  You may use the software subject to the license
+# terms below provided that you ensure that this notice is replicated
+# unmodified and in its entirety in all distributions of the software,
+# modified or unmodified, in source code or in binary form.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -25,28 +33,27 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-""" Simple config/run script for the HelloObject
+from m5.objects.Device import BasicPioDevice
+from m5.params import *
+from m5.proxy import *
+from m5.util.fdthelper import *
 
-This is probably the simplest gem5 config file you can possibly create.
-It creates a Root object and one *very* simple SimObject and simulates the
-system. Since there are no events, this "simulation" should finish immediately
+class PlicIntDevice(BasicPioDevice):
+    type = 'PlicIntDevice'
+    cxx_header = 'dev/straight/plic_device.hh'
+    cxx_class = 'gem5::PlicIntDevice'
+    abstract = True
 
-"""
+    platform = Param.Platform(Parent.any, "Platform")
+    pio_size = Param.Addr("PIO Size")
+    interrupt_id = Param.Int("PLIC Interrupt ID")
 
-# import the m5 (gem5) library created when gem5 is built
-import m5
-# import all of the SimObjects
-from m5.objects import *
+    def generatePlicDeviceNode(self, state, name):
+        node = self.generateBasicPioDeviceNode(state, name,
+                self.pio_addr, self.pio_size)
 
-# set up the root SimObject and start the simulation
-root = Root(full_system = False)
+        plic = self.platform.unproxy(self).plic
 
-# Create an instantiation of the simobject you created
-root.hello = AtomicSimpleCPU()
-
-# instantiate all of the objects we've created above
-m5.instantiate()
-
-print("Beginning simulation!")
-exit_event = m5.simulate()
-print('Exiting @ tick %i because %s' % (m5.curTick(), exit_event.getCause()))
+        node.append(FdtPropertyWords("interrupts", [self.interrupt_id]))
+        node.append(FdtPropertyWords("interrupt-parent", state.phandle(plic)))
+        return node

@@ -337,7 +337,7 @@ BaseSimpleCPU::preExecute()
 
         //Decode an instruction if one is ready. Otherwise, we'll have to
         //fetch beyond the MachInst at the current pc.
-        instPtr = decoder->decode(pc_state);
+        instPtr = decoder->decode(pc_state, t_info.numInst);
         if (instPtr) {
             t_info.stayAtPC = false;
             thread->pcState(pc_state);

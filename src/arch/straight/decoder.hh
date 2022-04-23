@@ -38,6 +38,7 @@
 #include "cpu/static_inst.hh"
 #include "debug/Decode.hh"
 #include "params/StraightDecoder.hh"
+#include <vector>
 
 namespace gem5
 {
@@ -50,6 +51,16 @@ class Decoder : public InstDecoder
 {
   private:
     decode_cache::InstMap<ExtMachInst> instMap;
+
+    std::vector<ExtMachInst> instHandcode = {
+      0x0000000000100013,
+      0x0000000000200013,
+      0x0000000000208033,
+      0x0000000000208033,
+      0x0000000000208033,
+      0x0000000000208033
+    };
+
     bool aligned;
     bool mid;
 
@@ -80,6 +91,7 @@ class Decoder : public InstDecoder
     void moreBytes(const PCStateBase &pc, Addr fetchPC) override;
 
     StaticInstPtr decode(PCStateBase &nextPC) override;
+    StaticInstPtr decode(PCStateBase &nextPC, Counter numInst) override;
 };
 
 } // namespace StraightISA

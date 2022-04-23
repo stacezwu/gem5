@@ -49,11 +49,11 @@ system.clk_domain.clock = '1GHz'
 system.clk_domain.voltage_domain = VoltageDomain()
 
 # Set up the system
-system.mem_mode = 'timing'               # Use timing accesses
+system.mem_mode = 'atomic'               # Use timing accesses
 system.mem_ranges = [AddrRange('512MB')] # Create an address range
 
 # Create a simple CPU
-system.cpu = TimingSimpleCPU()
+system.cpu = AtomicSimpleCPU()
 
 # Create a memory bus, a system crossbar, in this case
 system.membus = SystemXBar()
@@ -82,7 +82,8 @@ system.mem_ctrl.port = system.membus.mem_side_ports
 system.system_port = system.membus.cpu_side_ports
 
 # get ISA for the binary to run.
-isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
+# isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
+isa = 'riscv'
 
 # Default to running 'hello', use the compiled ISA to find the binary
 # grab the specific path to the binary
@@ -90,7 +91,7 @@ thispath = os.path.dirname(os.path.realpath(__file__))
 binary = os.path.join(thispath, '../../../',
                       'tests/test-progs/hello/bin/', isa, 'linux/hello')
 
-system.workload = SEWorkload.init_compatible(binary)
+# system.workload = SEWorkload.init_compatible(binary)
 
 # Create a process for a simple "Hello World" application
 process = Process()

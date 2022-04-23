@@ -1,6 +1,14 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2017 Jason Lowe-Power
+# Copyright (c) 2021 Huawei International
 # All rights reserved.
+#
+# The license below extends only to copyright in the software and shall
+# not be construed as granting a license to any other intellectual
+# property including but not limited to intellectual property relating
+# to a hardware implementation of the functionality of the software
+# licensed hereunder.  You may use the software subject to the license
+# terms below provided that you ensure that this notice is replicated
+# unmodified and in its entirety in all distributions of the software,
+# modified or unmodified, in source code or in binary form.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -25,28 +33,19 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-""" Simple config/run script for the HelloObject
+from m5.params import *
+from m5.proxy import *
+from m5.SimObject import SimObject
+from m5.objects.IntPin import IntSourcePin
 
-This is probably the simplest gem5 config file you can possibly create.
-It creates a Root object and one *very* simple SimObject and simulates the
-system. Since there are no events, this "simulation" should finish immediately
-
-"""
-
-# import the m5 (gem5) library created when gem5 is built
-import m5
-# import all of the SimObjects
-from m5.objects import *
-
-# set up the root SimObject and start the simulation
-root = Root(full_system = False)
-
-# Create an instantiation of the simobject you created
-root.hello = AtomicSimpleCPU()
-
-# instantiate all of the objects we've created above
-m5.instantiate()
-
-print("Beginning simulation!")
-exit_event = m5.simulate()
-print('Exiting @ tick %i because %s' % (m5.curTick(), exit_event.getCause()))
+class StraightRTC(SimObject):
+    type = 'StraightRTC'
+    cxx_class='gem5::StraightRTC'
+    cxx_header = "dev/straight/rtc.hh"
+    time = Param.Time('01/01/2012',
+        "System time to use")
+    int_pin = IntSourcePin('Pin to signal RTC interrupts to')
+    # The default 1MHz setting is taken from SiFive's U54MC
+    # core complex. Set to other frequencies if necessary.
+    frequency = Param.Frequency("1MHz", "RTC Frequency")
+    bcd = Param.Bool(False, "Binary Coded Decimal Mode for MC146818")

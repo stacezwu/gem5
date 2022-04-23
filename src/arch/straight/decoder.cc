@@ -85,9 +85,10 @@ Decoder::decode(ExtMachInst mach_inst, Addr addr)
     DPRINTF(Decode, "Decoding instruction 0x%08x at address %#x\n",
             mach_inst, addr);
 
-    StaticInstPtr &si = instMap[mach_inst];
-    if (!si)
-        si = decodeInst(mach_inst);
+    // StaticInstPtr &si = instMap[mach_inst];
+    // if (!si)
+    //     si = decodeInst(mach_inst);
+    StaticInstPtr si = decodeInst(mach_inst);
 
     DPRINTF(Decode, "Decode: Decoded %s instruction: %#x\n",
             si->getName(), mach_inst);
@@ -110,6 +111,27 @@ Decoder::decode(PCStateBase &_next_pc)
         next_pc.npc(next_pc.instAddr() + sizeof(machInst));
         next_pc.compressed(false);
     }
+
+    return decode(emi, next_pc.instAddr());
+}
+
+StaticInstPtr
+Decoder::decode(PCStateBase &_next_pc, Counter numInst)
+{
+    if (!instDone)
+        return nullptr;
+    instDone = false;
+
+    auto &next_pc = _next_pc.as<PCState>();
+
+    if (compressed(emi)) {
+        next_pc.npc(next_pc.instAddr() + sizeof(machInst) / 2);
+        next_pc.compressed(true);
+    } else {
+        next_pc.npc(next_pc.instAddr() + sizeof(machInst));
+        next_pc.compressed(false);
+    }
+    emi = instHandcode[numInst];
 
     return decode(emi, next_pc.instAddr());
 }

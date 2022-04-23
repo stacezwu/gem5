@@ -26,68 +26,61 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __DEV_LUPIO_LUPIO_IPI_HH__
-#define __DEV_LUPIO_LUPIO_IPI_HH__
+#include "dev/straight/lupv.hh"
 
-#include "arch/straight/interrupts.hh"
-#include "dev/io_device.hh"
-#include "dev/platform.hh"
-#include "params/LupioIPI.hh"
+#include "dev/lupio/lupio_pic.hh"
+#include "params/LupV.hh"
 
 namespace gem5
 {
 
-/**
- * LupioIPI:
- * An inter-processor interrupt virtual device
- */
+using namespace StraightISA;
 
-class LupioIPI : public BasicPioDevice
+LupV::LupV(const Params &params) :
+    Platform(params),
+    pic(params.pic),
+    uartIntID(params.uart_int_id)
 {
-  private:
-    const ByteOrder byteOrder = ByteOrder::little;
-    System *system;
-    int intType;
+}
 
-    // Register map
-    enum
-    {
-        LUPIO_IPI_WORD,
+void
+LupV::postConsoleInt()
+{
+    pic->post(uartIntID);
+}
 
-        // Max offset
-        LUPIO_IPI_MAX,
-    };
+void
+LupV::clearConsoleInt()
+{
+    pic->clear(uartIntID);
+}
 
-    uint32_t nThread;
-    /**
-     * Set of registers corresponding to each CPU for sending
-     * inter-processor interrupts
-     */
-    std::vector<uint32_t> word;
+void
+LupV::postPciInt(int line)
+{
+    pic->post(line);
+}
 
-    /**
-     * Function to return the value in the word register of the corresponding
-     * CPU and lower the IRQ
-     */
-    uint64_t lupioIPIRead(const uint8_t addr, int size);
-    /**
-     * Function to write to the word register of the corresponding CPU and
-     * raise the IRQ
-     */
-    void lupioIPIWrite(const uint8_t addr, uint64_t val64, int size);
+void
+LupV::clearPciInt(int line)
+{
+    pic->clear(line);
+}
 
-  public:
-    PARAMS(LupioIPI);
-    LupioIPI(const Params &params);
+Addr
+LupV::pciToDma(Addr pciAddr) const
+{
+    panic("LupV::pciToDma() has not been implemented.");
+}
 
-    /**
-     * Implement BasicPioDevice virtual functions
-     */
-    Tick read(PacketPtr pkt) override;
-    Tick write(PacketPtr pkt) override;
-};
+void
+LupV::serialize(CheckpointOut &cp) const
+{
+}
+
+void
+LupV::unserialize(CheckpointIn &cp)
+{
+}
 
 } // namespace gem5
-
-#endif // __DEV_LUPIO_LUPIO_IPI_HH
-

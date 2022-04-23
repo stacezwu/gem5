@@ -154,6 +154,7 @@ class InstDecoder : public SimObject
      * decoder isn't ready (see instReady()).
      */
     virtual StaticInstPtr decode(PCStateBase &pc) = 0;
+    virtual StaticInstPtr decode(PCStateBase &nextPC, Counter numInst) = 0;
 };
 
 } // namespace gem5

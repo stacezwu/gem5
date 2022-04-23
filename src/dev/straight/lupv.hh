@@ -26,68 +26,52 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __DEV_LUPIO_LUPIO_IPI_HH__
-#define __DEV_LUPIO_LUPIO_IPI_HH__
+#ifndef __DEV_STRAIGHT_LUPV_HH__
+#define __DEV_STRAIGHT_LUPV_HH__
 
-#include "arch/straight/interrupts.hh"
-#include "dev/io_device.hh"
+#include "dev/lupio/lupio_pic.hh"
 #include "dev/platform.hh"
-#include "params/LupioIPI.hh"
+#include "params/LupV.hh"
 
 namespace gem5
 {
 
+using namespace StraightISA;
+
 /**
- * LupioIPI:
- * An inter-processor interrupt virtual device
- */
+ * The LupV collection consists of a RISC-V processor, as well as the set of
+ * LupiIO devices. This LupV platform allows for us to not only use these
+ * devices, bu alsoseamlessly decide which interrupt controller we want to use.
+ * For example, this platform has been tested to use both the LupioPIC for
+ * interrupts, as well as the PLIC.
+ **/
 
-class LupioIPI : public BasicPioDevice
+class LupV : public Platform
 {
-  private:
-    const ByteOrder byteOrder = ByteOrder::little;
-    System *system;
-    int intType;
-
-    // Register map
-    enum
-    {
-        LUPIO_IPI_WORD,
-
-        // Max offset
-        LUPIO_IPI_MAX,
-    };
-
-    uint32_t nThread;
-    /**
-     * Set of registers corresponding to each CPU for sending
-     * inter-processor interrupts
-     */
-    std::vector<uint32_t> word;
-
-    /**
-     * Function to return the value in the word register of the corresponding
-     * CPU and lower the IRQ
-     */
-    uint64_t lupioIPIRead(const uint8_t addr, int size);
-    /**
-     * Function to write to the word register of the corresponding CPU and
-     * raise the IRQ
-     */
-    void lupioIPIWrite(const uint8_t addr, uint64_t val64, int size);
+  public:
+    LupioPIC *pic;
+    int uartIntID;
 
   public:
-    PARAMS(LupioIPI);
-    LupioIPI(const Params &params);
 
-    /**
-     * Implement BasicPioDevice virtual functions
-     */
-    Tick read(PacketPtr pkt) override;
-    Tick write(PacketPtr pkt) override;
+    PARAMS(LupV);
+    LupV(const Params &params);
+
+    void postConsoleInt() override;
+
+    void clearConsoleInt() override;
+
+    void postPciInt(int line) override;
+
+    void clearPciInt(int line) override;
+
+    virtual Addr pciToDma(Addr pciAddr) const;
+
+    void serialize(CheckpointOut &cp) const override;
+
+    void unserialize(CheckpointIn &cp) override;
 };
 
 } // namespace gem5
 
-#endif // __DEV_LUPIO_LUPIO_IPI_HH
-
+#endif  // __DEV_STRAIGHT_LUPV_HH__

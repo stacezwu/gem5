@@ -49,6 +49,7 @@ from m5.objects import (
     AddrRange,
     IOXBar,
     RiscvRTC,
+    StraightRTC,
     HiFive,
     CowDiskImage,
     RawDiskImage,
