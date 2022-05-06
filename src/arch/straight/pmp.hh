@@ -34,7 +34,7 @@
 #include "base/addr_range.hh"
 #include "base/types.hh"
 #include "mem/packet.hh"
-#include "params/PMP.hh"
+#include "params/StraightPMP.hh"
 #include "sim/sim_object.hh"
 
 /**
@@ -43,6 +43,8 @@
  */
 
 namespace gem5
+{
+namespace StraightISA
 {
 
 /**
@@ -53,7 +55,7 @@ namespace gem5
 class PMP : public SimObject
 {
   public:
-    PARAMS(PMP);
+    PARAMS(StraightPMP);
     PMP(const Params &params);
 
   private:
@@ -192,6 +194,7 @@ class PMP : public SimObject
 
 };
 
+} // namespace StraightISA
 } // namespace gem5
 
 #endif // __ARCH_STRAIGHT_PMP_HH__

@@ -51,6 +51,11 @@ class MemInst : public StraightStaticInst
     MemInst(const char *mnem, ExtMachInst _machInst, OpClass __opClass)
         : StraightStaticInst(mnem, _machInst, __opClass), offset(0)
     {}
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 class Load : public MemInst

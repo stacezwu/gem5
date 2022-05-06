@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2015 RISC-V Foundation
- * Copyright (c) 2017 The University of Virginia
- * All rights reserved.
+ * Copyright 2020 Google Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -27,13 +25,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
-#define __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#ifndef __ARCH_STRAIGHT_SE_WORKLOAD_HH__
+#define __ARCH_STRAIGHT_SE_WORKLOAD_HH__
 
-#include <string>
-
-#include "arch/straight/insts/static_inst.hh"
-#include "cpu/static_inst.hh"
+#include "arch/straight/reg_abi.hh"
+#include "arch/straight/regs/int.hh"
+// #include "arch/straight/remote_gdb.hh"
+#include "params/StraightSEWorkload.hh"
+#include "sim/se_workload.hh"
+#include "sim/syscall_abi.hh"
 
 namespace gem5
 {
@@ -41,24 +41,52 @@ namespace gem5
 namespace StraightISA
 {
 
-/**
- * Base class for compressed operations that work only on registers
- */
-class CompRegOp : public StraightStaticInst
+class SEWorkload : public gem5::SEWorkload
 {
-  protected:
-    using StraightStaticInst::StraightStaticInst;
+  public:
+    using Params = StraightSEWorkloadParams;
 
-    std::string generateDisassembly(
-        Addr pc, const loader::SymbolTable *symtab) const override;
-  public: 
-    // virtual void 
-    // translateSrcReg() override{
-    //     ;
-    // } 
+    SEWorkload(const Params &p, Addr page_shift) :
+        gem5::SEWorkload(p, page_shift)
+    {}
+
+    void
+    setSystem(System *sys) override
+    {
+        gem5::SEWorkload::setSystem(sys);
+        // gdb = BaseRemoteGDB::build<RemoteGDB>(system);
+    }
+
+    // loader::Arch getArch() const override { return loader::Straight64; }
+    loader::Arch getArch() const override { return loader::Riscv64; }
+
+    //FIXME STRAIGHT needs to handle 64 bit arguments in its 32 bit ISA.
+    using SyscallABI = RegABI64;
 };
 
 } // namespace StraightISA
+
+GEM5_DEPRECATED_NAMESPACE(GuestABI, guest_abi);
+namespace guest_abi
+{
+
+template <>
+struct Result<StraightISA::SEWorkload::SyscallABI, SyscallReturn>
+{
+    static void
+    store(ThreadContext *tc, const SyscallReturn &ret)
+    {
+        if (ret.successful()) {
+            // no error
+            tc->setIntReg(StraightISA::ReturnValueReg, ret.returnValue());
+        } else {
+            // got an error, return details
+            tc->setIntReg(StraightISA::ReturnValueReg, ret.encodedValue());
+        }
+    }
+};
+
+} // namespace guest_abi
 } // namespace gem5
 
-#endif // __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#endif // __ARCH_STRAIGHT_SE_WORKLOAD_HH__

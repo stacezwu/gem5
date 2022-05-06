@@ -34,7 +34,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from m5.objects.Platform import Platform
-from m5.objects.PMAChecker import PMAChecker
+from m5.objects.StraightPMAChecker import StraightPMAChecker
 from m5.objects.Clint import Clint
 from m5.objects.Plic import Plic
 from m5.objects.RTC import StraightRTC
@@ -90,8 +90,8 @@ class HiFive(Platform):
     Disk:
         See fs_linux.py for setup example.
 
-    PMAChecker:
-        The PMAChecker will be attached to the MMU of
+    StraightPMAChecker:
+        The StraightPMAChecker will be attached to the MMU of
         each CPU (which allows them to differ). See
         fs_linux.py for setup example.
     """

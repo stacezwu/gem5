@@ -55,18 +55,40 @@ class RegOp : public StraightStaticInst
     RegIndex _RS1_cache;
     RegIndex _RS2_cache;
 
-    using StraightStaticInst::StraightStaticInst;
+    // using StraightStaticInst::StraightStaticInst;
+    RegOp(const char *mnem, MachInst _machInst, OpClass __opClass)
+        : StraightStaticInst(mnem, _machInst, __opClass), _RS1_cache(0), _RS2_cache(0)
+    {}
 
     std::string generateDisassembly(
         Addr pc, const loader::SymbolTable *symtab) const override;
 
   public:
+    // using StraightStaticInst::advanceRP;
+    virtual void 
+    translateDestReg(RPState &RP){
+        std::cout << "RegOp::translateDestReg()" << std::endl;
+        // setDestRegIdx(_numDestRegs++, RegId(IntRegClass, RP.rp()));
+        // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP->rp() - _RS1_cache));
+        // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP->rp() - _RS2_cache));
+    }
+
+    virtual void 
+    translateSourceReg(RPState &RP) {
+        std::cout << "RegOp::translateSrcReg()" << std::endl;
+        // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS1_cache));
+        // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS2_cache));
+    } 
     
     virtual void 
-    translateSrcReg() override{
-        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp() - _RS1_cache));
-        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp() - _RS2_cache));
-    } 
+    translateReg(RPState &RP) override {
+
+        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, RP.rp()));
+        std::cout << "RP.rp() - _RS1_cache" << (RP.rp() - _RS1_cache) << std::endl;
+        std::cout << "RP.rp() - _RS2_cache" << (RP.rp() - _RS2_cache) << std::endl;
+        setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, 0));
+        setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, 0));
+    }
 };
 
 /**
@@ -81,6 +103,11 @@ class ImmOp : public StraightStaticInst
     ImmOp(const char *mnem, MachInst _machInst, OpClass __opClass)
         : StraightStaticInst(mnem, _machInst, __opClass), imm(0)
     {}
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 /**
@@ -93,6 +120,11 @@ class SystemOp : public StraightStaticInst
 
     std::string generateDisassembly(
         Addr pc, const loader::SymbolTable *symtab) const override;
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 /**
@@ -135,6 +167,11 @@ class CSROp : public StraightStaticInst
 
     std::string generateDisassembly(
         Addr pc, const loader::SymbolTable *symtab) const override;
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 } // namespace StraightISA

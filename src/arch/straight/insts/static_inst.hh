@@ -39,6 +39,7 @@
 #include "cpu/exec_context.hh"
 #include "cpu/static_inst.hh"
 #include "cpu/thread_context.hh"
+// #include "cpu/simple_thread.hh"
 #include "mem/packet.hh"
 
 namespace gem5
@@ -53,7 +54,7 @@ namespace StraightISA
 class StraightStaticInst : public StaticInst
 {
   protected:
-    RPState *_rp_cache = 0; 
+    // RPState *_rp_cache = 0; 
 
     StraightStaticInst(const char *_mnemonic, ExtMachInst _machInst,
             OpClass __opClass) :
@@ -67,32 +68,53 @@ class StraightStaticInst : public StaticInst
     advanceRP(RPStateBase &rp) {
 
         rp.advance();
-        _rp_cache = &rp.as<RPState>();
+        RPState rp_cache = rp.as<RPState>();
 
-        translateDestReg();
-        translateSrcReg();
+        translateDestReg(rp_cache);
+        translateSourceReg(rp_cache);
     }
 
     void
     advanceRP(ThreadContext *tc) override
     {
+        // std::cout << "machInst" << machInst << std::endl;
+        printf("machInst: 0x%lx", machInst);
+        std::cout << "opclass" << _opClass << std::endl;
+        std::cout  << "StraightStaticInst::advanceRP" << std::endl;
+        // if (tc->rpState()==nullptr){
+        //     std::cout << "NULLPOINTER!" << std::endl;
+        // }
         RPState rp = tc->rpState().as<RPState>();
+        std::cout  << "1" << std::endl; 
         rp.advance();
         tc->rpState(rp);
-        
-        _rp_cache = &rp.as<RPState>();
+        std::cout  << "2" << std::endl;
 
-        translateDestReg();
-        translateSrcReg();
+        RPState rp_cache = rp.as<RPState>();
+        std::cout  << "3" << std::endl;
+
+        translateDestReg(rp_cache);
+        // std::cout << "translate dest reg" << std::endl;
+        translateSourceReg(rp_cache);
+        // std::cout  << "4" << std::endl;
+        // translateReg(rp_cache);
+        // std::cout << "translateReg" << std::endl;
+
     }
 
     // const RegId &destRegIdx(int i) const {
     //     return destRegIdx(i);
     // }
+    
+    virtual void 
+    translateReg(RPState &RP){
+        std::cout << "not yet done" << std::endl;
+    }
 
-    void 
-    translateDestReg(){
-        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp()));
+    virtual void 
+    translateDestReg(RPState &RP){
+        // setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp()));
+        std::cout << "lol" << std::endl;
     }
 
     // const RegId &srcRegIdx(int i) const {
@@ -100,7 +122,9 @@ class StraightStaticInst : public StaticInst
     // }
 
     virtual void 
-    translateSrcReg(){}
+    translateSourceReg(RPState &RP) {
+        std::cout << "ghost?!!!" << std::endl;
+    };
 
     void
     advancePC(PCStateBase &pc) const override
@@ -175,6 +199,12 @@ class StraightMacroInst : public StraightStaticInst
     {
         panic("Tried to execute a macroop directly!\n");
     }
+
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 /**
@@ -192,6 +222,11 @@ class StraightMicroInst : public StraightStaticInst
 
     void advancePC(PCStateBase &pcState) const override;
     void advancePC(ThreadContext *tc) const override;
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 } // namespace StraightISA

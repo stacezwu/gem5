@@ -57,6 +57,8 @@
 #include "enums/StaticInstFlags.hh"
 #include "sim/byteswap.hh"
 
+// #include "cpu/simple_thread.hh"
+
 namespace gem5
 {
 
@@ -331,6 +333,7 @@ class StaticInst : public RefCounted, public StaticInstFlags
 
     virtual void advanceRP(RPStateBase &rp_state) = 0;
     virtual void advanceRP(ThreadContext *tc);
+    // virtual void advanceRP(SimpleThread *tc);
 
     /**
      * Return the microop that goes with a particular micropc. This should

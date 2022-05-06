@@ -1,9 +1,5 @@
-# -*- mode:python -*-
-
-# Copyright (c) 2007 MIPS Technologies, Inc.
-# Copyright (c) 2020 Barkhausen Institut
-# Copyright (c) 2021 Huawei International
-# All rights reserved.
+# Copyright (c) 2021 The Regents of the University of California
+# All Rights Reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -28,33 +24,14 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from m5.SimObject import SimObject
 from m5.params import *
 from m5.proxy import *
 
-from m5.objects.BaseTLB import BaseTLB
-from m5.objects.ClockedObject import ClockedObject
+class StraightPMP(SimObject):
+    type = 'StraightPMP'
+    cxx_header = 'arch/straight/pmp.hh'
+    cxx_class = 'gem5::StraightISA::PMP'
 
-class StraightPagetableWalker(ClockedObject):
-    type = 'StraightPagetableWalker'
-    cxx_class = 'gem5::StraightISA::Walker'
-    cxx_header = 'arch/straight/pagetable_walker.hh'
+    pmp_entries = Param.Int(16, "Maximum PMP Entries Supported")
 
-    port = RequestPort("Port for the hardware table walker")
-    system = Param.System(Parent.any, "system object")
-    num_squash_per_cycle = Param.Unsigned(4,
-            "Number of outstanding walks that can be squashed per cycle")
-    # Grab the pma_checker from the MMU
-    pma_checker = Param.StraightPMAChecker(Parent.any, "Straight PMA Checker")
-    pmp = Param.StraightPMP(Parent.any, "StraightPMP")
-
-class StraightTLB(BaseTLB):
-    type = 'StraightTLB'
-    cxx_class = 'gem5::StraightISA::TLB'
-    cxx_header = 'arch/straight/tlb.hh'
-
-    size = Param.Int(64, "TLB size")
-    walker = Param.StraightPagetableWalker(\
-            StraightPagetableWalker(), "page table walker")
-    # Grab the pma_checker from the MMU
-    pma_checker = Param.StraightPMAChecker(Parent.any, "Straight PMA Checker")
-    pmp  = Param.StraightPMP(Parent.any, "Straight Physical Memory Protection Unit")

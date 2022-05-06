@@ -237,15 +237,13 @@ class ThreadContext : public PCEventScope
 
     virtual void pcStateNoRecord(const PCStateBase &val) = 0;
 
-    virtual const RPStateBase &rpState() const
-    {   
-        RPStateBase* rp = new RPStateBase(0);
-        return *rp;
-    }
+    virtual const RPStateBase &rpState() const = 0;
+    // {   
+    //     RPStateBase* rp = new RPStateBase(0);
+    //     return *rp;
+    // }
 
-    virtual void rpState(const RPStateBase &val){
-        ;
-    }
+    virtual void rpState(const RPStateBase &val) = 0;
 
     void rpState(RegIndex regIdx)
     {
@@ -253,9 +251,7 @@ class ThreadContext : public PCEventScope
         rpState(*new_rp);
     }
 
-    virtual void rpStateNoRecord(const RPStateBase &val){
-        ;
-    }
+    virtual void rpStateNoRecord(const RPStateBase &val) = 0;
 
     virtual RegVal readMiscRegNoEffect(RegIndex misc_reg) const = 0;
 

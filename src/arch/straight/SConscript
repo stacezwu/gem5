@@ -47,22 +47,22 @@ Source('decoder.cc', tags='straight isa')
 Source('faults.cc', tags='straight isa')
 Source('idle_event.cc', tags='straight isa')
 Source('isa.cc', tags='straight isa')
-# Source('process.cc', tags='straight isa')
+Source('process.cc', tags='straight isa')
 Source('pagetable.cc', tags='straight isa')
 Source('pagetable_walker.cc', tags='straight isa')
 Source('pma_checker.cc', tags='straight isa')
 Source('pmp.cc', tags='straight isa')
-# Source('reg_abi.cc', tags='straight isa')
+Source('reg_abi.cc', tags='straight isa')
 # Source('remote_gdb.cc', tags='straight isa')
 Source('tlb.cc', tags='straight isa')
 
-# Source('linux/se_workload.cc', tags='straight isa')
+Source('linux/se_workload.cc', tags='straight isa')
 # Source('linux/fs_workload.cc', tags='straight isa')
 
 # Source('bare_metal/fs_workload.cc', tags='straight isa')
 
-SimObject('PMAChecker.py', sim_objects=['PMAChecker'], tags='straight isa')
-SimObject('PMP.py', sim_objects=['PMP'], tags='straight isa')
+SimObject('StraightPMAChecker.py', sim_objects=['StraightPMAChecker'], tags='straight isa')
+SimObject('StraightPMP.py', sim_objects=['StraightPMP'], tags='straight isa')
 SimObject('StraightDecoder.py', sim_objects=['StraightDecoder'],
     tags='straight isa')
 # SimObject('StraightFsWorkload.py',
@@ -72,8 +72,8 @@ SimObject('StraightInterrupts.py', sim_objects=['StraightInterrupts'],
     tags='straight isa')
 SimObject('StraightISA.py', sim_objects=['StraightISA'], tags='straight isa')
 SimObject('StraightMMU.py', sim_objects=['StraightMMU'], tags='straight isa')
-# SimObject('StraightSeWorkload.py', sim_objects=[
-#     'StraightSEWorkload', 'StraightEmuLinux'], tags='straight isa')
+SimObject('StraightSeWorkload.py', sim_objects=[
+    'StraightSEWorkload', 'StraightEmuLinux'], tags='straight isa')
 SimObject('StraightTLB.py',
     sim_objects=['StraightPagetableWalker', 'StraightTLB'],
     tags='straight isa')

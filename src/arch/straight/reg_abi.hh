@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2015 RISC-V Foundation
- * Copyright (c) 2017 The University of Virginia
- * All rights reserved.
+ * Copyright 2020 Google Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -27,13 +25,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
-#define __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#ifndef __ARCH_STRAIGHT_REG_ABI_HH__
+#define __ARCH_STRAIGHT_REG_ABI_HH__
 
-#include <string>
+#include <vector>
 
-#include "arch/straight/insts/static_inst.hh"
-#include "cpu/static_inst.hh"
+#include "sim/syscall_abi.hh"
 
 namespace gem5
 {
@@ -41,24 +38,13 @@ namespace gem5
 namespace StraightISA
 {
 
-/**
- * Base class for compressed operations that work only on registers
- */
-class CompRegOp : public StraightStaticInst
+//FIXME STRAIGHT needs to handle 64 bit arguments in its 32 bit ISA.
+struct RegABI64 : public GenericSyscallABI64
 {
-  protected:
-    using StraightStaticInst::StraightStaticInst;
-
-    std::string generateDisassembly(
-        Addr pc, const loader::SymbolTable *symtab) const override;
-  public: 
-    // virtual void 
-    // translateSrcReg() override{
-    //     ;
-    // } 
+    static const std::vector<int> ArgumentRegs;
 };
 
 } // namespace StraightISA
 } // namespace gem5
 
-#endif // __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#endif // __ARCH_STRAIGHT_REG_ABI_HH__

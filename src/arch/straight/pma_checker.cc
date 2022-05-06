@@ -41,10 +41,12 @@
 #include "base/types.hh"
 #include "mem/packet.hh"
 #include "mem/request.hh"
-#include "params/PMAChecker.hh"
+#include "params/StraightPMAChecker.hh"
 #include "sim/sim_object.hh"
 
 namespace gem5
+{
+namespace StraightISA
 {
 
 PMAChecker::PMAChecker(const Params &params) :
@@ -91,4 +93,5 @@ PMAChecker::takeOverFrom(PMAChecker *old)
     uncacheable = old->uncacheable;
 }
 
+} // namespace StraightISA
 } // namespace gem5

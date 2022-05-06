@@ -39,8 +39,8 @@ from m5.params import *
 
 from m5.objects.BaseMMU import BaseMMU
 from m5.objects.StraightTLB import StraightTLB
-from m5.objects.PMAChecker import PMAChecker
-from m5.objects.PMP import PMP
+from m5.objects.StraightPMAChecker import StraightPMAChecker
+from m5.objects.StraightPMP import StraightPMP
 
 class StraightMMU(BaseMMU):
     type = 'StraightMMU'
@@ -49,8 +49,8 @@ class StraightMMU(BaseMMU):
 
     itb = StraightTLB(entry_type="instruction")
     dtb = StraightTLB(entry_type="data")
-    pma_checker = Param.PMAChecker(PMAChecker(), "PMA Checker")
-    pmp = Param.PMP(PMP(), "Physical Memory Protection Unit")
+    pma_checker = Param.StraightPMAChecker(StraightPMAChecker(), "PMA Checker")
+    pmp = Param.StraightPMP(StraightPMP(), "Physical Memory Protection Unit")
 
     @classmethod
     def walkerPorts(cls):

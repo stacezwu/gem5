@@ -82,7 +82,7 @@ Decoder::moreBytes(const PCStateBase &pc, Addr fetchPC)
 StaticInstPtr
 Decoder::decode(ExtMachInst mach_inst, Addr addr)
 {
-    DPRINTF(Decode, "Decoding instruction 0x%08x at address %#x\n",
+    DPRINTF(Decode, "Decoding instruction 0x%llx at address %#x\n",
             mach_inst, addr);
 
     // StaticInstPtr &si = instMap[mach_inst];

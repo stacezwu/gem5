@@ -1,5 +1,4 @@
-# Copyright (c) 2021 The Regents of the University of California
-# All Rights Reserved.
+# Copyright 2020 Google Inc.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -24,14 +23,22 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from m5.SimObject import SimObject
 from m5.params import *
-from m5.proxy import *
 
-class PMP(SimObject):
-    type = 'PMP'
-    cxx_header = 'arch/straight/pmp.hh'
-    cxx_class = 'gem5::PMP'
+from m5.objects.Workload import SEWorkload
 
-    pmp_entries = Param.Int(16, "Maximum PMP Entries Supported")
+class StraightSEWorkload(SEWorkload):
+    type = 'StraightSEWorkload'
+    cxx_header = "arch/straight/se_workload.hh"
+    cxx_class = 'gem5::StraightISA::SEWorkload'
+    abstract = True
 
+class StraightEmuLinux(StraightSEWorkload):
+    type = 'StraightEmuLinux'
+    cxx_header = "arch/straight/linux/se_workload.hh"
+    cxx_class = 'gem5::StraightISA::EmuLinux'
+
+    @classmethod
+    def _is_compatible_with(cls, obj):
+        return obj.get_arch() in ('riscv64', 'riscv32') and \
+                obj.get_op_sys() in ('linux', 'unknown')

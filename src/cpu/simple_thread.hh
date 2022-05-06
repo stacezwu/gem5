@@ -250,6 +250,7 @@ class SimpleThread : public ThreadState, public ThreadContext
     clearArchRegs() override
     {
         set(_pcState, isa->newPCState());
+        set(_rpState, isa->newRPState());
         std::fill(intRegs.begin(), intRegs.end(), 0);
         std::fill(floatRegs.begin(), floatRegs.end(), 0);
         for (auto &vec_reg: vecRegs)
@@ -429,7 +430,11 @@ class SimpleThread : public ThreadState, public ThreadContext
         set(_pcState, val);
     }
 
-    const RPStateBase &rpState() const override { return *_rpState; }
+    const RPStateBase &rpState() const override { 
+        std::cout << "correct rpState()" << std::endl;
+        std::cout << "_rpState->rp(): " << _rpState->rp() << std::endl;
+        return *_rpState; 
+    }
 
     void rpState(const RPStateBase &val) override { set(_rpState, val); }
 

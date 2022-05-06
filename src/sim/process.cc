@@ -50,6 +50,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "base/intmath.hh"
 #include "base/loader/object_file.hh"
@@ -536,6 +537,7 @@ ProcessParams::create() const
 
     auto *obj_file = loader::createObjectFile(exec);
     fatal_if(!obj_file, "Cannot load object file %s.", exec);
+    std::cout << obj_file << std::endl;
 
     Process *process = Process::tryLoaders(*this, obj_file);
     fatal_if(!process, "Unknown error creating process object.");

@@ -49,6 +49,11 @@ class PseudoOp : public StraightStaticInst
     {
         return mnemonic;
     }
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 } // namespace StraightISA

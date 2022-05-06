@@ -69,6 +69,11 @@ class Unknown : public StraightStaticInst
     {
         return csprintf("unknown opcode %#02x", OPCODE);
     }
+  public: 
+    // virtual void 
+    // translateSrcReg() override{
+    //     ;
+    // } 
 };
 
 } // namespace StraightISA

@@ -38,10 +38,13 @@
 #include "debug/PMP.hh"
 #include "math.h"
 #include "mem/request.hh"
-#include "params/PMP.hh"
+#include "params/StraightPMP.hh"
 #include "sim/sim_object.hh"
 
 namespace gem5
+{
+
+namespace StraightISA
 {
 
 PMP::PMP(const Params &params) :
@@ -268,4 +271,5 @@ PMP::pmpDecodeNapot(Addr pmpaddr)
     }
 }
 
+} // namespace StraightISA
 } // namespace gem5

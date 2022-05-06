@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2015 RISC-V Foundation
- * Copyright (c) 2017 The University of Virginia
- * All rights reserved.
+ * Copyright 2004 The Regents of The University of Michigan
+ * Copyright 2016 The University of Virginia
+ * Copyright 2020 Google Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -27,13 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
-#define __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#ifndef __ARCH_STRAIGHT_LINUX_SE_WORKLOAD_HH__
+#define __ARCH_STRAIGHT_LINUX_SE_WORKLOAD_HH__
 
-#include <string>
-
-#include "arch/straight/insts/static_inst.hh"
-#include "cpu/static_inst.hh"
+#include "arch/straight/linux/linux.hh"
+#include "arch/straight/page_size.hh"
+#include "arch/straight/se_workload.hh"
+#include "params/StraightEmuLinux.hh"
+#include "sim/syscall_desc.hh"
 
 namespace gem5
 {
@@ -41,24 +42,27 @@ namespace gem5
 namespace StraightISA
 {
 
-/**
- * Base class for compressed operations that work only on registers
- */
-class CompRegOp : public StraightStaticInst
+class EmuLinux : public SEWorkload
 {
   protected:
-    using StraightStaticInst::StraightStaticInst;
 
-    std::string generateDisassembly(
-        Addr pc, const loader::SymbolTable *symtab) const override;
-  public: 
-    // virtual void 
-    // translateSrcReg() override{
-    //     ;
-    // } 
+    /// 64 bit syscall descriptors, indexed by call number.
+    static SyscallDescTable<SEWorkload::SyscallABI> syscallDescs64;
+
+    /// 32 bit syscall descriptors, indexed by call number.
+    static SyscallDescTable<SEWorkload::SyscallABI> syscallDescs32;
+
+  public:
+    using Params = StraightEmuLinuxParams;
+
+    EmuLinux(const Params &p) : SEWorkload(p, PageShift) {}
+
+    ByteOrder byteOrder() const override { return ByteOrder::little; }
+
+    void syscall(ThreadContext *tc) override;
 };
 
 } // namespace StraightISA
 } // namespace gem5
 
-#endif // __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#endif // __ARCH_STRAIGHT_LINUX_SE_WORKLOAD_HH__

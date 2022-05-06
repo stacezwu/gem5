@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 RISC-V Foundation
+ * Copyright (c) 2006 The Regents of The University of Michigan
  * Copyright (c) 2017 The University of Virginia
  * All rights reserved.
  *
@@ -27,38 +27,56 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
-#define __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#ifndef __STRAIGHT_PROCESS_HH__
+#define __STRAIGHT_PROCESS_HH__
 
 #include <string>
+#include <vector>
 
-#include "arch/straight/insts/static_inst.hh"
-#include "cpu/static_inst.hh"
+#include "mem/page_table.hh"
+#include "sim/process.hh"
+#include "sim/syscall_abi.hh"
 
 namespace gem5
 {
 
-namespace StraightISA
+GEM5_DEPRECATED_NAMESPACE(Loader, loader);
+namespace loader
 {
+class ObjectFile;
+} // namespace loader
 
-/**
- * Base class for compressed operations that work only on registers
- */
-class CompRegOp : public StraightStaticInst
+class System;
+
+class StraightProcess : public Process
 {
   protected:
-    using StraightStaticInst::StraightStaticInst;
+    StraightProcess(const ProcessParams &params, loader::ObjectFile *objFile);
+    template<class IntType>
+    void argsInit(int pageSize);
 
-    std::string generateDisassembly(
-        Addr pc, const loader::SymbolTable *symtab) const override;
-  public: 
-    // virtual void 
-    // translateSrcReg() override{
-    //     ;
-    // } 
+  public:
+    virtual bool mmapGrowsDown() const override { return false; }
 };
 
-} // namespace StraightISA
+class StraightProcess64 : public StraightProcess
+{
+  public:
+    StraightProcess64(const ProcessParams &params, loader::ObjectFile *objFile);
+
+  protected:
+    void initState() override;
+};
+
+class StraightProcess32 : public StraightProcess
+{
+  public:
+    StraightProcess32(const ProcessParams &params, loader::ObjectFile *objFile);
+
+  protected:
+    void initState() override;
+};
+
 } // namespace gem5
 
-#endif // __ARCH_STRAIGHT_INSTS_COMPRESSED_HH__
+#endif // __STRAIGHT_PROCESS_HH__

@@ -46,6 +46,8 @@
 #include "cpu/o3/cpu.hh"
 #include "cpu/thread_context.hh"
 
+#include "arch/generic/rpstate.hh"
+
 namespace gem5
 {
 
@@ -287,6 +289,24 @@ class ThreadContext : public gem5::ThreadContext
     void pcState(const PCStateBase &val) override;
 
     void pcStateNoRecord(const PCStateBase &val) override;
+
+    /** Reads this thread's PC state. */
+    const RPStateBase &
+    rpState() const override
+    {
+        // return cpu->rpState(thread->threadId());
+        RPStateBase* rp = new RPStateBase(0);
+        return *rp;
+    }
+
+    /** Sets this thread's PC state. */
+    void rpState(const RPStateBase &val) override{
+        ;
+    };
+
+    void rpStateNoRecord(const RPStateBase &val) override{
+        ;
+    };
 
     /** Reads a miscellaneous register. */
     RegVal

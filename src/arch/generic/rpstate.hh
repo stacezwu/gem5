@@ -88,10 +88,19 @@ class RPStateBase : public Serializable
         return static_cast<const Target &>(*this);
     }
 
+    RPStateBase &operator=(const RPStateBase &other) = default;
+
     virtual RPStateBase *clone() const
     {
       return new RPStateBase(*this);
     };
+
+    void
+    output(std::ostream &os) const 
+    {
+        ccprintf(os, "(%#x)", this->rp());
+    }
+
     virtual void
     update(const RPStateBase &other)
     {
@@ -99,7 +108,13 @@ class RPStateBase : public Serializable
     }
     void update(const RPStateBase *ptr) { update(*ptr); }
 
-    RPStateBase &operator=(const RPStateBase &other) = default;
+    bool
+    equals(const RPStateBase &other) const
+    {
+        auto &ps = other.as<RPStateBase>();
+        return RPStateBase::equals(other) &&
+            _rp == ps._rp;
+    }
 
     void
     serialize(CheckpointOut &cp) const override
@@ -125,6 +140,25 @@ class RPStateBase : public Serializable
 
 
 };
+
+static inline std::ostream &
+operator<<(std::ostream & os, const RPStateBase &pc)
+{
+    pc.output(os);
+    return os;
+}
+
+static inline bool
+operator==(const RPStateBase &a, const RPStateBase &b)
+{
+    return a.equals(b);
+}
+
+static inline bool
+operator!=(const RPStateBase &a, const RPStateBase &b)
+{
+    return !a.equals(b);
+}
 
 namespace
 {

@@ -31,6 +31,7 @@
 #include <iostream>
 
 #include "cpu/thread_context.hh"
+// #include "cpu/simple_thread.hh"
 
 namespace gem5
 {
@@ -95,9 +96,13 @@ StaticInst::advancePC(ThreadContext *tc) const
 void 
 StaticInst::advanceRP(ThreadContext *tc)
 {
+    std::cout  << "StaticInst::advanceRP" << std::endl;
     std::unique_ptr<RPStateBase> rp(tc->rpState().clone());
+    std::cout  << "1" << std::endl;
     advanceRP(*rp);
+    std::cout  << "2" << std::endl;
     tc->rpState(*rp);
+    std::cout  << "3" << std::endl;
 }
 
 } // namespace gem5

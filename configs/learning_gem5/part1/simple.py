@@ -84,28 +84,33 @@ system.system_port = system.membus.cpu_side_ports
 # get ISA for the binary to run.
 # isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 isa = 'riscv'
-
+# isa = 'straight'
 # Default to running 'hello', use the compiled ISA to find the binary
 # grab the specific path to the binary
 thispath = os.path.dirname(os.path.realpath(__file__))
-binary = os.path.join(thispath, '../../../',
-                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
+# binary = os.path.join(thispath, '../../../',
+#                       'tests/test-progs/hello/bin/', isa, 'linux/hello')
+binary = os.path.join(thispath, '../../../', 'tests/test-progs/', isa, 'dhrystone.riscv')
 
-# system.workload = SEWorkload.init_compatible(binary)
+system.workload = SEWorkload.init_compatible(binary)
 
 # Create a process for a simple "Hello World" application
 process = Process()
 # Set the command
 # cmd is a list which begins with the executable (like argv)
 process.cmd = [binary]
+print("hello")
 # Set the cpu to use the process as its workload and create thread contexts
 system.cpu.workload = process
 system.cpu.createThreads()
+print("please")
 
 # set up the root SimObject and start the simulation
 root = Root(full_system = False, system = system)
+print("here")
 # instantiate all of the objects we've created above
 m5.instantiate()
+print("work")
 
 print("Beginning simulation!")
 exit_event = m5.simulate()

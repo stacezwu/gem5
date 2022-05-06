@@ -185,7 +185,7 @@ void
 UnknownInstFault::invokeSE(ThreadContext *tc, const StaticInstPtr &inst)
 {
     auto *rsi = static_cast<StraightStaticInst *>(inst.get());
-    panic("Unknown instruction 0x%08x at pc %s", rsi->machInst,
+    panic("Unknown instruction 0x%x at pc %s", rsi->machInst,
         tc->pcState());
 }
 
@@ -193,7 +193,7 @@ void
 IllegalInstFault::invokeSE(ThreadContext *tc, const StaticInstPtr &inst)
 {
     auto *rsi = static_cast<StraightStaticInst *>(inst.get());
-    panic("Illegal instruction 0x%08x at pc %s: %s", rsi->machInst,
+    panic("Illegal instruction 0x%x at pc %s: %s", rsi->machInst,
         tc->pcState(), reason.c_str());
 }
 
