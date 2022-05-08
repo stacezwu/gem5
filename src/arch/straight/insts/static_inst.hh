@@ -67,11 +67,15 @@ class StraightStaticInst : public StaticInst
     void 
     advanceRP(RPStateBase &rp) {
 
-        rp.advance();
         RPState rp_cache = rp.as<RPState>();
-
         translateDestReg(rp_cache);
-        translateSourceReg(rp_cache);
+        translateSrcReg(rp_cache);
+
+        rp.advance();
+
+        // RPState rp_cache = rp.as<RPState>();
+        // translateDestReg(rp_cache);
+        // translateSrcReg(rp_cache);
     }
 
     void
@@ -81,24 +85,18 @@ class StraightStaticInst : public StaticInst
         printf("machInst: 0x%lx", machInst);
         std::cout << "opclass" << _opClass << std::endl;
         std::cout  << "StraightStaticInst::advanceRP" << std::endl;
-        // if (tc->rpState()==nullptr){
-        //     std::cout << "NULLPOINTER!" << std::endl;
-        // }
+
         RPState rp = tc->rpState().as<RPState>();
-        std::cout  << "1" << std::endl; 
+        translateDestReg(rp);
+        translateSrcReg(rp);
+        
         rp.advance();
         tc->rpState(rp);
-        std::cout  << "2" << std::endl;
 
-        RPState rp_cache = rp.as<RPState>();
-        std::cout  << "3" << std::endl;
+        // RPState rp_cache = rp;
 
-        translateDestReg(rp_cache);
-        // std::cout << "translate dest reg" << std::endl;
-        translateSourceReg(rp_cache);
-        // std::cout  << "4" << std::endl;
-        // translateReg(rp_cache);
-        // std::cout << "translateReg" << std::endl;
+        // translateDestReg(rp_cache);
+        // translateSrcReg(rp_cache);
 
     }
 
@@ -122,7 +120,7 @@ class StraightStaticInst : public StaticInst
     // }
 
     virtual void 
-    translateSourceReg(RPState &RP) {
+    translateSrcReg(RPState &RP) {
         std::cout << "ghost?!!!" << std::endl;
     };
 

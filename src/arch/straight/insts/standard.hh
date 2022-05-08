@@ -68,14 +68,19 @@ class RegOp : public StraightStaticInst
     virtual void 
     translateDestReg(RPState &RP){
         std::cout << "RegOp::translateDestReg()" << std::endl;
+        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, RP.rp()));
         // setDestRegIdx(_numDestRegs++, RegId(IntRegClass, RP.rp()));
         // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP->rp() - _RS1_cache));
         // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP->rp() - _RS2_cache));
     }
 
     virtual void 
-    translateSourceReg(RPState &RP) {
+    translateSrcReg(RPState &RP) {
         std::cout << "RegOp::translateSrcReg()" << std::endl;
+        std::cout << "RP.rp() - _RS1_cache" << (RP.rp() - _RS1_cache) << std::endl;
+        std::cout << "RP.rp() - _RS2_cache" << (RP.rp() - _RS2_cache) << std::endl;
+        setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS1_cache));
+        setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS2_cache));
         // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS1_cache));
         // setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS2_cache));
     } 
@@ -99,15 +104,26 @@ class ImmOp : public StraightStaticInst
 {
   protected:
     I imm;
+    RegIndex _RS1_cache;
 
     ImmOp(const char *mnem, MachInst _machInst, OpClass __opClass)
         : StraightStaticInst(mnem, _machInst, __opClass), imm(0)
     {}
   public: 
-    // virtual void 
-    // translateSrcReg() override{
-    //     ;
-    // } 
+    virtual void 
+    translateDestReg(RPState &RP){
+        std::cout << "RegOp::translateDestReg()" << std::endl;
+        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, RP.rp()));
+    }
+
+    virtual void 
+    translateSrcReg(RPState &RP) {
+        std::cout << "RegOp::translateSrcReg()" << std::endl;
+        std::cout << "RP.rp()" << RP.rp() << std::endl;
+        std::cout << "RP.rp() - _RS1_cache" << (RP.rp() - _RS1_cache) << std::endl;
+        setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS1_cache));
+
+    } 
 };
 
 /**

@@ -310,7 +310,7 @@ BaseSimpleCPU::preExecute()
     SimpleThread* thread = t_info.thread;
 
     // maintain $r0 semantics
-    thread->setIntReg(zeroReg, 0);
+    // thread->setIntReg(zeroReg, 0);
 
     // resets predicates
     t_info.setPredicate(true);
@@ -516,6 +516,7 @@ BaseSimpleCPU::advanceRP(const Fault &fault)
     SimpleThread* thread = t_info.thread;
 
     std::cout << "BaseSimpleCPU::advanceRP" << std::endl;
+    thread->setIntReg(thread->rpState().rp(), 0);
 
     if (fault == NoFault) {
         std::cout << "1" << std::endl;

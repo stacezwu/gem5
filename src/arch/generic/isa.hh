@@ -68,7 +68,7 @@ class BaseISA : public SimObject
     RegClasses _regClasses;
 
   public:
-    virtual PCStateBase *newPCState(Addr new_inst_addr=0) const = 0;
+    virtual PCStateBase *newPCState(Addr new_inst_addr=0x80000000) const = 0;
     virtual RPStateBase *newRPState(RegIndex new_reg_idx=0) const = 0;
     virtual void takeOverFrom(ThreadContext *new_tc, ThreadContext *old_tc) {}
     virtual void setThreadContext(ThreadContext *_tc) { tc = _tc; }

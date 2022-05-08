@@ -90,7 +90,7 @@ isa = 'riscv'
 thispath = os.path.dirname(os.path.realpath(__file__))
 # binary = os.path.join(thispath, '../../../',
 #                       'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join(thispath, '../../../', 'tests/test-progs/', isa, 'dhrystone.riscv')
+binary = os.path.join(thispath, '../../../', 'tests/test-progs/', 'straight', 'addlinked')
 
 system.workload = SEWorkload.init_compatible(binary)
 

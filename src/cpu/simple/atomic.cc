@@ -631,6 +631,8 @@ AtomicSimpleCPU::tick()
     SimpleExecContext &t_info = *threadInfo[curThread];
     SimpleThread *thread = t_info.thread;
 
+    std::cout << "pc: " << thread->pcState().instAddr() << std::endl;
+
     Tick latency = 0;
 
     for (int i = 0; i < width || locked; ++i) {
@@ -655,6 +657,7 @@ AtomicSimpleCPU::tick()
         Fault fault = NoFault;
 
         const PCStateBase &pc = thread->pcState();
+        std::cout << "pc: " << pc.instAddr() << std::endl;
 
         bool needToFetch = !isRomMicroPC(pc.microPC()) && !curMacroStaticInst;
         if (needToFetch) {
@@ -694,8 +697,7 @@ AtomicSimpleCPU::tick()
             } else {
                 std::cout << "fault?" << std::endl;
             }
-            std::cout << "RP value after advance RP = " << std::endl;
-            std::cout << thread->rpState().rp() << std::endl;
+            std::cout << "RP value after advance RP = " << thread->rpState().rp() << std::endl;
 
             Tick stall_ticks = 0;
             if (curStaticInst) {

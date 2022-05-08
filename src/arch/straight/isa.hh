@@ -79,7 +79,7 @@ class ISA : public BaseISA
     void clear();
 
     PCStateBase *
-    newPCState(Addr new_inst_addr=0) const override
+    newPCState(Addr new_inst_addr=0x80000000) const override
     {
         return new PCState(new_inst_addr);
     }

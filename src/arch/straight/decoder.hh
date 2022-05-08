@@ -53,8 +53,9 @@ class Decoder : public InstDecoder
     decode_cache::InstMap<ExtMachInst> instMap;
 
     std::vector<ExtMachInst> instHandcode = {
-      // 0x0000000000100013,
-      // 0x0000000000200013,
+      0x0000000000100013,
+      0x0000000000200013,
+      0x0000000000208033,
       0x0000000000208033,
       0x0000000000208033,
       0x0000000000208033,
@@ -67,7 +68,9 @@ class Decoder : public InstDecoder
   protected:
     //The extended machine instruction being generated
     ExtMachInst emi;
-    uint32_t machInst;
+    // STRAIGHT instructions are 64 bits
+    uint64_t machInst;
+    //uint32_t machInst;
 
     StaticInstPtr decodeInst(ExtMachInst mach_inst);
 

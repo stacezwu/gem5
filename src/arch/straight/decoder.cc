@@ -131,7 +131,7 @@ Decoder::decode(PCStateBase &_next_pc, Counter numInst)
         next_pc.npc(next_pc.instAddr() + sizeof(machInst));
         next_pc.compressed(false);
     }
-    emi = instHandcode[numInst];
+    // emi = instHandcode[numInst];
 
     return decode(emi, next_pc.instAddr());
 }

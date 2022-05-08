@@ -41,7 +41,43 @@ decode QUADRANT default Unknown::unknown() {
 //    }
 //    0x2: decode COPCODE {
 //    }
+
     0x3: decode OPCODE {
+        
+        0x04: decode FUNCT3 {
+            format IOp {
+                0x0: addi({{
+                    Rp = Rs1_sd + imm;
+                }});
+                0x1: slli({{
+                    Rp = Rs1 << imm;
+                }}, imm_type = uint64_t, imm_code = {{ imm = SHAMT6; }});
+                0x2: slti({{
+                    Rp = (Rs1_sd < imm) ? 1 : 0;
+                }});
+                0x3: sltiu({{
+                    Rp = (Rs1 < imm) ? 1 : 0;
+                }}, uint64_t);
+                0x4: xori({{
+                    Rp = Rs1 ^ imm;
+                }}, uint64_t);
+                0x5: decode SRTYPE {
+                    0x0: srli({{
+                        Rp = Rs1 >> imm;
+                    }}, imm_type = uint64_t, imm_code = {{ imm = SHAMT6; }});
+                    0x1: srai({{
+                        Rp_sd = Rs1_sd >> imm;
+                    }}, imm_type = uint64_t, imm_code = {{ imm = SHAMT6; }});
+                }
+                0x6: ori({{
+                    Rp = Rs1 | imm;
+                }}, uint64_t);
+                0x7: andi({{
+                    Rp = Rs1 & imm;
+                }}, uint64_t);
+            }
+        }
+        
         0x0c: decode FUNCT3 {
             format ROp {
                 0x0: decode FUNCT7 {

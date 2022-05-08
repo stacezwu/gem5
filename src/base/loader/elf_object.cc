@@ -120,6 +120,7 @@ ElfObject::ElfObject(ImageFileDataPtr ifd) : ObjectFile(ifd)
     determineByteOrder();
 
     entry = ehdr.e_entry;
+    std::cout << "entry: " << entry << std::endl;
     _programHeaderCount = ehdr.e_phnum;
     _programHeaderSize = ehdr.e_phentsize;
 

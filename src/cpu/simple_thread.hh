@@ -431,8 +431,6 @@ class SimpleThread : public ThreadState, public ThreadContext
     }
 
     const RPStateBase &rpState() const override { 
-        std::cout << "correct rpState()" << std::endl;
-        std::cout << "_rpState->rp(): " << _rpState->rp() << std::endl;
         return *_rpState; 
     }
 
