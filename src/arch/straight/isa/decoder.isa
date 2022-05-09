@@ -224,6 +224,20 @@ decode QUADRANT default Unknown::unknown() {
                 }
             }
         }
+
+        0x1c: decode FUNCT3 {
+            format SystemOp {
+                0x0: decode FUNCT7 {
+                    0x0: decode RS2 {
+                        0x0: ecall({{
+                            return std::make_shared<SyscallFault>(
+                                (PrivilegeMode)xc->readMiscReg(MISCREG_PRV));
+                        }}, IsSerializeAfter, IsNonSpeculative, IsSyscall,
+                            No_OpClass);
+                    }
+                }
+            }
+        }
     }
 
 }

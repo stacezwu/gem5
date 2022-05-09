@@ -273,6 +273,8 @@ class SimpleThread : public ThreadState, public ThreadContext
         uint64_t regVal = readIntRegFlat(flatIndex);
         DPRINTF(IntRegs, "Reading int reg %d (%d) as %#x.\n",
                 reg_idx, flatIndex, regVal);
+        DPRINTF(IntRegs, "Reading actual int reg %d (%d) as %#x.\n",
+                reg_idx, translateRegIdx(reg_idx), regVal);
         return regVal;
     }
 
@@ -364,6 +366,8 @@ class SimpleThread : public ThreadState, public ThreadContext
         assert(flatIndex < intRegs.size());
         DPRINTF(IntRegs, "Setting int reg %d (%d) to %#x.\n",
                 reg_idx, flatIndex, val);
+        DPRINTF(IntRegs, "Setting actual int reg %d (%d) to %#x.\n",
+            reg_idx, translateRegIdx(flatIndex), val);
         setIntRegFlat(flatIndex, val);
     }
 
@@ -494,11 +498,11 @@ class SimpleThread : public ThreadState, public ThreadContext
         storeCondFailures = sc_failures;
     }
 
-    RegVal readIntRegFlat(RegIndex idx) const override { return intRegs[idx]; }
+    RegVal readIntRegFlat(RegIndex idx) const override { return intRegs[translateRegIdx(idx)]; }
     void
     setIntRegFlat(RegIndex idx, RegVal val) override
     {
-        intRegs[idx] = val;
+        intRegs[translateRegIdx(idx)] = val;
     }
 
     RegVal
@@ -571,6 +575,12 @@ class SimpleThread : public ThreadState, public ThreadContext
 
     BaseHTMCheckpointPtr& getHtmCheckpointPtr() override;
     void setHtmCheckpointPtr(BaseHTMCheckpointPtr new_cpt) override;
+
+    RegIndex translateRegIdx(RegIndex reg_idx) const
+    {
+        return _rpState->rp() - reg_idx;
+    }
+
 };
 
 } // namespace gem5

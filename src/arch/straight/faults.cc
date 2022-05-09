@@ -57,12 +57,14 @@ StraightFault::invokeSE(ThreadContext *tc, const StaticInstPtr &inst)
 void
 StraightFault::invoke(ThreadContext *tc, const StaticInstPtr &inst)
 {
+    std::cout  << "StraightFault::invoke" << std::endl;
     auto pc_state = tc->pcState().as<PCState>();
 
     DPRINTFS(Fault, tc->getCpuPtr(), "Fault (%s) at PC: %s\n",
              name(), pc_state);
 
     if (FullSystem) {
+        std::cout  << "FullSystem" << std::endl;
         PrivilegeMode pp = (PrivilegeMode)tc->readMiscReg(MISCREG_PRV);
         PrivilegeMode prv = PRV_M;
         STATUS status = tc->readMiscReg(MISCREG_STATUS);
@@ -159,6 +161,7 @@ StraightFault::invoke(ThreadContext *tc, const StaticInstPtr &inst)
         pc_state.set(addr);
         tc->pcState(pc_state);
     } else {
+        std::cout  << "else" << std::endl;
         inst->advancePC(pc_state);
         tc->pcState(pc_state);
         invokeSE(tc, inst);
@@ -219,6 +222,7 @@ BreakpointFault::invokeSE(ThreadContext *tc, const StaticInstPtr &inst)
 void
 SyscallFault::invokeSE(ThreadContext *tc, const StaticInstPtr &inst)
 {
+    std::cout  << "SyscallFault::invokeSE" << std::endl;
     tc->getSystemPtr()->workload->syscall(tc);
 }
 

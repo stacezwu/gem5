@@ -258,6 +258,9 @@ class SyscallFault : public StraightFault
     SyscallFault(PrivilegeMode prv)
         : StraightFault("System call", FaultType::OTHERS, ECALL_USER)
     {
+      std::cout << "syscallfault:straightfault" << std::endl; 
+
+      std::cout << "prv: " << prv << std::endl; 
         switch (prv) {
           case PRV_U:
             _code = ECALL_USER;

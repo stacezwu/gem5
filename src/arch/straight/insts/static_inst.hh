@@ -68,8 +68,8 @@ class StraightStaticInst : public StaticInst
     advanceRP(RPStateBase &rp) {
 
         RPState rp_cache = rp.as<RPState>();
-        translateDestReg(rp_cache);
-        translateSrcReg(rp_cache);
+        // translateDestReg(rp_cache);
+        // translateSrcReg(rp_cache);
 
         rp.advance();
 
@@ -81,23 +81,15 @@ class StraightStaticInst : public StaticInst
     void
     advanceRP(ThreadContext *tc) override
     {
-        // std::cout << "machInst" << machInst << std::endl;
-        printf("machInst: 0x%lx", machInst);
         std::cout << "opclass" << _opClass << std::endl;
         std::cout  << "StraightStaticInst::advanceRP" << std::endl;
 
         RPState rp = tc->rpState().as<RPState>();
-        translateDestReg(rp);
-        translateSrcReg(rp);
+        // translateDestReg(rp);
+        // translateSrcReg(rp);
         
         rp.advance();
         tc->rpState(rp);
-
-        // RPState rp_cache = rp;
-
-        // translateDestReg(rp_cache);
-        // translateSrcReg(rp_cache);
-
     }
 
     // const RegId &destRegIdx(int i) const {
@@ -106,13 +98,12 @@ class StraightStaticInst : public StaticInst
     
     virtual void 
     translateReg(RPState &RP){
-        std::cout << "not yet done" << std::endl;
+        ;
     }
 
     virtual void 
     translateDestReg(RPState &RP){
-        // setDestRegIdx(_numDestRegs++, RegId(IntRegClass, _rp_cache->rp()));
-        std::cout << "lol" << std::endl;
+        ;    
     }
 
     // const RegId &srcRegIdx(int i) const {
@@ -121,7 +112,7 @@ class StraightStaticInst : public StaticInst
 
     virtual void 
     translateSrcReg(RPState &RP) {
-        std::cout << "ghost?!!!" << std::endl;
+        ;
     };
 
     void

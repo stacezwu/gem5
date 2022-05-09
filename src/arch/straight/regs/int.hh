@@ -67,7 +67,8 @@ const int ReturnValueReg = 10;
 const std::vector<int> ArgumentRegs = {10, 11, 12, 13, 14, 15, 16, 17};
 const int AMOTempReg = 32;
 
-const int SyscallNumReg = 17;
+// const int SyscallNumReg = 17;
+const int SyscallNumReg = 1;
 
 const std::vector<std::string> IntRegNames = {
     "zero", "ra", "sp", "gp",

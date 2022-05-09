@@ -480,11 +480,16 @@ BaseSimpleCPU::advancePC(const Fault &fault)
     //Since we're moving to a new pc, zero out the offset
     t_info.fetchOffset = 0;
     if (fault != NoFault) {
+        std::cout << "fault != NoFault" << std::endl;
         curMacroStaticInst = nullStaticInstPtr;
         fault->invoke(threadContexts[curThread], curStaticInst);
+        std::cout << "done fault->invoke" << std::endl;
         thread->decoder->reset();
+        std::cout << "done thread->decoder->reset()" << std::endl;
     } else {
+        std::cout << "fault == NoFault" << std::endl;
         if (curStaticInst) {
+            // std::cout << "curStaticInst" << std::endl;
             if (curStaticInst->isLastMicroop())
                 curMacroStaticInst = nullStaticInstPtr;
             curStaticInst->advancePC(thread);
