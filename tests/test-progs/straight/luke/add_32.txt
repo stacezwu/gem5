@@ -1,0 +1,3 @@
+
+add_32.o:     file format elf64-little
+

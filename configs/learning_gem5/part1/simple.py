@@ -90,7 +90,7 @@ isa = 'riscv'
 thispath = os.path.dirname(os.path.realpath(__file__))
 # binary = os.path.join(thispath, '../../../',
 #                     'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join(thispath, '../../../', 'tests/test-progs/', 'straight', 'linked.elf')
+binary = os.path.join(thispath, '../../../', 'tests/test-progs/', 'straight', 'luke/add.out')
 
 system.workload = SEWorkload.init_compatible(binary)
 
@@ -99,18 +99,14 @@ process = Process()
 # Set the command
 # cmd is a list which begins with the executable (like argv)
 process.cmd = [binary]
-print("hello")
 # Set the cpu to use the process as its workload and create thread contexts
 system.cpu.workload = process
 system.cpu.createThreads()
-print("please")
 
 # set up the root SimObject and start the simulation
 root = Root(full_system = False, system = system)
-print("here")
 # instantiate all of the objects we've created above
 m5.instantiate()
-print("work")
 
 print("Beginning simulation!")
 exit_event = m5.simulate()

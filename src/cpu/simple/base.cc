@@ -323,12 +323,10 @@ BaseSimpleCPU::preExecute()
     auto &decoder = thread->decoder;
 
     if (isRomMicroPC(pc_state.microPC())) {
-        std::cout << "isRomMicroPC(pc_state.microPC())" << std::endl;
         t_info.stayAtPC = false;
         curStaticInst = decoder->fetchRomMicroop(
                 pc_state.microPC(), curMacroStaticInst);
     } else if (!curMacroStaticInst) {
-        std::cout << "else if (!curMacroStaticInst)" << std::endl;
         //We're not in the middle of a macro instruction
         StaticInstPtr instPtr = NULL;
 
@@ -343,11 +341,9 @@ BaseSimpleCPU::preExecute()
         //fetch beyond the MachInst at the current pc.
         instPtr = decoder->decode(pc_state, t_info.numInst);
         if (instPtr) {
-            std::cout << "if (instPtr)" << std::endl;
             t_info.stayAtPC = false;
             thread->pcState(pc_state);
         } else {
-            std::cout << "else" << std::endl;
             t_info.stayAtPC = true;
             t_info.fetchOffset += decoder->moreBytesSize();
         }
@@ -355,16 +351,13 @@ BaseSimpleCPU::preExecute()
         //If we decoded an instruction and it's microcoded, start pulling
         //out micro ops
         if (instPtr && instPtr->isMacroop()) {
-            std::cout << "if (instPtr && instPtr->isMacroop())" << std::endl;
             curMacroStaticInst = instPtr;
             curStaticInst =
                 curMacroStaticInst->fetchMicroop(pc_state.microPC());
         } else {
-            std::cout << "else" << std::endl;
             curStaticInst = instPtr;
         }
     } else {
-        std::cout << "else, curStaticInst = curMacroStaticInst->fetchMicroop(pc_state.microPC())" << std::endl;
         //Read the next micro op from the macro op
         curStaticInst = curMacroStaticInst->fetchMicroop(pc_state.microPC());
     }
@@ -376,8 +369,6 @@ BaseSimpleCPU::preExecute()
                 curStaticInst, thread->pcState(), curMacroStaticInst);
 #endif // TRACING_ON
     }
-    std::cout << "curStaticInst class type" << typeid(curStaticInst).name() << std::endl;
-    std::cout << "curStaticInst->getName()" << curStaticInst->getName() << std::endl;
     if (branchPred && curStaticInst &&
         curStaticInst->isControl()) {
         // Use a fake sequence number since we only have one
@@ -471,23 +462,17 @@ BaseSimpleCPU::postExecute()
 void
 BaseSimpleCPU::advancePC(const Fault &fault)
 {
-    std::cout << "entering advancePC" << std::endl;
     SimpleExecContext &t_info = *threadInfo[curThread];
     SimpleThread* thread = t_info.thread;
 
     const bool branching = thread->pcState().branching();
-    std::cout << "advancePC 1" << std::endl;
     //Since we're moving to a new pc, zero out the offset
     t_info.fetchOffset = 0;
     if (fault != NoFault) {
-        std::cout << "fault != NoFault" << std::endl;
         curMacroStaticInst = nullStaticInstPtr;
         fault->invoke(threadContexts[curThread], curStaticInst);
-        std::cout << "done fault->invoke" << std::endl;
         thread->decoder->reset();
-        std::cout << "done thread->decoder->reset()" << std::endl;
     } else {
-        std::cout << "fault == NoFault" << std::endl;
         if (curStaticInst) {
             // std::cout << "curStaticInst" << std::endl;
             if (curStaticInst->isLastMicroop())
@@ -495,7 +480,6 @@ BaseSimpleCPU::advancePC(const Fault &fault)
             curStaticInst->advancePC(thread);
         }
     }
-    std::cout << "advancePC 2" << std::endl;
     if (branchPred && curStaticInst && curStaticInst->isControl()) {
         // Use a fake sequence number since we only have one
         // instruction in flight at the same time.
@@ -511,7 +495,6 @@ BaseSimpleCPU::advancePC(const Fault &fault)
             ++t_info.execContextStats.numBranchMispred;
         }
     }
-    std::cout << "advancePC 3" << std::endl;
 }
 
 void
@@ -520,11 +503,9 @@ BaseSimpleCPU::advanceRP(const Fault &fault)
     SimpleExecContext &t_info = *threadInfo[curThread];
     SimpleThread* thread = t_info.thread;
 
-    std::cout << "BaseSimpleCPU::advanceRP" << std::endl;
     thread->setIntReg(thread->rpState().rp(), 0);
 
     if (fault == NoFault) {
-        std::cout << "1" << std::endl;
         curStaticInst->advanceRP(thread);
     } 
 

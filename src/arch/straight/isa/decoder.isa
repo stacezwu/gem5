@@ -43,6 +43,42 @@ decode QUADRANT default Unknown::unknown() {
 //    }
 
     0x3: decode OPCODE {
+
+        0x00: decode FUNCT3 {
+            format Load {
+                0x0: lb({{
+                    Rp_sd = Mem_sb;
+                }});
+                0x1: lh({{
+                    Rp_sd = Mem_sh;
+                }});
+                0x2: lw({{
+                    Rp_sd = Mem_sw;
+                }});
+                0x3: ld({{
+                    Rp_sd = Mem_sd;
+                }});
+                0x4: lbu({{
+                    Rp = Mem_ub;
+                }});
+                0x5: lhu({{
+                    Rp = Mem_uh;
+                }});
+                0x6: lwu({{
+                    Rp = Mem_uw;
+                }});
+            }
+        }
+
+        0x03: decode FUNCT3 {
+            format FenceOp {
+                0x0: fence({{
+                }}, uint64_t, IsReadBarrier, IsWriteBarrier, No_OpClass);
+                0x1: fence_i({{
+                }}, uint64_t, IsNonSpeculative, IsSerializeAfter, No_OpClass);
+            }
+        }
+
         
         0x04: decode FUNCT3 {
             format IOp {
@@ -75,6 +111,27 @@ decode QUADRANT default Unknown::unknown() {
                 0x7: andi({{
                     Rp = Rs1 & imm;
                 }}, uint64_t);
+            }
+        }
+        
+        0x05: UOp::auipc({{
+            Rp = PC + (sext<20>(imm) << 12);
+        }});
+
+        0x08: decode FUNCT3 {
+            format Store {
+                0x0: sb({{
+                    Mem_ub = Rs2_ub;
+                }});
+                0x1: sh({{
+                    Mem_uh = Rs2_uh;
+                }});
+                0x2: sw({{
+                    Mem_uw = Rs2_uw;
+                }});
+                0x3: sd({{
+                    Mem_ud = Rs2_ud;
+                }});
             }
         }
         
@@ -224,6 +281,70 @@ decode QUADRANT default Unknown::unknown() {
                 }
             }
         }
+        
+        0x0d: UOp::lui({{
+            Rp = (uint64_t)(sext<20>(imm) << 12);
+        }});
+
+
+        0x18: decode FUNCT3 {
+            format BOp {
+                0x0: beq({{
+                    if (Rs1 == Rs2) {
+                        NPC = PC + imm;
+                    } else {
+                        NPC = NPC;
+                    }
+                }}, IsDirectControl, IsCondControl);
+                0x1: bne({{
+                    if (Rs1 != Rs2) {
+                        NPC = PC + imm;
+                    } else {
+                        NPC = NPC;
+                    }
+                }}, IsDirectControl, IsCondControl);
+                0x4: blt({{
+                    if (Rs1_sd < Rs2_sd) {
+                        NPC = PC + imm;
+                    } else {
+                        NPC = NPC;
+                    }
+                }}, IsDirectControl, IsCondControl);
+                0x5: bge({{
+                    if (Rs1_sd >= Rs2_sd) {
+                        NPC = PC + imm;
+                    } else {
+                        NPC = NPC;
+                    }
+                }}, IsDirectControl, IsCondControl);
+                0x6: bltu({{
+                    if (Rs1 < Rs2) {
+                        NPC = PC + imm;
+                    } else {
+                        NPC = NPC;
+                    }
+                }}, IsDirectControl, IsCondControl);
+                0x7: bgeu({{
+                    if (Rs1 >= Rs2) {
+                        NPC = PC + imm;
+                    } else {
+                        NPC = NPC;
+                    }
+                }}, IsDirectControl, IsCondControl);
+            }
+        }
+
+        0x19: decode FUNCT3 {
+            0x0: Jump::jalr({{
+                Rp = NPC;
+                NPC = (imm + Rs1) & (~0x1);
+            }}, IsIndirectControl, IsUncondControl, IsCall);
+        }
+
+        0x1b: JOp::jal({{
+            Rp = NPC;
+            NPC = PC + imm;
+        }}, IsDirectControl, IsUncondControl, IsCall);
 
         0x1c: decode FUNCT3 {
             format SystemOp {

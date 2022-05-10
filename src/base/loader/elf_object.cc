@@ -256,7 +256,9 @@ ElfObject::determineArch()
     } else if (emach == EM_PPC64 && eclass == ELFCLASS64) {
         arch = Power64;
     } else {
-        warn("Unknown architecture: %d\n", emach);
+    //     warn("Unknown architecture: %d\n", emach);
+    // }
+        arch = (eclass == ELFCLASS64) ? Riscv64 : Riscv32;
     }
 }
 

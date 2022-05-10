@@ -58,6 +58,10 @@ def bitfield SHAMT6 <25:20>;
 // I-Type
 def bitfield IMM12  <31:20>;
 
+// Sync
+def bitfield SUCC  <23:20>;
+def bitfield PRED  <27:24>;
+
 // S-Type
 def bitfield IMM5   <11:7>;
 def bitfield IMM7   <31:25>;
@@ -66,7 +70,6 @@ def bitfield IMM7   <31:25>;
 def bitfield IMM20  <31:12>;
 
 
-// Below is not used in STRAIGHT
 // SB-Type
 def bitfield BIMM12BIT11 <7>;
 def bitfield BIMM12BITS4TO1<11:8>;
@@ -82,6 +85,7 @@ def bitfield UJIMMBITS19TO12 <19:12>;
 def bitfield FUNCT12 <31:20>;
 def bitfield CSRIMM <19:15>;
 
+// Below is not used in STRAIGHT
 // Floating point
 def bitfield FD <11:7>;
 def bitfield FS1 <19:15>;

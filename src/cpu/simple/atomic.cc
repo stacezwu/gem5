@@ -616,7 +616,6 @@ AtomicSimpleCPU::tick()
 
     // Change thread if multi-threaded
     swapActiveThread();
-    std::cout  << "1" << std::endl;
 
     // Set memory request ids to current thread
     if (numThreads > 1) {
@@ -627,16 +626,12 @@ AtomicSimpleCPU::tick()
         data_write_req->setContext(cid);
         data_amo_req->setContext(cid);
     }
-    std::cout  << "2" << std::endl;
     SimpleExecContext &t_info = *threadInfo[curThread];
     SimpleThread *thread = t_info.thread;
-
-    std::cout << "pc: " << thread->pcState().instAddr() << std::endl;
 
     Tick latency = 0;
 
     for (int i = 0; i < width || locked; ++i) {
-        std::cout << "width = " << width << std::endl;
         baseStats.numCycles++;
         updateCycleCounters(BaseCPU::CPU_STATE_ON);
 
@@ -650,14 +645,12 @@ AtomicSimpleCPU::tick()
             tryCompleteDrain();
             return;
         }
-        std::cout  << "3" << std::endl;
 
         serviceInstCountEvents();
 
         Fault fault = NoFault;
 
         const PCStateBase &pc = thread->pcState();
-        std::cout << "pc: " << pc.instAddr() << std::endl;
 
         bool needToFetch = !isRomMicroPC(pc.microPC()) && !curMacroStaticInst;
         if (needToFetch) {
@@ -666,8 +659,6 @@ AtomicSimpleCPU::tick()
             fault = thread->mmu->translateAtomic(ifetch_req, thread->getTC(),
                                                  BaseMMU::Execute);
         }
-
-        std::cout  << "4" << std::endl;
 
 
         if (fault == NoFault) {
@@ -687,22 +678,18 @@ AtomicSimpleCPU::tick()
                     icache_latency = fetchInstMem();
                 //}
             }
-            std::cout  << "5" << std::endl;
 
             preExecute();
-            std::cout  << "finishing preexecute " << std::endl;
             if (fault == NoFault) {
-                std::cout  << "6" << std::endl;
                 advanceRP(fault);
             } else {
-                std::cout << "fault?" << std::endl;
+                ;
             }
             std::cout << "RP value after advance RP = " << thread->rpState().rp() << std::endl;
 
             Tick stall_ticks = 0;
             if (curStaticInst) {
                 fault = curStaticInst->execute(&t_info, traceData);
-                std::cout << "7" << std::endl;
 
                 // keep an instruction count
                 if (fault == NoFault) {
@@ -712,7 +699,6 @@ AtomicSimpleCPU::tick()
                     traceFault();
                 }
 
-                std::cout << "8" << std::endl;
 
                 if (fault != NoFault &&
                     std::dynamic_pointer_cast<SyscallRetryFault>(fault)) {
@@ -721,12 +707,9 @@ AtomicSimpleCPU::tick()
                     // caused the retry are unlikely to change every tick.
                     stall_ticks += clockEdge(syscallRetryLatency) - curTick();
                 }
-                std::cout << "9" << std::endl;
                 postExecute();
-                std::cout << "10" << std::endl;
             }
 
-            std::cout  << "11" << std::endl;
 
             // @todo remove me after debugging with legion done
             if (curStaticInst && (!curStaticInst->isMicroop() ||
@@ -751,7 +734,6 @@ AtomicSimpleCPU::tick()
         }
         if (fault != NoFault || !t_info.stayAtPC)
             advancePC(fault);
-        std::cout  << "12" << std::endl;
     }
 
     if (tryCompleteDrain())
@@ -761,7 +743,6 @@ AtomicSimpleCPU::tick()
     if (latency < clockPeriod())
         latency = clockPeriod();
 
-    std::cout  << "13" << std::endl;
     if (_status != Idle)
         reschedule(tickEvent, curTick() + latency, true);
 }

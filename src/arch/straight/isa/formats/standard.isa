@@ -197,7 +197,7 @@ def template BranchExecute {{
     std::unique_ptr<PCStateBase>
     %(class_name)s::branchTarget(const PCStateBase &branch_pc) const
     {
-        auto &rpc = branch_pc.as<RiscvISA::PCState>();
+        auto &rpc = branch_pc.as<StraightISA::PCState>();
         return std::make_unique<PCState>(rpc.pc() + imm);
     }
 
@@ -324,7 +324,7 @@ def template CSRExecute {{
         auto olddata_all = olddata;
 
         olddata &= maskVal;
-        DPRINTF(RiscvMisc, "Reading CSR %s: %#x\n", csrName, olddata);
+        DPRINTF(StraightMisc, "Reading CSR %s: %#x\n", csrName, olddata);
         data = olddata;
 
         %(code)s;
@@ -340,7 +340,7 @@ def template CSRExecute {{
             // olddata and data only contain the bits visable
             // in current privilige level.
             newdata_all = (olddata_all & ~maskVal) | data;
-            DPRINTF(RiscvMisc, "Writing %#x to CSR %s.\n",
+            DPRINTF(StraightMisc, "Writing %#x to CSR %s.\n",
                     newdata_all, csrName);
             switch (csr) {
               case CSR_FCSR:
