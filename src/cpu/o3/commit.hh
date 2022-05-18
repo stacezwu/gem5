@@ -311,6 +311,12 @@ class Commit
     /** Sets the PC of a specific thread. */
     void pcState(const PCStateBase &val, ThreadID tid) { set(pc[tid], val); }
 
+    /** Reads the RP of a specific thread. */
+    const RPStateBase &rpState(ThreadID tid) { return *rp[tid]; }
+
+    /** Sets the RP of a specific thread. */
+    void rpState(const RPStateBase &val, ThreadID tid) { set(rp[tid], val); }
+
   private:
     /** Time buffer interface. */
     TimeBuffer<TimeStruct> *timeBuffer;
@@ -422,6 +428,8 @@ class Commit
      * is currently being processed/committed.
      */
     std::unique_ptr<PCStateBase> pc[MaxThreads];
+
+    std::unique_ptr<RPStateBase> rp[MaxThreads];
 
     /** The sequence number of the youngest valid instruction in the ROB. */
     InstSeqNum youngestSeqNum[MaxThreads];

@@ -1,0 +1,165 @@
+entry: 2147483648
+Global frequency set at 1000000000000 ticks per second
+entry: 2147483648
+0x55cdf0bf0c00
+arch == Riscv64
+      0: system.cpu.workload: Wrote arg "/home/staceywu/fyp/gem5/configs/learning_gem5/part1/../../../tests/test-progs/straight/linked.elf" to address 0x7fffffffffffff8d
+      0: system.cpu.workload: Wrote argc 1 to address 0x7ffffffffffffee0
+      0: system.cpu.workload: Wrote argv pointer 0x7fffffffffffff8d to address 0x7ffffffffffffee8
+      0: system.cpu.workload: Wrote argv pointer 0 to address 0x7ffffffffffffef0
+      0: system.cpu.workload: Wrote envp pointer 0 to address 0x7ffffffffffffef8
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Entry to address 0x7fffffffffffff00
+      0: system.cpu.workload: Wrote aux value 80000000 to address 0x7fffffffffffff08
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Phnum to address 0x7fffffffffffff10
+      0: system.cpu.workload: Wrote aux value 1 to address 0x7fffffffffffff18
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Phent to address 0x7fffffffffffff20
+      0: system.cpu.workload: Wrote aux value 38 to address 0x7fffffffffffff28
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Phdr to address 0x7fffffffffffff30
+      0: system.cpu.workload: Wrote aux value 0 to address 0x7fffffffffffff38
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Pagesz to address 0x7fffffffffffff40
+      0: system.cpu.workload: Wrote aux value 1000 to address 0x7fffffffffffff48
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Secure to address 0x7fffffffffffff50
+      0: system.cpu.workload: Wrote aux value 0 to address 0x7fffffffffffff58
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Random to address 0x7fffffffffffff60
+      0: system.cpu.workload: Wrote aux value 7fffffffffffff88 to address 0x7fffffffffffff68
+      0: system.cpu.workload: Wrote aux key gem5::auxv::Null to address 0x7fffffffffffff70
+      0: system.cpu.workload: Wrote aux value 0 to address 0x7fffffffffffff78
+      0: system.cpu.[tid:0]: Setting int reg 2 (2) to 0x7ffffffffffffee0.
+      0: system.cpu.[tid:0]: Setting actual int reg 2 (65534) to 0x7ffffffffffffee0.
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 21.2.1.0
+gem5 compiled May 18 2022 13:21:43
+gem5 started May 18 2022 15:28:28
+gem5 executing on instance-1, pid 6038
+command line: build/STRAIGHT/gem5.opt --debug-flags=Decode,IntRegs,MiscRegs,Fault,Stack,Rename configs/learning_gem5/part1/simple.py
+
+Beginning simulation!
+      0: system.cpu.decoder: Requesting bytes 0x00100013 from address 0x80000000
+      0: system.cpu.decoder: Decoding instruction 0x100013 at address 0x80000000
+      0: system.cpu.decoder: Decode: Decoded addi instruction: 0x100013
+      0: system.cpu.[tid:0]: Setting int reg 0 (0) to 0.
+      0: system.cpu.[tid:0]: Setting actual int reg 0 (0) to 0.
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 1
+      0: system.cpu.[tid:0]: Reading int reg 0 (0) as 0.
+      0: system.cpu.[tid:0]: Reading actual int reg 0 (1) as 0.
+      0: system.cpu.[tid:0]: Setting int reg 0 (0) to 0x1.
+      0: system.cpu.[tid:0]: Setting actual int reg 0 (1) to 0x1.
+   1000: system.cpu.decoder: Requesting bytes 0x00200013 from address 0x80000008
+   1000: system.cpu.decoder: Decoding instruction 0x200013 at address 0x80000008
+   1000: system.cpu.decoder: Decode: Decoded addi instruction: 0x200013
+   1000: system.cpu.[tid:0]: Setting int reg 1 (1) to 0.
+   1000: system.cpu.[tid:0]: Setting actual int reg 1 (0) to 0.
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 2
+   1000: system.cpu.[tid:0]: Reading int reg 0 (0) as 0.
+   1000: system.cpu.[tid:0]: Reading actual int reg 0 (2) as 0.
+   1000: system.cpu.[tid:0]: Setting int reg 0 (0) to 0x2.
+   1000: system.cpu.[tid:0]: Setting actual int reg 0 (2) to 0x2.
+   2000: system.cpu.decoder: Requesting bytes 0x00208033 from address 0x80000010
+   2000: system.cpu.decoder: Decoding instruction 0x208033 at address 0x80000010
+   2000: system.cpu.decoder: Decode: Decoded add instruction: 0x208033
+   2000: system.cpu.[tid:0]: Setting int reg 2 (2) to 0.
+   2000: system.cpu.[tid:0]: Setting actual int reg 2 (0) to 0.
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 3
+   2000: system.cpu.[tid:0]: Reading int reg 1 (1) as 0x2.
+   2000: system.cpu.[tid:0]: Reading actual int reg 1 (2) as 0x2.
+   2000: system.cpu.[tid:0]: Reading int reg 2 (2) as 0x1.
+   2000: system.cpu.[tid:0]: Reading actual int reg 2 (1) as 0x1.
+   2000: system.cpu.[tid:0]: Setting int reg 0 (0) to 0x3.
+   2000: system.cpu.[tid:0]: Setting actual int reg 0 (3) to 0x3.
+   3000: system.cpu.decoder: Requesting bytes 0x05d00013 from address 0x80000018
+   3000: system.cpu.decoder: Decoding instruction 0x5d00013 at address 0x80000018
+   3000: system.cpu.decoder: Decode: Decoded addi instruction: 0x5d00013
+   3000: system.cpu.[tid:0]: Setting int reg 3 (3) to 0.
+   3000: system.cpu.[tid:0]: Setting actual int reg 3 (0) to 0.
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 4
+   3000: system.cpu.[tid:0]: Reading int reg 0 (0) as 0.
+   3000: system.cpu.[tid:0]: Reading actual int reg 0 (4) as 0.
+   3000: system.cpu.[tid:0]: Setting int reg 0 (0) to 0x5d.
+   3000: system.cpu.[tid:0]: Setting actual int reg 0 (4) to 0x5d.
+   4000: system.cpu.decoder: Requesting bytes 0x00000073 from address 0x80000020
+   4000: system.cpu.decoder: Decoding instruction 0x73 at address 0x80000020
+   4000: system.cpu.decoder: Decode: Decoded ecall instruction: 0x73
+   4000: system.cpu.[tid:0]: Setting int reg 4 (4) to 0.
+   4000: system.cpu.[tid:0]: Setting actual int reg 4 (0) to 0.
+opclass0
+StraightStaticInst::advanceRP
+RP value after advance RP = 5
+syscallfault:straightfault
+prv: 0
+StraightFault::invoke
+   4000: system.cpu: Fault (System call) at PC: (0x80000020=>0x80000028).(0=>1)
+else
+SyscallFault::invokeSE
+   4000: system.cpu.[tid:0]: Reading int reg 1 (1) as 0x5d.
+   4000: system.cpu.[tid:0]: Reading actual int reg 1 (4) as 0x5d.
+   4000: system.cpu.[tid:0]: Reading int reg 10 (10) as 0.
+   4000: system.cpu.[tid:0]: Reading actual int reg 10 (65531) as 0.
+   4000: system.cpu.[tid:0]: Setting int reg 10 (10) to 0.
+   4000: system.cpu.[tid:0]: Setting actual int reg 10 (65531) to 0.
+Exiting @ tick 4000 because exiting with last active thread context
+entry: 2147483648
+Global frequency set at 1000000000000 ticks per second
+entry: 2147483648
+0x560a51754c00
+arch == Riscv64
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 21.2.1.0
+gem5 compiled May 18 2022 13:21:43
+gem5 started May 18 2022 16:19:19
+gem5 executing on instance-1, pid 8180
+command line: build/STRAIGHT/gem5.opt --debug-flags=O3CPUAll configs/learning_gem5/part1/simple.py
+
+Beginning simulation!
+      0: system.cpu: Fetch: Inst PC:0x80000000, Fetch PC:0x80000000
+      0: system.cpu.decoder: Requesting bytes 0x00100013 from address 0x80000000
+      0: system.cpu.decoder: Decoding instruction 0x100013 at address 0x80000000
+      0: system.cpu.decoder: Decode: Decoded addi instruction: 0x100013
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 1
+   1000: system.cpu: Fetch: Inst PC:0x80000008, Fetch PC:0x80000008
+   1000: system.cpu.decoder: Requesting bytes 0x00200013 from address 0x80000008
+   1000: system.cpu.decoder: Decoding instruction 0x200013 at address 0x80000008
+   1000: system.cpu.decoder: Decode: Decoded addi instruction: 0x200013
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 2
+   2000: system.cpu: Fetch: Inst PC:0x80000010, Fetch PC:0x80000010
+   2000: system.cpu.decoder: Requesting bytes 0x00208033 from address 0x80000010
+   2000: system.cpu.decoder: Decoding instruction 0x208033 at address 0x80000010
+   2000: system.cpu.decoder: Decode: Decoded add instruction: 0x208033
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 3
+   3000: system.cpu: Fetch: Inst PC:0x80000018, Fetch PC:0x80000018
+   3000: system.cpu.decoder: Requesting bytes 0x05d00013 from address 0x80000018
+   3000: system.cpu.decoder: Decoding instruction 0x5d00013 at address 0x80000018
+   3000: system.cpu.decoder: Decode: Decoded addi instruction: 0x5d00013
+opclass1
+StraightStaticInst::advanceRP
+RP value after advance RP = 4
+   4000: system.cpu: Fetch: Inst PC:0x80000020, Fetch PC:0x80000020
+   4000: system.cpu.decoder: Requesting bytes 0x00000073 from address 0x80000020
+   4000: system.cpu.decoder: Decoding instruction 0x73 at address 0x80000020
+   4000: system.cpu.decoder: Decode: Decoded ecall instruction: 0x73
+opclass0
+StraightStaticInst::advanceRP
+RP value after advance RP = 5
+syscallfault:straightfault
+prv: 0
+StraightFault::invoke
+else
+SyscallFault::invokeSE
+Exiting @ tick 4000 because exiting with last active thread context

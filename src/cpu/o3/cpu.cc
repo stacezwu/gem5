@@ -1319,6 +1319,18 @@ CPU::pcState(const PCStateBase &val, ThreadID tid)
     commit.pcState(val, tid);
 }
 
+const RPStateBase &
+CPU::rpState(ThreadID tid)
+{
+    return commit.rpState(tid);
+}
+
+void
+CPU::rpState(const RPStateBase &val, ThreadID tid)
+{
+    commit.rpState(val, tid);
+}
+
 void
 CPU::squashFromTC(ThreadID tid)
 {

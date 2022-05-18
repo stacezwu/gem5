@@ -121,6 +121,7 @@ Commit::Commit(CPU *_cpu, const O3CPUParams &params)
         tcSquash[tid] = false;
         squashAfterInst[tid] = nullptr;
         pc[tid].reset(params.isa[0]->newPCState());
+        rp[tid].reset(params.isa[0]->newRPState());
         youngestSeqNum[tid] = 0;
         lastCommitedSeqNum[tid] = 0;
         trapInFlight[tid] = false;
@@ -1066,6 +1067,7 @@ Commit::commitInsts()
                 cpu->traceFunctions(pc[tid]->instAddr());
 
                 head_inst->staticInst->advancePC(*pc[tid]);
+                head_inst->staticInst->advanceRP(*rp[tid]);
 
                 // Keep track of the last sequence number commited
                 lastCommitedSeqNum[tid] = head_inst->seqNum;

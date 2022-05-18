@@ -50,6 +50,7 @@
 #include <vector>
 
 #include "arch/generic/pcstate.hh"
+#include "arch/generic/rpstate.hh"
 #include "base/statistics.hh"
 #include "config/the_isa.hh"
 #include "cpu/o3/comm.hh"
@@ -389,6 +390,12 @@ class CPU : public BaseCPU
 
     /** Reads the commit PC state of a specific thread. */
     const PCStateBase &pcState(ThreadID tid);
+
+    /** Sets the commit RP state of a specific thread. */
+    void rpState(const RPStateBase &new_rp_state, ThreadID tid);
+
+    /** Reads the commit RP state of a specific thread. */
+    const RPStateBase &rpState(ThreadID tid);
 
     /** Initiates a squash of all in-flight instructions for a given
      * thread.  The source of the squash is an external update of

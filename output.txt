@@ -1,0 +1,1335 @@
+entry: 2147483648
+Global frequency set at 1000000000000 ticks per second
+      0: global: BTB: Creating BTB object.
+entry: 2147483648
+0x56117108ac00
+arch == Riscv64
+      0: Creating MemDepUnit 0 object.
+      0: global: StoreSet: Creating store set object.
+      0: global: StoreSet: SSIT size: 1024, LFST size: 1024.
+      0: Creating MemDepUnit 1 object.
+      0: global: StoreSet: Creating store set object.
+      0: global: StoreSet: SSIT size: 1024, LFST size: 1024.
+      0: Creating MemDepUnit 2 object.
+      0: global: StoreSet: Creating store set object.
+      0: global: StoreSet: SSIT size: 1024, LFST size: 1024.
+      0: Creating MemDepUnit 3 object.
+      0: global: StoreSet: Creating store set object.
+      0: global: StoreSet: SSIT size: 1024, LFST size: 1024.
+      0: system.cpu.iq: IQ sharing policy set to Partitioned:64 entries per thread.
+      0: system.cpu.iew.lsq: LSQ sharing policy set to Partitioned: 32 entries per LQ | 32 entries per SQ
+      0: system.cpu.iew.lsq.thread0: Creating LSQUnit0 object.
+      0: system.cpu.freelist: Creating new free list object.
+      0: system.cpu.rob: ROB sharing policy set to Partitioned
+      0: system.cpu: Creating O3CPU object.
+      0: system.cpu: Workload[0] process is 0      0: global: Calling activate on Thread Context 0
+      0: system.cpu: [tid:0] Calling activate thread.
+      0: system.cpu: [tid:0] Adding to active threads list
+      0: system.cpu: Activity: 1
+      0: system.cpu.fetch: Waking up from quiesce
+      0: global: RegFile: Setting int register 2 to 0x7ffffffffffffee0
+      0: system.cpu.commit: Generating TC squash event for [tid:0]
+      0: system.cpu.fetch: Activating stage.
+      0: system.cpu: Activity: 2
+      0: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+      0: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+      0: system.cpu: Activity: 3
+      0: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+      0: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+      0: system.cpu.rob: Setting active threads list pointer.
+      0: system.cpu: Activity: 4
+gem5 Simulator System.  http://gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 21.2.1.0
+gem5 compiled May 18 2022 13:21:43
+gem5 started May 18 2022 15:11:16
+gem5 executing on instance-1, pid 5543
+command line: build/STRAIGHT/gem5.opt --debug-flags=O3CPUAll configs/learning_gem5/part1/simple.py
+
+Beginning simulation!
+      0: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+      0: system.cpu.fetch: Running stage.
+      0: system.cpu.fetch: Attempting to fetch from [tid:0]
+      0: system.cpu.fetch: [tid:0] Attempting to translate and read instruction, starting at PC (0x80000000=>0x80000004).(0=>1).
+      0: system.cpu.fetch: [tid:0] Fetching cache line 0x80000000 for addr 0x80000000
+      0: system.cpu: CPU already running.
+      0: system.cpu.fetch: Fetch: Doing instruction read.
+      0: system.cpu.fetch: [tid:0] Doing Icache access.
+      0: system.cpu.fetch: [tid:0] Activity: Waiting on I-cache response.
+      0: system.cpu.fetch: Deactivating stage.
+      0: system.cpu: Activity: 3
+      0: system.cpu.decode: Processing [tid:0]
+      0: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+      0: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+      0: system.cpu.rename: Processing [tid:0]
+      0: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+      0: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+      0: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+      0: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+      0: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+      0: system.cpu.iew: Issue: Processing [tid:0]
+      0: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+      0: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+      0: system.cpu.iq: Not able to schedule any instructions.
+      0: system.cpu.iew: Processing [tid:0]
+      0: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+      0: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+      0: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+      0: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+      0: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+      0: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+      0: system.cpu.iew: IEW switching to idle
+      0: system.cpu.iew: Deactivating stage.
+      0: system.cpu: Activity: 2
+      0: system.cpu.iew: Activity this cycle.
+      0: system.cpu.rob: Does not need to squash due to being empty [sn:0]
+      0: system.cpu.commit: Squashing from TC, restarting at PC (0x80000000=>0x80000004).(0=>1)
+      0: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+      0: system.cpu.commit: Activity This Cycle.
+      0: system.cpu: Scheduling next tick!
+   1000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   1000: system.cpu.fetch: [tid:0] Squashing instructions due to squash from commit.
+   1000: system.cpu.fetch: [tid:0] Squash from commit.
+   1000: system.cpu.fetch: [tid:0] Squashing, setting PC to: (0x80000000=>0x80000004).(0=>1).
+   1000: system.cpu.fetch: [tid:0] Squashing outstanding Icache miss.
+   1000: system.cpu: Thread 0: Deleting instructions from instruction list.
+   1000: system.cpu.fetch: Running stage.
+   1000: system.cpu.fetch: There are no more threads available to fetch from.
+   1000: system.cpu.fetch: [tid:0] Fetch is squashing!
+   1000: system.cpu.fetch: [tid:0] Activating stage.
+   1000: system.cpu: Activity: 3
+   1000: system.cpu.decode: Processing [tid:0]
+   1000: system.cpu.decode: [tid:0] Squashing instructions due to squash from commit.
+   1000: system.cpu.decode: [tid:0] Squashing.
+   1000: system.cpu.rename: Processing [tid:0]
+   1000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   1000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   1000: system.cpu.rename: [tid:0] Squashing instructions due to squash from commit.
+   1000: system.cpu.rename: [tid:0] [squash sn:0] Squashing instructions.
+   1000: system.cpu.iew: Issue: Processing [tid:0]
+   1000: system.cpu.iew: [tid:0] Squashing all instructions.
+   1000: system.cpu.iq: [tid:0] Starting to squash instructions in the IQ.
+   1000: system.cpu.iq: [tid:0] Squashing until sequence number 0!
+   1000: global: StoreSet: Squashing until inum 0
+   1000: system.cpu.iew.lsq.thread0: Squashing until [sn:0]!(Loads:0 Stores:0)
+   1000: system.cpu.iew: Removing skidbuffer instructions until [sn:0] [tid:0]
+   1000: system.cpu.iew: [tid:0] Removing incoming rename instructions
+   1000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   1000: system.cpu.iq: Not able to schedule any instructions.
+   1000: system.cpu.iew: Processing [tid:0]
+   1000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   1000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   1000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   1000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   1000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   1000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   1000: system.cpu.iew: Activity this cycle.
+   1000: system.cpu: Activity: 4
+   1000: system.cpu.commit: Getting instructions from Rename stage.
+   1000: system.cpu.commit: Trying to commit instructions in the ROB.
+   1000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   1000: system.cpu.commit: Deactivating stage.
+   1000: system.cpu: Activity: 3
+   1000: system.cpu: Scheduling next tick!
+   2000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   2000: system.cpu.fetch: [tid:0] Done squashing, switching to running.
+   2000: system.cpu.fetch: Running stage.
+   2000: system.cpu.fetch: Attempting to fetch from [tid:0]
+   2000: system.cpu.fetch: [tid:0] Attempting to translate and read instruction, starting at PC (0x80000000=>0x80000004).(0=>1).
+   2000: system.cpu.fetch: [tid:0] Fetching cache line 0x80000000 for addr 0x80000000
+   2000: system.cpu: CPU already running.
+   2000: system.cpu.fetch: Fetch: Doing instruction read.
+   2000: system.cpu.fetch: [tid:0] Doing Icache access.
+   2000: system.cpu.fetch: [tid:0] Activity: Waiting on I-cache response.
+   2000: system.cpu.fetch: Deactivating stage.
+   2000: system.cpu: Activity: 2
+   2000: system.cpu.decode: Processing [tid:0]
+   2000: system.cpu.decode: [tid:0] Done squashing, switching to running.
+   2000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   2000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   2000: system.cpu.rename: Processing [tid:0]
+   2000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   2000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   2000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   2000: system.cpu.rename: [tid:0] Done squashing, switching to running.
+   2000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   2000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   2000: system.cpu.iew: Issue: Processing [tid:0]
+   2000: system.cpu.iew: [tid:0] Done squashing, switching to running.
+   2000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   2000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   2000: system.cpu.iq: Not able to schedule any instructions.
+   2000: system.cpu.iew: Processing [tid:0]
+   2000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   2000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   2000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   2000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   2000: system.cpu.commit: Getting instructions from Rename stage.
+   2000: system.cpu.commit: Trying to commit instructions in the ROB.
+   2000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   2000: system.cpu: Scheduling next tick!
+   3000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   3000: system.cpu.fetch: Running stage.
+   3000: system.cpu.fetch: There are no more threads available to fetch from.
+   3000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+   3000: system.cpu.decode: Processing [tid:0]
+   3000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   3000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   3000: system.cpu.rename: Processing [tid:0]
+   3000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   3000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   3000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   3000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   3000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   3000: system.cpu.iew: Issue: Processing [tid:0]
+   3000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   3000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   3000: system.cpu.iq: Not able to schedule any instructions.
+   3000: system.cpu.iew: Processing [tid:0]
+   3000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   3000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   3000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   3000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   3000: system.cpu.commit: Getting instructions from Rename stage.
+   3000: system.cpu.commit: Trying to commit instructions in the ROB.
+   3000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   3000: system.cpu: Scheduling next tick!
+   4000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   4000: system.cpu.fetch: Running stage.
+   4000: system.cpu.fetch: There are no more threads available to fetch from.
+   4000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+   4000: system.cpu.decode: Processing [tid:0]
+   4000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   4000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   4000: system.cpu.rename: Processing [tid:0]
+   4000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   4000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   4000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   4000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   4000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   4000: system.cpu.iew: Issue: Processing [tid:0]
+   4000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   4000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   4000: system.cpu.iq: Not able to schedule any instructions.
+   4000: system.cpu.iew: Processing [tid:0]
+   4000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   4000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   4000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   4000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   4000: system.cpu.commit: Getting instructions from Rename stage.
+   4000: system.cpu.commit: Trying to commit instructions in the ROB.
+   4000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   4000: system.cpu: Scheduling next tick!
+   5000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   5000: system.cpu.fetch: Running stage.
+   5000: system.cpu.fetch: There are no more threads available to fetch from.
+   5000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+   5000: system.cpu.decode: Processing [tid:0]
+   5000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   5000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   5000: system.cpu.rename: Processing [tid:0]
+   5000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   5000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   5000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   5000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   5000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   5000: system.cpu.iew: Issue: Processing [tid:0]
+   5000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   5000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   5000: system.cpu.iq: Not able to schedule any instructions.
+   5000: system.cpu.iew: Processing [tid:0]
+   5000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   5000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   5000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   5000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   5000: system.cpu.commit: Getting instructions from Rename stage.
+   5000: system.cpu.commit: Trying to commit instructions in the ROB.
+   5000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   5000: system.cpu: Scheduling next tick!
+   6000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   6000: system.cpu.fetch: Running stage.
+   6000: system.cpu.fetch: There are no more threads available to fetch from.
+   6000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+   6000: system.cpu.decode: Processing [tid:0]
+   6000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   6000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   6000: system.cpu.rename: Processing [tid:0]
+   6000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   6000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   6000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   6000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   6000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   6000: system.cpu.iew: Issue: Processing [tid:0]
+   6000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   6000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   6000: system.cpu.iq: Not able to schedule any instructions.
+   6000: system.cpu.iew: Processing [tid:0]
+   6000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   6000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   6000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   6000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   6000: system.cpu.commit: Getting instructions from Rename stage.
+   6000: system.cpu.commit: Trying to commit instructions in the ROB.
+   6000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   6000: system.cpu: Scheduling next tick!
+   7000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   7000: system.cpu.fetch: Running stage.
+   7000: system.cpu.fetch: There are no more threads available to fetch from.
+   7000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+   7000: system.cpu.decode: Processing [tid:0]
+   7000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   7000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   7000: system.cpu.rename: Processing [tid:0]
+   7000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   7000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   7000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   7000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   7000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   7000: system.cpu.iew: Issue: Processing [tid:0]
+   7000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   7000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   7000: system.cpu.iq: Not able to schedule any instructions.
+   7000: system.cpu.iew: Processing [tid:0]
+   7000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   7000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   7000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   7000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   7000: system.cpu.commit: Getting instructions from Rename stage.
+   7000: system.cpu.commit: Trying to commit instructions in the ROB.
+   7000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   7000: system.cpu: Scheduling next tick!
+   8000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   8000: system.cpu.fetch: Running stage.
+   8000: system.cpu.fetch: There are no more threads available to fetch from.
+   8000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+   8000: system.cpu.decode: Processing [tid:0]
+   8000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   8000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   8000: system.cpu.rename: Processing [tid:0]
+   8000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   8000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   8000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   8000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   8000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   8000: system.cpu.iew: Issue: Processing [tid:0]
+   8000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   8000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   8000: system.cpu.iq: Not able to schedule any instructions.
+   8000: system.cpu.iew: Processing [tid:0]
+   8000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   8000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   8000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   8000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   8000: system.cpu.commit: Getting instructions from Rename stage.
+   8000: system.cpu.commit: Trying to commit instructions in the ROB.
+   8000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   8000: system.cpu: Scheduling next tick!
+   9000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+   9000: system.cpu.fetch: Running stage.
+   9000: system.cpu.fetch: There are no more threads available to fetch from.
+   9000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+   9000: system.cpu.decode: Processing [tid:0]
+   9000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+   9000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+   9000: system.cpu.rename: Processing [tid:0]
+   9000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+   9000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+   9000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+   9000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+   9000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+   9000: system.cpu.iew: Issue: Processing [tid:0]
+   9000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+   9000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+   9000: system.cpu.iq: Not able to schedule any instructions.
+   9000: system.cpu.iew: Processing [tid:0]
+   9000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+   9000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+   9000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+   9000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+   9000: system.cpu.commit: Getting instructions from Rename stage.
+   9000: system.cpu.commit: Trying to commit instructions in the ROB.
+   9000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+   9000: system.cpu: Scheduling next tick!
+  10000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  10000: system.cpu.fetch: Running stage.
+  10000: system.cpu.fetch: There are no more threads available to fetch from.
+  10000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  10000: system.cpu.decode: Processing [tid:0]
+  10000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  10000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+  10000: system.cpu.rename: Processing [tid:0]
+  10000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  10000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  10000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  10000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  10000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+  10000: system.cpu.iew: Issue: Processing [tid:0]
+  10000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  10000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  10000: system.cpu.iq: Not able to schedule any instructions.
+  10000: system.cpu.iew: Processing [tid:0]
+  10000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  10000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  10000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  10000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  10000: system.cpu.commit: Getting instructions from Rename stage.
+  10000: system.cpu.commit: Trying to commit instructions in the ROB.
+  10000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+  10000: system.cpu: Activity: 1
+  10000: system.cpu: Scheduling next tick!
+  11000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  11000: system.cpu.fetch: Running stage.
+  11000: system.cpu.fetch: There are no more threads available to fetch from.
+  11000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  11000: system.cpu.decode: Processing [tid:0]
+  11000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  11000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+  11000: system.cpu.rename: Processing [tid:0]
+  11000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  11000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  11000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  11000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  11000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+  11000: system.cpu.iew: Issue: Processing [tid:0]
+  11000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  11000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  11000: system.cpu.iq: Not able to schedule any instructions.
+  11000: system.cpu.iew: Processing [tid:0]
+  11000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  11000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  11000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  11000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  11000: system.cpu.commit: Getting instructions from Rename stage.
+  11000: system.cpu.commit: Trying to commit instructions in the ROB.
+  11000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+  11000: system.cpu: Activity: 0
+  11000: system.cpu: No activity left!
+  11000: system.cpu: Idle!
+  77000: system.cpu.icache_port: Fetch unit received timing
+  77000: system.cpu.fetch: [tid:0] Waking up from cache miss.
+  82000: system.cpu.icache_port: Fetch unit received timing
+  82000: system.cpu.fetch: [tid:0] Waking up from cache miss.
+  82000: system.cpu: Waking up CPU
+  82000: system.cpu.fetch: [tid:0] Activating fetch due to cache completion
+  82000: system.cpu.fetch: Activating stage.
+  82000: system.cpu: Activity: 1
+  82000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  82000: system.cpu.fetch: Running stage.
+  82000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  82000: system.cpu.fetch: [tid:0] Icache miss is complete.
+  82000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  82000: system.cpu.decoder: Requesting bytes 0x00100013 from address 0x80000000
+  82000: system.cpu.decoder: Decoding instruction 0x100013 at address 0x80000000
+  82000: system.cpu.decoder: Decode: Decoded addi instruction: 0x100013
+  82000: global: DynInst: [sn:1] Instruction created. Instcount for system.cpu = 1
+  82000: system.cpu.fetch: [tid:0] Instruction PC (0x80000000=>0x80000008).(0=>1) created [sn:1].
+  82000: system.cpu.fetch: [tid:0] Instruction is: addi zero, zero, 1
+  82000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  82000: system.cpu.fetch: Branch detected with PC = (0x80000000=>0x80000008).(0=>1)
+  82000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  82000: system.cpu.fetch: [tid:0] [sn:1] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  82000: system.cpu.fetch: Activity this cycle.
+  82000: system.cpu: Activity: 2
+  82000: system.cpu.decode: Processing [tid:0]
+  82000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  82000: system.cpu.decode: [tid:0] Nothing to do, breaking out early.
+  82000: system.cpu.rename: Processing [tid:0]
+  82000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  82000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  82000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  82000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  82000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+  82000: system.cpu.iew: Issue: Processing [tid:0]
+  82000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  82000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  82000: system.cpu.iq: Not able to schedule any instructions.
+  82000: system.cpu.iew: Processing [tid:0]
+  82000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  82000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  82000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  82000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  82000: system.cpu.commit: Getting instructions from Rename stage.
+  82000: system.cpu.commit: Trying to commit instructions in the ROB.
+  82000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+  82000: system.cpu: Scheduling next tick!
+  83000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  83000: system.cpu.fetch: Running stage.
+  83000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  83000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  83000: system.cpu.decoder: Requesting bytes 0x00200013 from address 0x80000008
+  83000: system.cpu.decoder: Decoding instruction 0x200013 at address 0x80000008
+  83000: system.cpu.decoder: Decode: Decoded addi instruction: 0x200013
+  83000: global: DynInst: [sn:2] Instruction created. Instcount for system.cpu = 2
+  83000: system.cpu.fetch: [tid:0] Instruction PC (0x80000008=>0x80000010).(0=>1) created [sn:2].
+  83000: system.cpu.fetch: [tid:0] Instruction is: addi zero, zero, 2
+  83000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  83000: system.cpu.fetch: Branch detected with PC = (0x80000008=>0x80000010).(0=>1)
+  83000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  83000: system.cpu.fetch: [tid:0] [sn:2] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  83000: system.cpu.fetch: Activity this cycle.
+  83000: system.cpu: Activity: 3
+  83000: system.cpu.decode: Processing [tid:0]
+  83000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  83000: system.cpu.decode: [tid:0] Sending instruction to rename.
+  83000: system.cpu.decode: [tid:0] Processing instruction [sn:1] with PC (0x80000000=>0x80000008).(0=>1)
+  83000: system.cpu.decode: Activity this cycle.
+  83000: system.cpu.rename: Processing [tid:0]
+  83000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  83000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  83000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  83000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  83000: system.cpu.rename: [tid:0] Nothing to do, breaking out early.
+  83000: system.cpu.iew: Issue: Processing [tid:0]
+  83000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  83000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  83000: system.cpu.iq: Not able to schedule any instructions.
+  83000: system.cpu.iew: Processing [tid:0]
+  83000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  83000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  83000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  83000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  83000: system.cpu.commit: Getting instructions from Rename stage.
+  83000: system.cpu.commit: Trying to commit instructions in the ROB.
+  83000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+  83000: system.cpu: Scheduling next tick!
+  84000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  84000: system.cpu.fetch: Running stage.
+  84000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  84000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  84000: system.cpu.decoder: Requesting bytes 0x00208033 from address 0x80000010
+  84000: system.cpu.decoder: Decoding instruction 0x208033 at address 0x80000010
+  84000: system.cpu.decoder: Decode: Decoded add instruction: 0x208033
+  84000: global: DynInst: [sn:3] Instruction created. Instcount for system.cpu = 3
+  84000: system.cpu.fetch: [tid:0] Instruction PC (0x80000010=>0x80000018).(0=>1) created [sn:3].
+  84000: system.cpu.fetch: [tid:0] Instruction is: add zero, ra, sp
+  84000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  84000: system.cpu.fetch: Branch detected with PC = (0x80000010=>0x80000018).(0=>1)
+  84000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  84000: system.cpu.fetch: [tid:0] [sn:3] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  84000: system.cpu.fetch: Activity this cycle.
+  84000: system.cpu: Activity: 4
+  84000: system.cpu.decode: Processing [tid:0]
+  84000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  84000: system.cpu.decode: [tid:0] Sending instruction to rename.
+  84000: system.cpu.decode: [tid:0] Processing instruction [sn:2] with PC (0x80000008=>0x80000010).(0=>1)
+  84000: system.cpu.decode: Activity this cycle.
+  84000: system.cpu.rename: Processing [tid:0]
+  84000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  84000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  84000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  84000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  84000: system.cpu.rename: [tid:0] 1 available instructions to send iew.
+  84000: system.cpu.rename: [tid:0] 0 insts pipelining from Rename | 0 insts dispatched to IQ last cycle.
+  84000: system.cpu.rename: [tid:0] Sending instructions to IEW.
+  84000: system.cpu.rename: [tid:0] Processing instruction [sn:1] with PC (0x80000000=>0x80000008).(0=>1).
+  84000: system.cpu.rename: [tid:0] Looking up IntRegClass arch reg 0, got phys reg 0 (IntRegClass)
+  84000: system.cpu.rename: [tid:0] Register 0 (flat: 0) (IntRegClass) is ready.
+  84000: global: [sn:1] has 1 ready out of 1 sources. RTI 0)
+  84000: global: Renamed reg IntRegClass{0} to physical reg 0 (0) old mapping was 0 (0)
+  84000: system.cpu.rename: [tid:0] Renaming arch reg 0 (IntRegClass) to physical reg 0 (0).
+  84000: system.cpu.rename: [tid:0] [sn:1] Adding instruction to history buffer (size=1).
+  84000: system.cpu.rename: Activity this cycle.
+  84000: system.cpu.iew: Issue: Processing [tid:0]
+  84000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  84000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  84000: system.cpu.iq: Not able to schedule any instructions.
+  84000: system.cpu.iew: Processing [tid:0]
+  84000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  84000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  84000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  84000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  84000: system.cpu.commit: Getting instructions from Rename stage.
+  84000: system.cpu.commit: Trying to commit instructions in the ROB.
+  84000: system.cpu.commit: [tid:0] ROB has 0 insts & 192 free entries.
+  84000: system.cpu: Scheduling next tick!
+  85000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  85000: system.cpu.fetch: Running stage.
+  85000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  85000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  85000: system.cpu.decoder: Requesting bytes 0x05d00013 from address 0x80000018
+  85000: system.cpu.decoder: Decoding instruction 0x5d00013 at address 0x80000018
+  85000: system.cpu.decoder: Decode: Decoded addi instruction: 0x5d00013
+  85000: global: DynInst: [sn:4] Instruction created. Instcount for system.cpu = 4
+  85000: system.cpu.fetch: [tid:0] Instruction PC (0x80000018=>0x80000020).(0=>1) created [sn:4].
+  85000: system.cpu.fetch: [tid:0] Instruction is: addi zero, zero, 93
+  85000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  85000: system.cpu.fetch: Branch detected with PC = (0x80000018=>0x80000020).(0=>1)
+  85000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  85000: system.cpu.fetch: [tid:0] [sn:4] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  85000: system.cpu.fetch: Activity this cycle.
+  85000: system.cpu: Activity: 5
+  85000: system.cpu.decode: Processing [tid:0]
+  85000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  85000: system.cpu.decode: [tid:0] Sending instruction to rename.
+  85000: system.cpu.decode: [tid:0] Processing instruction [sn:3] with PC (0x80000010=>0x80000018).(0=>1)
+  85000: system.cpu.decode: Activity this cycle.
+  85000: system.cpu.rename: Processing [tid:0]
+  85000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 192, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  85000: system.cpu.rename: [tid:0] 1 instructions not yet in ROB
+  85000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  85000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  85000: system.cpu.rename: [tid:0] 1 available instructions to send iew.
+  85000: system.cpu.rename: [tid:0] 1 insts pipelining from Rename | 0 insts dispatched to IQ last cycle.
+  85000: system.cpu.rename: [tid:0] Sending instructions to IEW.
+  85000: system.cpu.rename: [tid:0] Processing instruction [sn:2] with PC (0x80000008=>0x80000010).(0=>1).
+  85000: system.cpu.rename: [tid:0] Looking up IntRegClass arch reg 0, got phys reg 0 (IntRegClass)
+  85000: system.cpu.rename: [tid:0] Register 0 (flat: 0) (IntRegClass) is ready.
+  85000: global: [sn:2] has 1 ready out of 1 sources. RTI 0)
+  85000: global: Renamed reg IntRegClass{0} to physical reg 0 (0) old mapping was 0 (0)
+  85000: system.cpu.rename: [tid:0] Renaming arch reg 0 (IntRegClass) to physical reg 0 (0).
+  85000: system.cpu.rename: [tid:0] [sn:2] Adding instruction to history buffer (size=2).
+  85000: system.cpu.rename: Activity this cycle.
+  85000: system.cpu.iew: Issue: Processing [tid:0]
+  85000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  85000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  85000: system.cpu.iq: Not able to schedule any instructions.
+  85000: system.cpu.iew: Processing [tid:0]
+  85000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  85000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  85000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  85000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  85000: system.cpu.commit: Getting instructions from Rename stage.
+  85000: system.cpu.commit: [tid:0] [sn:1] Inserting PC (0x80000000=>0x80000008).(0=>1) into ROB.
+  85000: system.cpu.rob: Adding inst PC (0x80000000=>0x80000008).(0=>1) to the ROB.
+  85000: system.cpu.rob: [tid:0] Now has 1 instructions.
+  85000: system.cpu.commit: Trying to commit instructions in the ROB.
+  85000: system.cpu.commit: [tid:0] Can't commit, Instruction [sn:1] PC (0x80000000=>0x80000008).(0=>1) is head of ROB and not ready
+  85000: system.cpu.commit: [tid:0] ROB has 1 insts & 191 free entries.
+  85000: system.cpu.commit: Activity This Cycle.
+  85000: system.cpu: Scheduling next tick!
+  86000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  86000: system.cpu.fetch: Running stage.
+  86000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  86000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  86000: system.cpu.decoder: Requesting bytes 0x00000073 from address 0x80000020
+  86000: system.cpu.decoder: Decoding instruction 0x73 at address 0x80000020
+  86000: system.cpu.decoder: Decode: Decoded ecall instruction: 0x73
+  86000: global: DynInst: [sn:5] Instruction created. Instcount for system.cpu = 5
+  86000: system.cpu.fetch: [tid:0] Instruction PC (0x80000020=>0x80000028).(0=>1) created [sn:5].
+  86000: system.cpu.fetch: [tid:0] Instruction is: ecall
+  86000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  86000: system.cpu.fetch: Branch detected with PC = (0x80000020=>0x80000028).(0=>1)
+  86000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  86000: system.cpu.fetch: [tid:0] [sn:5] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  86000: system.cpu.fetch: Activity this cycle.
+  86000: system.cpu: Activity: 6
+  86000: system.cpu.decode: Processing [tid:0]
+  86000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  86000: system.cpu.decode: [tid:0] Sending instruction to rename.
+  86000: system.cpu.decode: [tid:0] Processing instruction [sn:4] with PC (0x80000018=>0x80000020).(0=>1)
+  86000: system.cpu.decode: Activity this cycle.
+  86000: system.cpu.rename: Processing [tid:0]
+  86000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 191, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  86000: system.cpu.rename: [tid:0] 2 instructions not yet in ROB
+  86000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  86000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  86000: system.cpu.rename: [tid:0] 1 available instructions to send iew.
+  86000: system.cpu.rename: [tid:0] 2 insts pipelining from Rename | 0 insts dispatched to IQ last cycle.
+  86000: system.cpu.rename: [tid:0] Sending instructions to IEW.
+  86000: system.cpu.rename: [tid:0] Processing instruction [sn:3] with PC (0x80000010=>0x80000018).(0=>1).
+  86000: system.cpu.rename: [tid:0] Looking up IntRegClass arch reg 1, got phys reg 1 (IntRegClass)
+  86000: system.cpu.rename: [tid:0] Register 1 (flat: 1) (IntRegClass) is ready.
+  86000: global: [sn:3] has 1 ready out of 2 sources. RTI 0)
+  86000: system.cpu.rename: [tid:0] Looking up IntRegClass arch reg 2, got phys reg 2 (IntRegClass)
+  86000: system.cpu.rename: [tid:0] Register 2 (flat: 2) (IntRegClass) is ready.
+  86000: global: [sn:3] has 2 ready out of 2 sources. RTI 0)
+  86000: global: Renamed reg IntRegClass{0} to physical reg 0 (0) old mapping was 0 (0)
+  86000: system.cpu.rename: [tid:0] Renaming arch reg 0 (IntRegClass) to physical reg 0 (0).
+  86000: system.cpu.rename: [tid:0] [sn:3] Adding instruction to history buffer (size=3).
+  86000: system.cpu.rename: Activity this cycle.
+  86000: system.cpu.iew: Issue: Processing [tid:0]
+  86000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  86000: system.cpu.iew: [tid:0] Issue: Adding PC (0x80000000=>0x80000008).(0=>1) [sn:1] [tid:0] to IQ.
+  86000: system.cpu.iq: Adding instruction [sn:1] PC (0x80000000=>0x80000008).(0=>1) to the IQ.
+  86000: system.cpu.iq: Instruction is ready to issue, putting it onto the ready list, PC (0x80000000=>0x80000008).(0=>1) opclass:1 [sn:1].
+  86000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  86000: system.cpu.iq: Thread 0: Issuing instruction PC (0x80000000=>0x80000008).(0=>1) [sn:1]
+  86000: system.cpu.iew: Processing [tid:0]
+  86000: system.cpu.iew: [tid:0], Dispatch dispatched 1 instructions.
+  86000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  86000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  86000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  86000: system.cpu.commit: Getting instructions from Rename stage.
+  86000: system.cpu.commit: [tid:0] [sn:2] Inserting PC (0x80000008=>0x80000010).(0=>1) into ROB.
+  86000: system.cpu.rob: Adding inst PC (0x80000008=>0x80000010).(0=>1) to the ROB.
+  86000: system.cpu.rob: [tid:0] Now has 2 instructions.
+  86000: system.cpu.commit: Trying to commit instructions in the ROB.
+  86000: system.cpu.commit: [tid:0] Can't commit, Instruction [sn:1] PC (0x80000000=>0x80000008).(0=>1) is head of ROB and not ready
+  86000: system.cpu.commit: [tid:0] ROB has 2 insts & 190 free entries.
+  86000: system.cpu.commit: Activity This Cycle.
+  86000: system.cpu: Scheduling next tick!
+  87000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  87000: system.cpu.fetch: Running stage.
+  87000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  87000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  87000: system.cpu.decoder: Requesting bytes 0x00000000 from address 0x80000028
+  87000: system.cpu.decoder: Decoding instruction 0x0 at address 0x80000028
+  87000: system.cpu.decoder: Decode: Decoded unknown instruction: 0
+  87000: global: DynInst: [sn:6] Instruction created. Instcount for system.cpu = 6
+  87000: system.cpu.fetch: [tid:0] Instruction PC (0x80000028=>0x8000002c).(0=>1) created [sn:6].
+  87000: system.cpu.fetch: [tid:0] Instruction is: unknown opcode 0x0
+  87000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  87000: system.cpu.fetch: Branch detected with PC = (0x80000028=>0x8000002c).(0=>1)
+  87000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  87000: system.cpu.fetch: [tid:0] [sn:6] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  87000: system.cpu.fetch: Activity this cycle.
+  87000: system.cpu: Activity: 7
+  87000: system.cpu.decode: Processing [tid:0]
+  87000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  87000: system.cpu.decode: [tid:0] Sending instruction to rename.
+  87000: system.cpu.decode: [tid:0] Processing instruction [sn:5] with PC (0x80000020=>0x80000028).(0=>1)
+  87000: system.cpu.decode: Activity this cycle.
+  87000: system.cpu.rename: Processing [tid:0]
+  87000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 190, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  87000: system.cpu.rename: [tid:0] 3 instructions not yet in ROB
+  87000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  87000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  87000: system.cpu.rename: [tid:0] 1 available instructions to send iew.
+  87000: system.cpu.rename: [tid:0] 3 insts pipelining from Rename | 1 insts dispatched to IQ last cycle.
+  87000: system.cpu.rename: [tid:0] Sending instructions to IEW.
+  87000: system.cpu.rename: [tid:0] Processing instruction [sn:4] with PC (0x80000018=>0x80000020).(0=>1).
+  87000: system.cpu.rename: [tid:0] Looking up IntRegClass arch reg 0, got phys reg 0 (IntRegClass)
+  87000: system.cpu.rename: [tid:0] Register 0 (flat: 0) (IntRegClass) is ready.
+  87000: global: [sn:4] has 1 ready out of 1 sources. RTI 0)
+  87000: global: Renamed reg IntRegClass{0} to physical reg 0 (0) old mapping was 0 (0)
+  87000: system.cpu.rename: [tid:0] Renaming arch reg 0 (IntRegClass) to physical reg 0 (0).
+  87000: system.cpu.rename: [tid:0] [sn:4] Adding instruction to history buffer (size=4).
+  87000: system.cpu.rename: Activity this cycle.
+  87000: system.cpu.iew: Issue: Processing [tid:0]
+  87000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  87000: system.cpu.iew: [tid:0] Issue: Adding PC (0x80000008=>0x80000010).(0=>1) [sn:2] [tid:0] to IQ.
+  87000: system.cpu.iq: Adding instruction [sn:2] PC (0x80000008=>0x80000010).(0=>1) to the IQ.
+  87000: system.cpu.iq: Instruction is ready to issue, putting it onto the ready list, PC (0x80000008=>0x80000010).(0=>1) opclass:1 [sn:2].
+  87000: system.cpu.iew: Execute: Executing instructions from IQ.
+  87000: system.cpu.iew: Execute: Processing PC (0x80000000=>0x80000008).(0=>1), [tid:0] [sn:1].
+  87000: global: RegFile: Access to int register 0, has data 0
+  87000: global: RegFile: Setting int register 0 to 0x1
+  87000: system.cpu.iew: Current wb cycle: 0, width: 8, numInst: 0
+wbActual:0
+  87000: system.cpu.iew: Sending instructions to commit, [sn:1] PC (0x80000000=>0x80000008).(0=>1).
+  87000: system.cpu.iq: Waking dependents of completed instruction.
+  87000: system.cpu.iq: Reg 0 [IntRegClass] is pinned, skipping
+  87000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  87000: system.cpu.iq: Thread 0: Issuing instruction PC (0x80000008=>0x80000010).(0=>1) [sn:2]
+  87000: system.cpu.iew: Processing [tid:0]
+  87000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  87000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  87000: system.cpu.iew: [tid:0], Dispatch dispatched 1 instructions.
+  87000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  87000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  87000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  87000: system.cpu.iew: Activity this cycle.
+  87000: system.cpu.commit: Getting instructions from Rename stage.
+  87000: system.cpu.commit: [tid:0] [sn:3] Inserting PC (0x80000010=>0x80000018).(0=>1) into ROB.
+  87000: system.cpu.rob: Adding inst PC (0x80000010=>0x80000018).(0=>1) to the ROB.
+  87000: system.cpu.rob: [tid:0] Now has 3 instructions.
+  87000: system.cpu.commit: Trying to commit instructions in the ROB.
+  87000: system.cpu.commit: [tid:0] Can't commit, Instruction [sn:1] PC (0x80000000=>0x80000008).(0=>1) is head of ROB and not ready
+  87000: system.cpu.commit: [tid:0] ROB has 3 insts & 189 free entries.
+  87000: system.cpu.commit: Activity This Cycle.
+  87000: system.cpu: Scheduling next tick!
+  88000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  88000: system.cpu.fetch: Running stage.
+  88000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  88000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  88000: system.cpu.decoder: Requesting bytes 0x00000000 from address 0x80000028
+  88000: system.cpu.decoder: Decoding instruction 0x0 at address 0x8000002c
+  88000: system.cpu.decoder: Decode: Decoded unknown instruction: 0
+  88000: global: DynInst: [sn:7] Instruction created. Instcount for system.cpu = 7
+  88000: system.cpu.fetch: [tid:0] Instruction PC (0x8000002c=>0x80000030).(0=>1) created [sn:7].
+  88000: system.cpu.fetch: [tid:0] Instruction is: unknown opcode 0x0
+  88000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  88000: system.cpu.fetch: Branch detected with PC = (0x8000002c=>0x80000030).(0=>1)
+  88000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  88000: system.cpu.fetch: [tid:0] [sn:7] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  88000: system.cpu.fetch: Activity this cycle.
+  88000: system.cpu: Activity: 8
+  88000: system.cpu.decode: Processing [tid:0]
+  88000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  88000: system.cpu.decode: [tid:0] Sending instruction to rename.
+  88000: system.cpu.decode: [tid:0] Processing instruction [sn:6] with PC (0x80000028=>0x8000002c).(0=>1)
+  88000: system.cpu.decode: Activity this cycle.
+  88000: system.cpu.rename: Processing [tid:0]
+  88000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 189, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  88000: system.cpu.rename: [tid:0] 3 instructions not yet in ROB
+  88000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  88000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  88000: system.cpu.rename: [tid:0] 1 available instructions to send iew.
+  88000: system.cpu.rename: [tid:0] 3 insts pipelining from Rename | 1 insts dispatched to IQ last cycle.
+  88000: system.cpu.rename: [tid:0] Sending instructions to IEW.
+  88000: system.cpu.rename: [tid:0] Processing instruction [sn:5] with PC (0x80000020=>0x80000028).(0=>1).
+  88000: system.cpu.rename: Serialize after instruction encountered.
+  88000: system.cpu.rename: Activity this cycle.
+  88000: system.cpu.iew: Issue: Processing [tid:0]
+  88000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  88000: system.cpu.iew: [tid:0] Issue: Adding PC (0x80000010=>0x80000018).(0=>1) [sn:3] [tid:0] to IQ.
+  88000: system.cpu.iq: Adding instruction [sn:3] PC (0x80000010=>0x80000018).(0=>1) to the IQ.
+  88000: system.cpu.iq: Instruction is ready to issue, putting it onto the ready list, PC (0x80000010=>0x80000018).(0=>1) opclass:1 [sn:3].
+  88000: system.cpu.iew: Execute: Executing instructions from IQ.
+  88000: system.cpu.iew: Execute: Processing PC (0x80000008=>0x80000010).(0=>1), [tid:0] [sn:2].
+  88000: global: RegFile: Access to int register 0, has data 0
+  88000: global: RegFile: Setting int register 0 to 0x2
+  88000: system.cpu.iew: Current wb cycle: 0, width: 8, numInst: 0
+wbActual:0
+  88000: system.cpu.iew: Sending instructions to commit, [sn:2] PC (0x80000008=>0x80000010).(0=>1).
+  88000: system.cpu.iq: Waking dependents of completed instruction.
+  88000: system.cpu.iq: Reg 0 [IntRegClass] is pinned, skipping
+  88000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  88000: system.cpu.iq: Thread 0: Issuing instruction PC (0x80000010=>0x80000018).(0=>1) [sn:3]
+  88000: system.cpu.iew: Processing [tid:0]
+  88000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  88000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  88000: system.cpu.iew: [tid:0], Dispatch dispatched 1 instructions.
+  88000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  88000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  88000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  88000: system.cpu.iew: Activity this cycle.
+  88000: system.cpu.commit: Getting instructions from Rename stage.
+  88000: system.cpu.commit: [tid:0] [sn:4] Inserting PC (0x80000018=>0x80000020).(0=>1) into ROB.
+  88000: system.cpu.rob: Adding inst PC (0x80000018=>0x80000020).(0=>1) to the ROB.
+  88000: system.cpu.rob: [tid:0] Now has 4 instructions.
+  88000: system.cpu.commit: Trying to commit instructions in the ROB.
+  88000: system.cpu.commit: [tid:0] Marking PC (0x80000000=>0x80000008).(0=>1), [sn:1] ready within ROB.
+  88000: system.cpu.commit: [tid:0] Instruction [sn:1] PC (0x80000000=>0x80000008).(0=>1) is head of ROB and ready to commit
+  88000: system.cpu.commit: [tid:0] ROB has 4 insts & 188 free entries.
+  88000: system.cpu.commit: Activity This Cycle.
+  88000: system.cpu.commit: Activating stage.
+  88000: system.cpu: Activity: 9
+  88000: system.cpu: Scheduling next tick!
+  89000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  89000: system.cpu.fetch: Running stage.
+  89000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  89000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  89000: system.cpu.decoder: Requesting bytes 0x00000000 from address 0x80000030
+  89000: system.cpu.decoder: Decoding instruction 0x0 at address 0x80000030
+  89000: system.cpu.decoder: Decode: Decoded unknown instruction: 0
+  89000: global: DynInst: [sn:8] Instruction created. Instcount for system.cpu = 8
+  89000: system.cpu.fetch: [tid:0] Instruction PC (0x80000030=>0x80000034).(0=>1) created [sn:8].
+  89000: system.cpu.fetch: [tid:0] Instruction is: unknown opcode 0x0
+  89000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  89000: system.cpu.fetch: Branch detected with PC = (0x80000030=>0x80000034).(0=>1)
+  89000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  89000: system.cpu.fetch: [tid:0] [sn:8] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  89000: system.cpu.fetch: Activity this cycle.
+  89000: system.cpu: Activity: 10
+  89000: system.cpu.decode: Processing [tid:0]
+  89000: system.cpu.decode: [tid:0] Not blocked, so attempting to run stage.
+  89000: system.cpu.decode: [tid:0] Sending instruction to rename.
+  89000: system.cpu.decode: [tid:0] Processing instruction [sn:7] with PC (0x8000002c=>0x80000030).(0=>1)
+  89000: system.cpu.decode: Activity this cycle.
+  89000: system.cpu.rename: Processing [tid:0]
+  89000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 188, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  89000: system.cpu.rename: [tid:0] 3 instructions not yet in ROB
+  89000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  89000: system.cpu.rename: [tid:0] Not blocked, so attempting to run stage.
+  89000: system.cpu.rename: [tid:0] 1 available instructions to send iew.
+  89000: system.cpu.rename: [tid:0] 3 insts pipelining from Rename | 1 insts dispatched to IQ last cycle.
+  89000: system.cpu.rename: [tid:0] Sending instructions to IEW.
+  89000: system.cpu.rename: [tid:0] Processing instruction [sn:6] with PC (0x80000028=>0x8000002c).(0=>1).
+  89000: system.cpu.rename: Serialize before instruction encountered.
+  89000: system.cpu.rename: [tid:0] Blocking.
+  89000: system.cpu.rename: Activity this cycle.
+  89000: system.cpu.iew: Issue: Processing [tid:0]
+  89000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  89000: system.cpu.iew: [tid:0] Issue: Adding PC (0x80000018=>0x80000020).(0=>1) [sn:4] [tid:0] to IQ.
+  89000: system.cpu.iq: Adding instruction [sn:4] PC (0x80000018=>0x80000020).(0=>1) to the IQ.
+  89000: system.cpu.iq: Instruction is ready to issue, putting it onto the ready list, PC (0x80000018=>0x80000020).(0=>1) opclass:1 [sn:4].
+  89000: system.cpu.iew: Execute: Executing instructions from IQ.
+  89000: system.cpu.iew: Execute: Processing PC (0x80000010=>0x80000018).(0=>1), [tid:0] [sn:3].
+  89000: global: RegFile: Access to int register 1, has data 0
+  89000: global: RegFile: Access to int register 2, has data 0x7ffffffffffffee0
+  89000: global: RegFile: Setting int register 0 to 0x7ffffffffffffee0
+  89000: system.cpu.iew: Current wb cycle: 0, width: 8, numInst: 0
+wbActual:0
+  89000: system.cpu.iew: Sending instructions to commit, [sn:3] PC (0x80000010=>0x80000018).(0=>1).
+  89000: system.cpu.iq: Waking dependents of completed instruction.
+  89000: system.cpu.iq: Reg 0 [IntRegClass] is pinned, skipping
+  89000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  89000: system.cpu.iq: Thread 0: Issuing instruction PC (0x80000018=>0x80000020).(0=>1) [sn:4]
+  89000: system.cpu.iew: Processing [tid:0]
+  89000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  89000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  89000: system.cpu.iew: [tid:0], Dispatch dispatched 1 instructions.
+  89000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  89000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  89000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  89000: system.cpu.iew: Activity this cycle.
+  89000: system.cpu.commit: Getting instructions from Rename stage.
+  89000: system.cpu.commit: [tid:0] [sn:5] Inserting PC (0x80000020=>0x80000028).(0=>1) into ROB.
+  89000: system.cpu.rob: Adding inst PC (0x80000020=>0x80000028).(0=>1) to the ROB.
+  89000: system.cpu.rob: [tid:0] Now has 5 instructions.
+  89000: system.cpu.commit: Trying to commit instructions in the ROB.
+  89000: system.cpu.commit: Trying to commit head instruction, [tid:0] [sn:1]
+  89000: system.cpu.commit: [tid:0] [sn:1] Committing instruction with PC (0x80000000=>0x80000008).(0=>1)
+  89000: system.cpu.rob: [tid:0] Retiring head instruction, instruction PC (0x80000000=>0x80000008).(0=>1), [sn:1]
+  89000: system.cpu: Removing committed instruction [tid:0] PC (0x80000000=>0x80000008).(0=>1) [sn:1]
+  89000: system.cpu.commit: [tid:0] Marking PC (0x80000008=>0x80000010).(0=>1), [sn:2] ready within ROB.
+  89000: system.cpu.commit: [tid:0] Instruction [sn:2] PC (0x80000008=>0x80000010).(0=>1) is head of ROB and ready to commit
+  89000: system.cpu.commit: [tid:0] ROB has 4 insts & 188 free entries.
+  89000: system.cpu.commit: Activity This Cycle.
+  89000: system.cpu: Removing instruction, [tid:0] [sn:1] PC (0x80000000=>0x80000008).(0=>1)
+  89000: system.cpu: Scheduling next tick!
+  90000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  90000: system.cpu.fetch: Running stage.
+  90000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  90000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  90000: system.cpu.decoder: Requesting bytes 0x00000000 from address 0x80000030
+  90000: system.cpu.decoder: Decoding instruction 0x0 at address 0x80000034
+  90000: system.cpu.decoder: Decode: Decoded unknown instruction: 0
+  90000: global: DynInst: [sn:9] Instruction created. Instcount for system.cpu = 9
+  90000: system.cpu.fetch: [tid:0] Instruction PC (0x80000034=>0x80000038).(0=>1) created [sn:9].
+  90000: system.cpu.fetch: [tid:0] Instruction is: unknown opcode 0x0
+  90000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  90000: system.cpu.fetch: Branch detected with PC = (0x80000034=>0x80000038).(0=>1)
+  90000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  90000: system.cpu.fetch: [tid:0] [sn:9] Sending instruction to decode from fetch queue. Fetch queue size: 1.
+  90000: system.cpu.fetch: Activity this cycle.
+  90000: system.cpu: Activity: 11
+  90000: system.cpu.decode: Processing [tid:0]
+  90000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  90000: system.cpu.decode: [tid:0] Blocking.
+  90000: system.cpu.decode: Inserting [tid:0][sn:8] PC: (0x80000030=>0x80000034).(0=>1) into decode skidBuffer 1
+  90000: system.cpu.decode: Activity this cycle.
+  90000: system.cpu.rename: Processing [tid:0]
+  90000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 188, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  90000: system.cpu.rename: [tid:0] 2 instructions not yet in ROB
+  90000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  90000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  90000: system.cpu.rename: [tid:0] Blocking.
+  90000: system.cpu.rename: [tid:0] Inserting [sn:7] PC: (0x8000002c=>0x80000030).(0=>1) into Rename skidBuffer
+  90000: system.cpu.rename: Activity this cycle.
+  90000: system.cpu.rename: [tid:0] Removing a committed instruction from the history buffer 0 (size=4), until [sn:1].
+  90000: system.cpu.rename: [tid:0] Freeing up older rename of reg 0 (IntRegClass), [sn:1].
+  90000: system.cpu.iew: Issue: Processing [tid:0]
+  90000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  90000: system.cpu.iew: [tid:0] Issue: Adding PC (0x80000020=>0x80000028).(0=>1) [sn:5] [tid:0] to IQ.
+  90000: system.cpu.iew: [tid:0] Issue: Nonspeculative instruction encountered, skipping.
+  90000: system.cpu.iq: Adding non-speculative instruction [sn:5] PC (0x80000020=>0x80000028).(0=>1) to the IQ.
+  90000: system.cpu.iew: Execute: Executing instructions from IQ.
+  90000: system.cpu.iew: Execute: Processing PC (0x80000018=>0x80000020).(0=>1), [tid:0] [sn:4].
+  90000: global: RegFile: Access to int register 0, has data 0
+  90000: global: RegFile: Setting int register 0 to 0x5d
+  90000: system.cpu.iew: Current wb cycle: 0, width: 8, numInst: 0
+wbActual:0
+  90000: system.cpu.iew: Sending instructions to commit, [sn:4] PC (0x80000018=>0x80000020).(0=>1).
+  90000: system.cpu.iq: Waking dependents of completed instruction.
+  90000: system.cpu.iq: Reg 0 [IntRegClass] is pinned, skipping
+  90000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  90000: system.cpu.iq: Not able to schedule any instructions.
+  90000: system.cpu.iew: Processing [tid:0]
+  90000: system.cpu.iq: [tid:0] Committing instructions older than [sn:1]
+  90000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  90000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  90000: system.cpu.iew: [tid:0], Dispatch dispatched 1 instructions.
+  90000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  90000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  90000: system.cpu.iew: IQ has 63 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  90000: system.cpu.iew: Activity this cycle.
+  90000: system.cpu.commit: Getting instructions from Rename stage.
+  90000: system.cpu.commit: Trying to commit instructions in the ROB.
+  90000: system.cpu.commit: Trying to commit head instruction, [tid:0] [sn:2]
+  90000: system.cpu.commit: [tid:0] [sn:2] Committing instruction with PC (0x80000008=>0x80000010).(0=>1)
+  90000: system.cpu.rob: [tid:0] Retiring head instruction, instruction PC (0x80000008=>0x80000010).(0=>1), [sn:2]
+  90000: system.cpu: Removing committed instruction [tid:0] PC (0x80000008=>0x80000010).(0=>1) [sn:2]
+  90000: system.cpu.commit: [tid:0] Marking PC (0x80000010=>0x80000018).(0=>1), [sn:3] ready within ROB.
+  90000: system.cpu.commit: [tid:0] Instruction [sn:3] PC (0x80000010=>0x80000018).(0=>1) is head of ROB and ready to commit
+  90000: system.cpu.commit: [tid:0] ROB has 3 insts & 189 free entries.
+  90000: system.cpu.commit: Activity This Cycle.
+  90000: system.cpu: Removing instruction, [tid:0] [sn:2] PC (0x80000008=>0x80000010).(0=>1)
+  90000: system.cpu: Scheduling next tick!
+  91000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  91000: system.cpu.fetch: Running stage.
+  91000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  91000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  91000: system.cpu.decoder: Requesting bytes 0x00000000 from address 0x80000038
+  91000: system.cpu.decoder: Decoding instruction 0x0 at address 0x80000038
+  91000: system.cpu.decoder: Decode: Decoded unknown instruction: 0
+  91000: global: DynInst: [sn:10] Instruction created. Instcount for system.cpu = 10
+  91000: system.cpu.fetch: [tid:0] Instruction PC (0x80000038=>0x8000003c).(0=>1) created [sn:10].
+  91000: system.cpu.fetch: [tid:0] Instruction is: unknown opcode 0x0
+  91000: system.cpu.fetch: [tid:0] Fetch queue entry created (1/32).
+  91000: system.cpu.fetch: Branch detected with PC = (0x80000038=>0x8000003c).(0=>1)
+  91000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  91000: system.cpu.fetch: Activity this cycle.
+  91000: system.cpu: Activity: 12
+  91000: system.cpu.decode: Processing [tid:0]
+  91000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  91000: system.cpu.decode: [tid:0] Blocking.
+  91000: system.cpu.decode: Inserting [tid:0][sn:9] PC: (0x80000034=>0x80000038).(0=>1) into decode skidBuffer 2
+  91000: system.cpu.rename: Processing [tid:0]
+  91000: system.cpu.rename: [tid:0] Free IQ: 63, Free ROB: 189, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  91000: system.cpu.rename: [tid:0] 1 instructions not yet in ROB
+  91000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  91000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  91000: system.cpu.rename: [tid:0] Blocking.
+  91000: system.cpu.rename: Activity this cycle.
+  91000: system.cpu.rename: [tid:0] Removing a committed instruction from the history buffer 0 (size=3), until [sn:2].
+  91000: system.cpu.rename: [tid:0] Freeing up older rename of reg 0 (IntRegClass), [sn:2].
+  91000: system.cpu.iew: Issue: Processing [tid:0]
+  91000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  91000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  91000: system.cpu.iq: Not able to schedule any instructions.
+  91000: system.cpu.iew: Processing [tid:0]
+  91000: system.cpu.iq: [tid:0] Committing instructions older than [sn:2]
+  91000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  91000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  91000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  91000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  91000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  91000: system.cpu.iew: IQ has 63 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  91000: system.cpu.iew: Activity this cycle.
+  91000: system.cpu.commit: Getting instructions from Rename stage.
+  91000: system.cpu.commit: Trying to commit instructions in the ROB.
+  91000: system.cpu.commit: Trying to commit head instruction, [tid:0] [sn:3]
+  91000: system.cpu.commit: [tid:0] [sn:3] Committing instruction with PC (0x80000010=>0x80000018).(0=>1)
+  91000: system.cpu.rob: [tid:0] Retiring head instruction, instruction PC (0x80000010=>0x80000018).(0=>1), [sn:3]
+  91000: system.cpu: Removing committed instruction [tid:0] PC (0x80000010=>0x80000018).(0=>1) [sn:3]
+  91000: system.cpu.commit: [tid:0] Marking PC (0x80000018=>0x80000020).(0=>1), [sn:4] ready within ROB.
+  91000: system.cpu.commit: [tid:0] Instruction [sn:4] PC (0x80000018=>0x80000020).(0=>1) is head of ROB and ready to commit
+  91000: system.cpu.commit: [tid:0] ROB has 2 insts & 190 free entries.
+  91000: system.cpu.commit: Activity This Cycle.
+  91000: system.cpu: Removing instruction, [tid:0] [sn:3] PC (0x80000010=>0x80000018).(0=>1)
+  91000: system.cpu: Scheduling next tick!
+  92000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  92000: system.cpu.fetch: Running stage.
+  92000: system.cpu.fetch: Attempting to fetch from [tid:0]
+  92000: system.cpu.fetch: [tid:0] Adding instructions to queue to decode.
+  92000: system.cpu.decoder: Requesting bytes 0x00000000 from address 0x80000038
+  92000: system.cpu.decoder: Decoding instruction 0x0 at address 0x8000003c
+  92000: system.cpu.decoder: Decode: Decoded unknown instruction: 0
+  92000: global: DynInst: [sn:11] Instruction created. Instcount for system.cpu = 11
+  92000: system.cpu.fetch: [tid:0] Instruction PC (0x8000003c=>0x80000040).(0=>1) created [sn:11].
+  92000: system.cpu.fetch: [tid:0] Instruction is: unknown opcode 0x0
+  92000: system.cpu.fetch: [tid:0] Fetch queue entry created (2/32).
+  92000: system.cpu.fetch: Branch detected with PC = (0x8000003c=>0x80000040).(0=>1)
+  92000: system.cpu.fetch: [tid:0] Done fetching, predicted branch instruction encountered.
+  92000: system.cpu.fetch: [tid:0] Issuing a pipelined I-cache access, starting at PC (0x80000040=>0x80000044).(0=>1).
+  92000: system.cpu.fetch: [tid:0] Fetching cache line 0x80000040 for addr 0x80000040
+  92000: system.cpu: CPU already running.
+  92000: system.cpu.fetch: Fetch: Doing instruction read.
+  92000: system.cpu.fetch: [tid:0] Doing Icache access.
+  92000: system.cpu.fetch: [tid:0] Activity: Waiting on I-cache response.
+  92000: system.cpu.fetch: Deactivating stage.
+  92000: system.cpu: Activity: 11
+  92000: system.cpu.fetch: Activity this cycle.
+  92000: system.cpu: Activity: 12
+  92000: system.cpu.decode: Processing [tid:0]
+  92000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  92000: system.cpu.decode: [tid:0] Blocking.
+  92000: system.cpu.rename: Processing [tid:0]
+  92000: system.cpu.rename: [tid:0] Free IQ: 63, Free ROB: 190, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  92000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  92000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  92000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  92000: system.cpu.rename: [tid:0] Blocking.
+  92000: system.cpu.rename: Activity this cycle.
+  92000: system.cpu.rename: [tid:0] Removing a committed instruction from the history buffer 0 (size=2), until [sn:3].
+  92000: system.cpu.rename: [tid:0] Freeing up older rename of reg 0 (IntRegClass), [sn:3].
+  92000: system.cpu.iew: Issue: Processing [tid:0]
+  92000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  92000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  92000: system.cpu.iq: Not able to schedule any instructions.
+  92000: system.cpu.iew: Processing [tid:0]
+  92000: system.cpu.iq: [tid:0] Committing instructions older than [sn:3]
+  92000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  92000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  92000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  92000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  92000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  92000: system.cpu.iew: IQ has 63 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  92000: system.cpu.iew: Activity this cycle.
+  92000: system.cpu.commit: Getting instructions from Rename stage.
+  92000: system.cpu.commit: Trying to commit instructions in the ROB.
+  92000: system.cpu.commit: Trying to commit head instruction, [tid:0] [sn:4]
+  92000: system.cpu.commit: [tid:0] [sn:4] Committing instruction with PC (0x80000018=>0x80000020).(0=>1)
+  92000: system.cpu.rob: [tid:0] Retiring head instruction, instruction PC (0x80000018=>0x80000020).(0=>1), [sn:4]
+  92000: system.cpu: Removing committed instruction [tid:0] PC (0x80000018=>0x80000020).(0=>1) [sn:4]
+  92000: system.cpu.commit: Trying to commit head instruction, [tid:0] [sn:5]
+  92000: system.cpu.commit: Encountered a barrier or non-speculative instruction [tid:0] [sn:5] at the head of the ROB, PC (0x80000020=>0x80000028).(0=>1).
+  92000: system.cpu.commit: [tid:0] [sn:5] Waiting for all stores to writeback.
+  92000: system.cpu.commit: Unable to commit head instruction PC:(0x80000020=>0x80000028).(0=>1) [tid:0] [sn:5].
+  92000: system.cpu.commit: [tid:0] Instruction [sn:5] PC (0x80000020=>0x80000028).(0=>1) is head of ROB and ready to commit
+  92000: system.cpu.commit: [tid:0] ROB has 1 insts & 191 free entries.
+  92000: system.cpu.commit: Activity This Cycle.
+  92000: global: DynInst: [sn:1] Instruction destroyed. Instcount for system.cpu = 10
+  92000: system.cpu: Activity: 11
+  92000: system.cpu: Removing instruction, [tid:0] [sn:4] PC (0x80000018=>0x80000020).(0=>1)
+  92000: system.cpu: Scheduling next tick!
+  93000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  93000: system.cpu.fetch: Running stage.
+  93000: system.cpu.fetch: There are no more threads available to fetch from.
+  93000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  93000: system.cpu.decode: Processing [tid:0]
+  93000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  93000: system.cpu.decode: [tid:0] Blocking.
+  93000: system.cpu.rename: Processing [tid:0]
+  93000: system.cpu.rename: [tid:0] Free IQ: 63, Free ROB: 191, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  93000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  93000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  93000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  93000: system.cpu.rename: [tid:0] Blocking.
+  93000: system.cpu.rename: Activity this cycle.
+  93000: system.cpu: Activity: 12
+  93000: system.cpu.rename: [tid:0] Removing a committed instruction from the history buffer 0 (size=1), until [sn:4].
+  93000: system.cpu.rename: [tid:0] Freeing up older rename of reg 0 (IntRegClass), [sn:4].
+  93000: system.cpu.iew: Issue: Processing [tid:0]
+  93000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  93000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  93000: system.cpu.iq: Not able to schedule any instructions.
+  93000: system.cpu.iew: Processing [tid:0]
+  93000: system.cpu.iq: [tid:0] Committing instructions older than [sn:4]
+  93000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  93000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  93000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  93000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  93000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  93000: system.cpu.iew: IQ has 63 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  93000: system.cpu.iew: Activity this cycle.
+  93000: system.cpu.commit: Getting instructions from Rename stage.
+  93000: system.cpu.commit: Trying to commit instructions in the ROB.
+  93000: system.cpu.commit: Trying to commit head instruction, [tid:0] [sn:5]
+  93000: system.cpu.commit: Encountered a barrier or non-speculative instruction [tid:0] [sn:5] at the head of the ROB, PC (0x80000020=>0x80000028).(0=>1).
+  93000: system.cpu.commit: Unable to commit head instruction PC:(0x80000020=>0x80000028).(0=>1) [tid:0] [sn:5].
+  93000: system.cpu.commit: [tid:0] Can't commit, Instruction [sn:5] PC (0x80000020=>0x80000028).(0=>1) is head of ROB and not ready
+  93000: system.cpu.commit: [tid:0] ROB has 1 insts & 191 free entries.
+  93000: system.cpu.commit: Deactivating stage.
+  93000: system.cpu: Activity: 11
+  93000: global: DynInst: [sn:2] Instruction destroyed. Instcount for system.cpu = 9
+  93000: system.cpu: Activity: 10
+  93000: system.cpu: Scheduling next tick!
+  94000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  94000: system.cpu.fetch: Running stage.
+  94000: system.cpu.fetch: There are no more threads available to fetch from.
+  94000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  94000: system.cpu.decode: Processing [tid:0]
+  94000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  94000: system.cpu.decode: [tid:0] Blocking.
+  94000: system.cpu.rename: Processing [tid:0]
+  94000: system.cpu.rename: [tid:0] Free IQ: 63, Free ROB: 191, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  94000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  94000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  94000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  94000: system.cpu.rename: [tid:0] Blocking.
+  94000: system.cpu.rename: Activity this cycle.
+  94000: system.cpu: Activity: 11
+  94000: system.cpu.iew: Issue: Processing [tid:0]
+  94000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  94000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  94000: system.cpu.iq: Not able to schedule any instructions.
+  94000: system.cpu.iew: Processing [tid:0]
+  94000: system.cpu.iq: Marking nonspeculative instruction [sn:5] as ready to execute.
+  94000: system.cpu.iq: Instruction is ready to issue, putting it onto the ready list, PC (0x80000020=>0x80000028).(0=>1) opclass:0 [sn:5].
+  94000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  94000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  94000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  94000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  94000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  94000: system.cpu.iew: IQ has 63 free entries (Can schedule: 1).  LQ has 32 free entries. SQ has 32 free entries.
+  94000: system.cpu.iew: IEW switching to active
+  94000: system.cpu.iew: Activating stage.
+  94000: system.cpu: Activity: 12
+  94000: system.cpu.iew: Activity this cycle.
+  94000: system.cpu.commit: Getting instructions from Rename stage.
+  94000: system.cpu.commit: Trying to commit instructions in the ROB.
+  94000: system.cpu.commit: [tid:0] Can't commit, Instruction [sn:5] PC (0x80000020=>0x80000028).(0=>1) is head of ROB and not ready
+  94000: system.cpu.commit: [tid:0] ROB has 1 insts & 191 free entries.
+  94000: global: DynInst: [sn:3] Instruction destroyed. Instcount for system.cpu = 8
+  94000: system.cpu: Activity: 11
+  94000: system.cpu: Scheduling next tick!
+  95000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  95000: system.cpu.fetch: Running stage.
+  95000: system.cpu.fetch: There are no more threads available to fetch from.
+  95000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  95000: system.cpu.decode: Processing [tid:0]
+  95000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  95000: system.cpu.decode: [tid:0] Blocking.
+  95000: system.cpu.rename: Processing [tid:0]
+  95000: system.cpu.rename: [tid:0] Free IQ: 63, Free ROB: 191, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  95000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  95000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  95000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  95000: system.cpu.rename: [tid:0] Blocking.
+  95000: system.cpu.rename: Activity this cycle.
+  95000: system.cpu: Activity: 12
+  95000: system.cpu.iew: Issue: Processing [tid:0]
+  95000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  95000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  95000: system.cpu.iq: Thread 0: Issuing instruction PC (0x80000020=>0x80000028).(0=>1) [sn:5]
+  95000: system.cpu.iew: Processing [tid:0]
+  95000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  95000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  95000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  95000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  95000: system.cpu.iew: IEW switching to idle
+  95000: system.cpu.iew: Deactivating stage.
+  95000: system.cpu: Activity: 11
+  95000: system.cpu.commit: Getting instructions from Rename stage.
+  95000: system.cpu.commit: Trying to commit instructions in the ROB.
+  95000: system.cpu.commit: [tid:0] Can't commit, Instruction [sn:5] PC (0x80000020=>0x80000028).(0=>1) is head of ROB and not ready
+  95000: system.cpu.commit: [tid:0] ROB has 1 insts & 191 free entries.
+  95000: system.cpu: Activity: 10
+  95000: system.cpu: Scheduling next tick!
+  96000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  96000: system.cpu.fetch: Running stage.
+  96000: system.cpu.fetch: There are no more threads available to fetch from.
+  96000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  96000: system.cpu.decode: Processing [tid:0]
+  96000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  96000: system.cpu.decode: [tid:0] Blocking.
+  96000: system.cpu.rename: Processing [tid:0]
+  96000: system.cpu.rename: [tid:0] Free IQ: 63, Free ROB: 191, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  96000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  96000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  96000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  96000: system.cpu.rename: [tid:0] Blocking.
+  96000: system.cpu.rename: Activity this cycle.
+  96000: system.cpu: Activity: 11
+  96000: system.cpu.iew: Issue: Processing [tid:0]
+  96000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  96000: system.cpu.iew: Execute: Executing instructions from IQ.
+  96000: system.cpu.iew: Execute: Processing PC (0x80000020=>0x80000028).(0=>1), [tid:0] [sn:5].
+syscallfault:straightfault
+prv: 0
+  96000: system.cpu.iew: Current wb cycle: 0, width: 8, numInst: 0
+wbActual:0
+  96000: system.cpu.iew: Sending instructions to commit, [sn:5] PC (0x80000020=>0x80000028).(0=>1).
+  96000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  96000: system.cpu.iq: Not able to schedule any instructions.
+  96000: system.cpu.iew: Processing [tid:0]
+  96000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  96000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  96000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  96000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  96000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  96000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  96000: system.cpu.iew: Activity this cycle.
+  96000: system.cpu.commit: Getting instructions from Rename stage.
+  96000: system.cpu.commit: Trying to commit instructions in the ROB.
+  96000: system.cpu.commit: [tid:0] Can't commit, Instruction [sn:5] PC (0x80000020=>0x80000028).(0=>1) is head of ROB and not ready
+  96000: system.cpu.commit: [tid:0] ROB has 1 insts & 191 free entries.
+  96000: system.cpu: Activity: 10
+  96000: system.cpu: Scheduling next tick!
+  97000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  97000: system.cpu.fetch: Running stage.
+  97000: system.cpu.fetch: There are no more threads available to fetch from.
+  97000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  97000: system.cpu.decode: Processing [tid:0]
+  97000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  97000: system.cpu.decode: [tid:0] Blocking.
+  97000: system.cpu.rename: Processing [tid:0]
+  97000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 191, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  97000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  97000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  97000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  97000: system.cpu.rename: [tid:0] Blocking.
+  97000: system.cpu.rename: Activity this cycle.
+  97000: system.cpu: Activity: 11
+  97000: system.cpu.iew: Issue: Processing [tid:0]
+  97000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  97000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  97000: system.cpu.iq: Not able to schedule any instructions.
+  97000: system.cpu.iew: Processing [tid:0]
+  97000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  97000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  97000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  97000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  97000: system.cpu.commit: Getting instructions from Rename stage.
+  97000: system.cpu.commit: Trying to commit instructions in the ROB.
+  97000: system.cpu.commit: [tid:0] Marking PC (0x80000020=>0x80000028).(0=>1), [sn:5] ready within ROB.
+  97000: system.cpu.commit: [tid:0] Instruction [sn:5] PC (0x80000020=>0x80000028).(0=>1) is head of ROB and ready to commit
+  97000: system.cpu.commit: [tid:0] ROB has 1 insts & 191 free entries.
+  97000: system.cpu.commit: Activating stage.
+  97000: system.cpu: Activity: 12
+  97000: system.cpu: Activity: 11
+  97000: system.cpu: Scheduling next tick!
+  98000: system.cpu: 
+
+O3CPU: Ticking main, O3CPU.
+  98000: system.cpu.fetch: Running stage.
+  98000: system.cpu.fetch: There are no more threads available to fetch from.
+  98000: system.cpu.fetch: [tid:0] Fetch is waiting cache response!
+  98000: system.cpu.decode: Processing [tid:0]
+  98000: system.cpu.decode: [tid:0] Stall fom Rename stage detected.
+  98000: system.cpu.decode: [tid:0] Blocking.
+  98000: system.cpu.rename: Processing [tid:0]
+  98000: system.cpu.rename: [tid:0] Free IQ: 64, Free ROB: 191, Free LQ: 32, Free SQ: 32, FreeRM 31(223 224 255 510 31 0)
+  98000: system.cpu.rename: [tid:0] 0 instructions not yet in ROB
+  98000: system.cpu.rename: calcFreeLQEntries: free lqEntries: 32, loadsInProgress: 0, loads dispatchedToLQ: 0
+  98000: system.cpu.rename: [tid:0] Stall: Serialize stall and ROB is not empty.
+  98000: system.cpu.rename: [tid:0] Blocking.
+  98000: system.cpu.rename: Activity this cycle.
+  98000: system.cpu: Activity: 12
+  98000: system.cpu.iew: Issue: Processing [tid:0]
+  98000: system.cpu.iew: [tid:0] Not blocked, so attempting to run dispatch.
+  98000: system.cpu.iq: Attempting to schedule ready instructions from the IQ.
+  98000: system.cpu.iq: Not able to schedule any instructions.
+  98000: system.cpu.iew: Processing [tid:0]
+  98000: system.cpu.iew: [tid:0], Dispatch dispatched 0 instructions.
+  98000: system.cpu.iew.lsq.thread0: SQ size: 32, #stores occupied: 0
+  98000: system.cpu.iew.lsq.thread0: LQ size: 32, #loads occupied: 0
+  98000: system.cpu.iew: IQ has 64 free entries (Can schedule: 0).  LQ has 32 free entries. SQ has 32 free entries.
+  98000: system.cpu.commit: Getting instructions from Rename stage.
+  98000: system.cpu.commit: Trying to commit instructions in the ROB.
+  98000: system.cpu.commit: Trying to commit head instruction, [tid:0] [sn:5]
+  98000: system.cpu.commit: Inst [tid:0] [sn:5] PC (0x80000020=>0x80000028).(0=>1) has a fault
+StraightFault::invoke
+else
+SyscallFault::invokeSE
+  98000: global: RegFile: Access to int register 1, has data 0
