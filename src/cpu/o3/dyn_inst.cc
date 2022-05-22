@@ -101,6 +101,19 @@ DynInst::DynInst(const Arrays &arrays, const StaticInstPtr &static_inst,
     set(predPC, pred_pc);
 }
 
+
+DynInst::DynInst(const Arrays &arrays, const StaticInstPtr &static_inst,
+        const StaticInstPtr &_macroop, const PCStateBase &_pc,
+        const PCStateBase &pred_pc, const RPStateBase &_rp,
+        InstSeqNum seq_num, CPU *_cpu)
+    : DynInst(arrays, static_inst, _macroop, seq_num, _cpu)
+{
+    set(pc, _pc);
+    set(predPC, pred_pc);
+    set(rp, _rp);
+    std::cout << "DynInst rp: " << rp->rp() << std::endl;
+}
+
 DynInst::DynInst(const Arrays &arrays, const StaticInstPtr &_staticInst,
         const StaticInstPtr &_macroop)
     : DynInst(arrays, _staticInst, _macroop, 0, nullptr)

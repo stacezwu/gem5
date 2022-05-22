@@ -77,6 +77,7 @@ SimpleRenameMap::rename(const RegId& arch_reg)
     // Record the current physical register that is renamed to the
     // requested architected register.
     PhysRegIdPtr prev_reg = map[arch_reg.flatIndex()];
+    std::cout << "SimpleRenameMap::rename: prev_reg " << prev_reg->flatIndex() << std::endl;
 
     if (arch_reg == zeroReg) {
         assert(prev_reg->index() == zeroReg.index());
@@ -90,8 +91,9 @@ SimpleRenameMap::rename(const RegId& arch_reg)
         renamed_reg = prev_reg;
         renamed_reg->decrNumPinnedWrites();
     } else {
-        renamed_reg = freeList->getReg();
-        map[arch_reg.flatIndex()] = renamed_reg;
+        renamed_reg = prev_reg;
+        std::cout << "SimpleRenameMap::rename: renamed_reg " << renamed_reg->flatIndex() << std::endl;
+        map[arch_reg.flatIndex()] = prev_reg;
         renamed_reg->setNumPinnedWrites(arch_reg.getNumPinnedWrites());
         renamed_reg->setNumPinnedWritesToComplete(
             arch_reg.getNumPinnedWrites() + 1);

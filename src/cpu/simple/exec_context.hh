@@ -479,6 +479,18 @@ class SimpleExecContext : public ExecContext
         thread->pcState(val);
     }
 
+    const RPStateBase &
+    rpState() const override
+    {
+        return thread->rpState();
+    }
+
+    void
+    rpState(const RPStateBase &val) override
+    {
+        thread->rpState(val);
+    }
+
     Fault
     readMem(Addr addr, uint8_t *data, unsigned int size,
             Request::Flags flags,

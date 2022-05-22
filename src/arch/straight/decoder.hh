@@ -79,6 +79,8 @@ class Decoder : public InstDecoder
     /// @retval A pointer to the corresponding StaticInst object.
     StaticInstPtr decode(ExtMachInst mach_inst, Addr addr);
 
+    StaticInstPtr decode(ExtMachInst mach_inst, Addr addr, RPStateBase &_next_rp);
+
   public:
     Decoder(const StraightDecoderParams &p) : InstDecoder(p, &machInst)
     {
@@ -95,6 +97,8 @@ class Decoder : public InstDecoder
 
     StaticInstPtr decode(PCStateBase &nextPC) override;
     StaticInstPtr decode(PCStateBase &nextPC, Counter numInst) override;
+
+    StaticInstPtr decode(PCStateBase &_next_pc, RPStateBase &_next_rp) override;
 };
 
 } // namespace StraightISA

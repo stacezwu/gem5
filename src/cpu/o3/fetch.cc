@@ -121,6 +121,7 @@ Fetch::Fetch(CPU *_cpu, const O3CPUParams &params)
         fetchStatus[i] = Idle;
         decoder[i] = nullptr;
         pc[i].reset(params.isa[0]->newPCState());
+        rp[i].reset(params.isa[0]->newRPState());
         fetchOffset[i] = 0;
         macroop[i] = nullptr;
         delayedCommit[i] = false;
@@ -299,6 +300,7 @@ Fetch::clearStates(ThreadID tid)
 {
     fetchStatus[tid] = Running;
     set(pc[tid], cpu->pcState(tid));
+    set(rp[tid], cpu->rpState(tid));
     fetchOffset[tid] = 0;
     macroop[tid] = NULL;
     delayedCommit[tid] = false;
@@ -326,6 +328,7 @@ Fetch::resetStage()
     for (ThreadID tid = 0; tid < numThreads; ++tid) {
         fetchStatus[tid] = Running;
         set(pc[tid], cpu->pcState(tid));
+        set(rp[tid], cpu->rpState(tid));
         fetchOffset[tid] = 0;
         macroop[tid] = NULL;
 
@@ -516,6 +519,51 @@ Fetch::lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc)
 
     if (!inst->isControl()) {
         inst->staticInst->advancePC(next_pc);
+        inst->setPredTarg(next_pc);
+        inst->setPredTaken(false);
+        return false;
+    }
+
+    ThreadID tid = inst->threadNumber;
+    predict_taken = branchPred->predict(inst->staticInst, inst->seqNum,
+                                        next_pc, tid);
+
+    if (predict_taken) {
+        DPRINTF(Fetch, "[tid:%i] [sn:%llu] Branch at PC %#x "
+                "predicted to be taken to %s\n",
+                tid, inst->seqNum, inst->pcState().instAddr(), next_pc);
+    } else {
+        DPRINTF(Fetch, "[tid:%i] [sn:%llu] Branch at PC %#x "
+                "predicted to be not taken\n",
+                tid, inst->seqNum, inst->pcState().instAddr());
+    }
+
+    DPRINTF(Fetch, "[tid:%i] [sn:%llu] Branch at PC %#x "
+            "predicted to go to %s\n",
+            tid, inst->seqNum, inst->pcState().instAddr(), next_pc);
+    inst->setPredTarg(next_pc);
+    inst->setPredTaken(predict_taken);
+
+    ++fetchStats.branches;
+
+    if (predict_taken) {
+        ++fetchStats.predictedBranches;
+    }
+
+    return predict_taken;
+}
+
+bool
+Fetch::lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc, RPStateBase &this_rp)
+{
+    // Do branch prediction check here.
+    // A bit of a misnomer...next_PC is actually the current PC until
+    // this function updates it.
+    bool predict_taken;
+
+    if (!inst->isControl()) {
+        inst->staticInst->advancePC(next_pc);
+        inst->staticInst->advanceRP(this_rp);
         inst->setPredTarg(next_pc);
         inst->setPredTaken(false);
         return false;
@@ -1050,6 +1098,7 @@ Fetch::buildInst(ThreadID tid, StaticInstPtr staticInst,
     DynInst::Arrays arrays;
     arrays.numSrcs = staticInst->numSrcRegs();
     arrays.numDests = staticInst->numDestRegs();
+    // std::cout << "arrays.flatDestIdx: " << *arrays.flatDestIdx << std::endl;
 
     // Create a new DynInst from the instruction fetched.
     DynInstPtr instruction = new (arrays) DynInst(
@@ -1057,6 +1106,74 @@ Fetch::buildInst(ThreadID tid, StaticInstPtr staticInst,
     instruction->setTid(tid);
 
     instruction->setThreadState(cpu->thread[tid]);
+
+    
+
+    std::cout << "staticInst->numSrcRegs(): " << instruction->staticInst->numSrcRegs() << std::endl;
+    std::cout << "staticInst->numDestRegs(): " << instruction->staticInst->numDestRegs() << std::endl;
+
+    std::cout << "hello" << std::endl;
+
+    DPRINTF(Fetch, "[tid:%i] Instruction PC %s created [sn:%lli].\n",
+            tid, this_pc, seq);
+
+    DPRINTF(Fetch, "[tid:%i] Instruction is: %s\n", tid,
+            instruction->staticInst->disassemble(this_pc.instAddr()));
+
+    instruction->translateOperands();
+
+#if TRACING_ON
+    if (trace) {
+        instruction->traceData =
+            cpu->getTracer()->getInstRecord(curTick(), cpu->tcBase(tid),
+                    instruction->staticInst, this_pc, curMacroop);
+    }
+#else
+    instruction->traceData = NULL;
+#endif
+
+    // Add instruction to the CPU's list of instructions.
+    instruction->setInstListIt(cpu->addInst(instruction));
+
+    // Write the instruction to the first slot in the queue
+    // that heads to decode.
+    assert(numInst < fetchWidth);
+    fetchQueue[tid].push_back(instruction);
+    assert(fetchQueue[tid].size() <= fetchQueueSize);
+    DPRINTF(Fetch, "[tid:%i] Fetch queue entry created (%i/%i).\n",
+            tid, fetchQueue[tid].size(), fetchQueueSize);
+    //toDecode->insts[toDecode->size++] = instruction;
+
+    // Keep track of if we can take an interrupt at this boundary
+    delayedCommit[tid] = instruction->isDelayedCommit();
+
+    return instruction;
+}
+
+DynInstPtr
+Fetch::buildInst(ThreadID tid, StaticInstPtr staticInst,
+        StaticInstPtr curMacroop, const PCStateBase &this_pc,
+        const PCStateBase &next_pc, const RPStateBase &this_rp, bool trace)
+{
+    // Get a sequence number.
+    InstSeqNum seq = cpu->getAndIncrementInstSeq();
+
+    DynInst::Arrays arrays;
+    arrays.numSrcs = staticInst->numSrcRegs();
+    arrays.numDests = staticInst->numDestRegs();
+    // std::cout << "arrays.flatDestIdx: " << *arrays.flatDestIdx << std::endl;
+
+    // Create a new DynInst from the instruction fetched.
+    DynInstPtr instruction = new (arrays) DynInst(
+            arrays, staticInst, curMacroop, this_pc, next_pc, this_rp, seq, cpu);
+    instruction->setTid(tid);
+
+    instruction->setThreadState(cpu->thread[tid]);
+
+    instruction->translateOperands();
+
+    std::cout << "staticInst->numSrcRegs(): " << instruction->staticInst->numSrcRegs() << std::endl;
+    std::cout << "staticInst->numDestRegs(): " << instruction->staticInst->numDestRegs() << std::endl;
 
     DPRINTF(Fetch, "[tid:%i] Instruction PC %s created [sn:%lli].\n",
             tid, this_pc, seq);
@@ -1117,7 +1234,12 @@ Fetch::fetch(bool &status_change)
 
     // The current PC.
     PCStateBase &this_pc = *pc[tid];
+    RPStateBase &this_rp = *rp[tid];
 
+    printf("this_pc: %#x\n", this_pc.instAddr());
+    // std::cout << "this_pc: " << this_pc.instAddr() << std::endl;
+    std::cout << "this_rp: " << this_rp.rp() << std::endl;
+    
     Addr pcOffset = fetchOffset[tid];
     Addr fetchAddr = (this_pc.instAddr() + pcOffset) & decoder[tid]->pcMask();
 
@@ -1241,6 +1363,12 @@ Fetch::fetch(bool &status_change)
             if (!(curMacroop || inRom)) {
                 if (dec_ptr->instReady()) {
                     staticInst = dec_ptr->decode(this_pc);
+                    std::cout << "staticInst->getName(): " << staticInst->getName() << std::endl;
+                    // staticInst = dec_ptr->decode(this_pc, this_rp);
+                    std::cout << "staticInst->numSrcRegs(): " << staticInst->numSrcRegs() << std::endl;
+                    std::cout << "staticInst->numDestRegs(): " << staticInst->numDestRegs() << std::endl;
+
+                    std::cout << "hello" << std::endl;
 
                     // Increment stat of fetched instructions.
                     ++fetchStats.insts;
@@ -1270,9 +1398,12 @@ Fetch::fetch(bool &status_change)
                 newMacro |= staticInst->isLastMicroop();
             }
 
+            std::cout << "BEFORE buildInst" << std::endl;
+            // DynInstPtr instruction = buildInst(
+            //         tid, staticInst, curMacroop, this_pc, *next_pc, true);
             DynInstPtr instruction = buildInst(
-                    tid, staticInst, curMacroop, this_pc, *next_pc, true);
-
+                    tid, staticInst, curMacroop, this_pc, *next_pc, this_rp, true);
+            std::cout << "DONE buildInst" << std::endl;
             ppFetch->notify(instruction);
             numInst++;
 
@@ -1287,7 +1418,8 @@ Fetch::fetch(bool &status_change)
             // If we're branching after this instruction, quit fetching
             // from the same block.
             predictedBranch |= this_pc.branching();
-            predictedBranch |= lookupAndUpdateNextPC(instruction, *next_pc);
+            // predictedBranch |= lookupAndUpdateNextPC(instruction, *next_pc);
+            predictedBranch |= lookupAndUpdateNextPC(instruction, *next_pc, this_rp);
             if (predictedBranch) {
                 DPRINTF(Fetch, "Branch detected with PC = %s\n", this_pc);
             }

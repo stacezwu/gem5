@@ -244,7 +244,8 @@ StraightProcess::argsInit(int pageSize)
     }
 
     ThreadContext *tc = system->threads[contextIds[0]];
-    tc->setIntReg(StackPointerReg, memState->getStackMin());
+    
+    // tc->setIntReg(StackPointerReg, memState->getStackMin());
     tc->pcState(getStartPC());
 
     memState->setStackMin(roundDown(memState->getStackMin(), pageSize));

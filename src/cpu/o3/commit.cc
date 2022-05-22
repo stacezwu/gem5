@@ -342,6 +342,7 @@ Commit::clearStates(ThreadID tid)
     trapSquash[tid] = false;
     tcSquash[tid] = false;
     pc[tid].reset(cpu->tcBase(tid)->getIsaPtr()->newPCState());
+    rp[tid].reset(cpu->tcBase(tid)->getIsaPtr()->newRPState());
     lastCommitedSeqNum[tid] = 0;
     squashAfterInst[tid] = NULL;
 }
@@ -702,6 +703,8 @@ Commit::tick()
     }
 
     updateStatus();
+
+    std::cout << "END OF commit.tick()" << std::endl;
 }
 
 void
@@ -966,7 +969,7 @@ Commit::commitInsts()
         // hardware transactionally memory
         // If executing within a transaction,
         // need to handle interrupts specially
-
+        std::cout << "num_committed: " << num_committed << std::endl;
         ThreadID commit_thread = getCommittingThread();
 
         // Check for any interrupt that we've already squashed for
@@ -1015,9 +1018,11 @@ Commit::commitInsts()
             changedROBNumEntries[tid] = true;
         } else {
             set(pc[tid], head_inst->pcState());
+            set(rp[tid], head_inst->rpState());
 
             // Try to commit the head instruction.
             bool commit_success = commitHead(head_inst, num_committed);
+            std::cout << "head_inst->staticInst->getName()" << head_inst->staticInst->getName() << std::endl;
 
             if (commit_success) {
                 ++num_committed;
@@ -1166,12 +1171,15 @@ Commit::commitHead(const DynInstPtr &head_inst, unsigned inst_num)
                 tid, head_inst->seqNum, head_inst->pcState());
 
         if (inst_num > 0 || iewStage->hasStoresToWB(tid)) {
+            std::cout << "inst_num: " << inst_num << std::endl;
             DPRINTF(Commit,
                     "[tid:%i] [sn:%llu] "
                     "Waiting for all stores to writeback.\n",
                     tid, head_inst->seqNum);
             return false;
         }
+
+        std::cout << "head_inst->seqNum: " << head_inst->seqNum << std::endl;
 
         toIEW->commitInfo[tid].nonSpecSeqNum = head_inst->seqNum;
 

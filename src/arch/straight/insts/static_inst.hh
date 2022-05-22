@@ -96,24 +96,20 @@ class StraightStaticInst : public StaticInst
     //     return destRegIdx(i);
     // }
     
-    virtual void 
-    translateReg(RPState &RP){
-        ;
-    }
+    // virtual void 
+    // translateReg(RPStateBase &RP){
+    //     ;
+    // }
 
     virtual void 
-    translateDestReg(RPState &RP){
-        ;    
-    }
+    translateDestReg(RPStateBase &RP) override{;}
 
     // const RegId &srcRegIdx(int i) const {
     //     return srcRegIdx(i);
     // }
 
     virtual void 
-    translateSrcReg(RPState &RP) {
-        ;
-    };
+    translateSrcReg(RPStateBase &RP) override {;}
 
     void
     advancePC(PCStateBase &pc) const override

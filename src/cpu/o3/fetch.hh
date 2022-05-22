@@ -285,6 +285,8 @@ class Fetch
      * @return Whether or not a branch was predicted as taken.
      */
     bool lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &pc);
+    
+    bool lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc, RPStateBase &this_rp);
 
     /**
      * Fetches the cache line that contains the fetch PC.  Returns any
@@ -365,6 +367,10 @@ class Fetch
             StaticInstPtr curMacroop, const PCStateBase &this_pc,
             const PCStateBase &next_pc, bool trace);
 
+    DynInstPtr buildInst(ThreadID tid, StaticInstPtr staticInst,
+            StaticInstPtr curMacroop, const PCStateBase &this_pc,
+            const PCStateBase &next_pc, const RPStateBase &this_rp, bool trace);
+
     /** Returns the appropriate thread to fetch, given the fetch policy. */
     ThreadID getFetchingThread();
 
@@ -414,6 +420,8 @@ class Fetch
     branch_prediction::BPredUnit *branchPred;
 
     std::unique_ptr<PCStateBase> pc[MaxThreads];
+
+    std::unique_ptr<RPStateBase> rp[MaxThreads];
 
     Addr fetchOffset[MaxThreads];
 

@@ -284,6 +284,7 @@ ISA::readMiscRegNoEffect(int misc_reg) const
 RegVal
 ISA::readMiscReg(int misc_reg)
 {
+    std::cout << "DEBUG PRINT: " << misc_reg << std::endl;
     switch (misc_reg) {
       case MISCREG_HARTID:
         return tc->contextId();

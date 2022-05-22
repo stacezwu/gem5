@@ -105,6 +105,11 @@ class DynInst : public ExecContext, public RefCounted
             const StaticInstPtr &macroop, const PCStateBase &pc,
             const PCStateBase &pred_pc, InstSeqNum seq_num, CPU *cpu);
 
+    DynInst(const Arrays &arrays, const StaticInstPtr &staticInst,
+            const StaticInstPtr &macroop, const PCStateBase &pc,
+            const PCStateBase &pred_pc, const RPStateBase &_rp,
+            InstSeqNum seq_num, CPU *cpu);
+
     /** BaseDynInst constructor given a static inst pointer. */
     DynInst(const Arrays &arrays, const StaticInstPtr &_staticInst,
             const StaticInstPtr &_macroop);
@@ -206,6 +211,9 @@ class DynInst : public ExecContext, public RefCounted
     /** PC state for this instruction. */
     std::unique_ptr<PCStateBase> pc;
 
+    /** RP state for this instruction. */
+    std::unique_ptr<RPStateBase> rp;
+
     /** Values to be written to the destination misc. registers. */
     std::vector<RegVal> _destMiscRegVal;
 
@@ -269,6 +277,7 @@ class DynInst : public ExecContext, public RefCounted
     renamedDestIdx(int idx, PhysRegIdPtr phys_reg_id)
     {
         _destIdx[idx] = phys_reg_id;
+        // _destIdx[idx] = _destIdx[idx];
     }
 
     // Returns the physical register index of the previous physical
@@ -297,6 +306,7 @@ class DynInst : public ExecContext, public RefCounted
     renamedSrcIdx(int idx, PhysRegIdPtr phys_reg_id)
     {
         _srcIdx[idx] = phys_reg_id;
+        // _srcIdx[idx] = _srcIdx[idx];
     }
 
     bool
@@ -901,6 +911,16 @@ class DynInst : public ExecContext, public RefCounted
     /** Set the PC state of this instruction. */
     void pcState(const PCStateBase &val) override { set(pc, val); }
 
+    /** Read the RP state of this instruction. */
+    const RPStateBase &
+    rpState() const override
+    {
+        return *rp;
+    }
+
+    /** Set the PC state of this instruction. */
+    void rpState(const RPStateBase &val) override { set(rp, val); }
+
     bool readPredicate() const override { return instFlags[Predicate]; }
 
     void
@@ -1236,6 +1256,19 @@ class DynInst : public ExecContext, public RefCounted
     {
         cpu->setCCReg(renamedDestIdx(idx), val);
         setResult(val);
+    }
+
+    void
+    translateOperands(){
+        // translate src operands
+        for (int i = 0; i < staticInst->numSrcRegs(); i++){
+            staticInst->setSrcRegIdx(i, RegId(IntRegClass,rp->rp() - staticInst->srcRegIdx(i).index()));
+        }
+        
+        //translate dest operand
+        for (int i = 0; i < staticInst->numDestRegs(); i++){
+            staticInst->setDestRegIdx(i, RegId(IntRegClass,rp->rp()));
+        }
     }
 };
 

@@ -80,6 +80,7 @@ ThreadContext::activate()
 
     // status() == Suspended
     cpu->activateContext(thread->threadId());
+    std::cout << "done ThreadContext::activate()" << std::endl;
 }
 
 void

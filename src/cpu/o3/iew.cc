@@ -770,12 +770,14 @@ void
 IEW::sortInsts()
 {
     int insts_from_rename = fromRename->size;
+    std::cout << "IEW::sortInsts() insts_from_rename: " << insts_from_rename << std::endl;
 #ifdef DEBUG
     for (ThreadID tid = 0; tid < numThreads; tid++)
         assert(insts[tid].empty());
 #endif
     for (int i = 0; i < insts_from_rename; ++i) {
         insts[fromRename->insts[i]->threadNumber].push(fromRename->insts[i]);
+        std::cout << "fromRename->insts " << fromRename->insts[i]->staticInst->getName() << std::endl;
     }
 }
 
@@ -1066,6 +1068,8 @@ IEW::dispatchInsts(ThreadID tid)
             DPRINTF(IEW, "[tid:%i] Issue: Nonspeculative instruction "
                     "encountered, skipping.\n", tid);
 
+            std::cout << "inst->isNonSpeculative() " << inst->staticInst->getName() << std::endl;
+
             // Same as non-speculative stores.
             inst->setCanCommit();
 
@@ -1079,7 +1083,9 @@ IEW::dispatchInsts(ThreadID tid)
 
         // If the instruction queue is not full, then add the
         // instruction.
+        std::cout << "dispatchInsts() inst = " << inst->staticInst->getName() << std::endl;
         if (add_to_iq) {
+            std::cout << "dispatchInsts add_to_iq is true!!! ghjost!!!" << std::endl;
             instQueue.insert(inst);
         }
 
@@ -1123,7 +1129,8 @@ IEW::printAvailableInsts()
 
         std::cout << "PC: " << fromIssue->insts[inst]->pcState()
              << " TN: " << fromIssue->insts[inst]->threadNumber
-             << " SN: " << fromIssue->insts[inst]->seqNum << " | ";
+             << " SN: " << fromIssue->insts[inst]->seqNum 
+             << " Name: " << fromIssue->insts[inst]->staticInst->getName() << " | ";
 
         inst++;
 
@@ -1135,6 +1142,8 @@ IEW::printAvailableInsts()
 void
 IEW::executeInsts()
 {
+
+    std::cout << "executeInsts()" << std::endl;
     wbNumInst = 0;
     wbCycle = 0;
 
@@ -1148,10 +1157,11 @@ IEW::executeInsts()
 
     // Uncomment this if you want to see all available instructions.
     // @todo This doesn't actually work anymore, we should fix it.
-//    printAvailableInsts();
+    printAvailableInsts();
 
     // Execute/writeback any instructions that are available.
     int insts_to_execute = fromIssue->size;
+    std::cout << "insts_to_execute " << insts_to_execute << std::endl;
     int inst_num = 0;
     for (; inst_num < insts_to_execute;
           ++inst_num) {
@@ -1159,6 +1169,7 @@ IEW::executeInsts()
         DPRINTF(IEW, "Execute: Executing instructions from IQ.\n");
 
         DynInstPtr inst = instQueue.getInstToExecute();
+        std::cout << "IEW::executeInsts() inst " << inst->staticInst->getName() << std::endl;
 
         DPRINTF(IEW, "Execute: Processing PC %s, [tid:%i] [sn:%llu].\n",
                 inst->pcState(), inst->threadNumber,inst->seqNum);
@@ -1265,6 +1276,7 @@ IEW::executeInsts()
             // If we execute the instruction (even if it's a nop) the fault
             // will be replaced and we will lose it.
             if (inst->getFault() == NoFault) {
+                std::cout << "iew::inst->execute() instruction: " << inst->staticInst->getName() << std::endl;
                 inst->execute();
                 if (!inst->readPredicate())
                     inst->forwardOldRegs();
@@ -1509,6 +1521,8 @@ IEW::tick()
         }
 
         if (fromCommit->commitInfo[tid].nonSpecSeqNum != 0) {
+
+            std::cout << "nonSpecSeqNum: " << fromCommit->commitInfo[tid].nonSpecSeqNum << std::endl;
 
             //DPRINTF(IEW,"NonspecInst from thread %i",tid);
             if (fromCommit->commitInfo[tid].strictlyOrdered) {

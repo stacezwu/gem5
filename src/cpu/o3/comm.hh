@@ -101,6 +101,9 @@ struct IEWStruct
     bool branchMispredict[MaxThreads];
     bool branchTaken[MaxThreads];
     bool includeSquashInst[MaxThreads];
+
+    // Fix error : new-delete-type-mismatch from ASan
+    virtual ~IEWStruct() = default;
 };
 
 struct IssueStruct
@@ -113,6 +116,8 @@ struct IssueStruct
 /** Struct that defines all backwards communication. */
 struct TimeStruct
 {
+    virtual ~TimeStruct() = default;
+    
     struct DecodeComm
     {
         std::unique_ptr<PCStateBase> nextPC;

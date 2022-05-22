@@ -780,6 +780,7 @@ InstructionQueue::scheduleReadyInsts()
         assert(!readyInsts[op_class].empty());
 
         DynInstPtr issuing_inst = readyInsts[op_class].top();
+        std::cout << "InstructionQueue::scheduleReadyInsts() issuing inst: " << issuing_inst->staticInst->getName() << std::endl;
 
         if (issuing_inst->isFloating()) {
             iqIOStats.fpInstQueueReads++;

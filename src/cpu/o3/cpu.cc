@@ -671,6 +671,7 @@ CPU::activateContext(ThreadID tid)
         _status = Running;
 
         BaseCPU::activateContext(tid);
+        std::cout << "done CPU::activateContext" << std::endl;
     }
 }
 
@@ -760,6 +761,8 @@ CPU::insertThread(ThreadID tid)
     src_tc->setStatus(gem5::ThreadContext::Active);
 
     activateContext(tid);
+
+    std::cout << "void CPU::insertThread(ThreadID tid)" << std::endl;
 
     //Reset ROB/IQ/LSQ Entries
     commit.rob->resetEntries();
@@ -888,8 +891,10 @@ CPU::drain()
                 DPRINTF(Drain, "Currently suspended so activate %i \n",
                         t->threadId());
                 t->activate();
+                std::cout << "CPU::drain()" << std::endl;
                 // As the thread is now active, change the power state as well
                 activateContext(t->threadId());
+                std::cout << "DrainState CPU::drain()" << std::endl;
             }
         }
 
@@ -1552,6 +1557,7 @@ CPU::wakeup(ThreadID tid)
 
     DPRINTF(Quiesce, "Suspended Processor woken\n");
     threadContexts[tid]->activate();
+    std::cout << "CPU::wakeup" << std::endl;
 }
 
 ThreadID

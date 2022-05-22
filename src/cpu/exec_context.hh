@@ -185,6 +185,14 @@ class ExecContext
     virtual void pcState(const PCStateBase &val) = 0;
     /** @} */
 
+     /**
+     * @{
+     * @name RP Control
+     */
+    virtual const RPStateBase &rpState() const = 0;
+    virtual void rpState(const RPStateBase &val) = 0;
+    /** @} */
+
     /**
      * @{
      * @name Memory Interface

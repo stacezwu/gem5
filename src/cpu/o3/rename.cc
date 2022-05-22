@@ -795,8 +795,10 @@ void
 Rename::sortInsts()
 {
     int insts_from_decode = fromDecode->size;
+    std::cout << "Rename::sortInsts() insts_from_decode: " << std::endl;
     for (int i = 0; i < insts_from_decode; ++i) {
         const DynInstPtr &inst = fromDecode->insts[i];
+        std::cout << "fromDecode->insts: " << inst->staticInst->getName() << std::endl;
         insts[inst->threadNumber].push_back(inst);
 #if TRACING_ON
         if (debug::O3PipeView) {

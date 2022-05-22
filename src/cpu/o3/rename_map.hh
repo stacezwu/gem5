@@ -126,6 +126,7 @@ class SimpleRenameMap
     PhysRegIdPtr
     lookup(const RegId& arch_reg) const
     {
+        std::cout << "arch_reg.flatIndex(): " << arch_reg.flatIndex() << std::endl;
         assert(arch_reg.flatIndex() <= map.size());
         return map[arch_reg.flatIndex()];
     }

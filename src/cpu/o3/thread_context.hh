@@ -294,9 +294,9 @@ class ThreadContext : public gem5::ThreadContext
     const RPStateBase &
     rpState() const override
     {
-        // return cpu->rpState(thread->threadId());
-        RPStateBase* rp = new RPStateBase(0);
-        return *rp;
+        return cpu->rpState(thread->threadId());
+        // RPStateBase* rp = new RPStateBase(0);
+        // return *rp;
     }
 
     /** Sets this thread's PC state. */
@@ -391,6 +391,14 @@ class ThreadContext : public gem5::ThreadContext
                              HtmFailureFaultCause cause) override;
     BaseHTMCheckpointPtr& getHtmCheckpointPtr() override;
     void setHtmCheckpointPtr(BaseHTMCheckpointPtr new_cpt) override;
+
+    // Not needed for now
+    RegIndex translateRegIdx(RegIndex reg_idx) const
+    {   
+        // This is to prevent setting values in registers during CPU setup
+        RegIndex archReg = (rpState().rp() >= reg_idx) ? rpState().rp() >= reg_idx : reg_idx;
+        return archReg;
+    }
 };
 
 } // namespace o3

@@ -116,6 +116,45 @@ Decoder::decode(PCStateBase &_next_pc)
 }
 
 StaticInstPtr
+Decoder::decode(ExtMachInst mach_inst, Addr addr, RPStateBase &_next_rp)
+{
+    DPRINTF(Decode, "Decoding instruction 0x%llx at address %#x\n",
+            mach_inst, addr);
+
+    // StaticInstPtr &si = instMap[mach_inst];
+    // if (!si)
+    //     si = decodeInst(mach_inst);
+    StaticInstPtr si = decodeInst(mach_inst);
+
+    si->translateSrcReg(_next_rp);
+    si->translateDestReg(_next_rp);
+
+    DPRINTF(Decode, "Decode: Decoded %s instruction: %#x\n",
+            si->getName(), mach_inst);
+    return si;
+}
+
+StaticInstPtr
+Decoder::decode(PCStateBase &_next_pc, RPStateBase &_next_rp)
+{
+    if (!instDone)
+        return nullptr;
+    instDone = false;
+
+    auto &next_pc = _next_pc.as<PCState>();
+
+    if (compressed(emi)) {
+        next_pc.npc(next_pc.instAddr() + sizeof(machInst) / 2);
+        next_pc.compressed(true);
+    } else {
+        next_pc.npc(next_pc.instAddr() + sizeof(machInst));
+        next_pc.compressed(false);
+    }
+
+    return decode(emi, next_pc.instAddr(), _next_rp);
+}
+
+StaticInstPtr
 Decoder::decode(PCStateBase &_next_pc, Counter numInst)
 {
     if (!instDone)

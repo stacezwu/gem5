@@ -47,15 +47,22 @@ class MemInst : public StraightStaticInst
   protected:
     int64_t offset;
     Request::Flags memAccessFlags;
+    RegIndex _RS1_cache;
 
     MemInst(const char *mnem, ExtMachInst _machInst, OpClass __opClass)
         : StraightStaticInst(mnem, _machInst, __opClass), offset(0)
     {}
   public: 
-    // virtual void 
-    // translateSrcReg() override{
-    //     ;
-    // } 
+    virtual void 
+    translateSrcReg(RPStateBase &RP) override {
+      setSrcRegIdx(_numSrcRegs++, RegId(IntRegClass, RP.rp() - _RS1_cache));
+    } 
+
+    virtual void 
+    translateDestReg(RPStateBase &RP) override {
+        setDestRegIdx(_numDestRegs++, RegId(IntRegClass, RP.rp()));
+    }
+
 };
 
 class Load : public MemInst

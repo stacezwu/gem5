@@ -311,6 +311,18 @@ class ExecContext : public gem5::ExecContext
         thread.pcState(val);
     }
 
+    const RPStateBase &
+    rpState() const override
+    {
+        return thread.rpState();
+    }
+
+    void
+    rpState(const RPStateBase &val) override
+    {
+        thread.rpState(val);
+    }
+
     RegVal
     readMiscRegNoEffect(int misc_reg) const
     {

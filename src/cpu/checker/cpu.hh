@@ -366,6 +366,19 @@ class CheckerCPU : public BaseCPU, public ExecContext
                          val, thread->pcState());
         thread->pcState(val);
     }
+
+    const RPStateBase &
+    rpState() const override
+    {
+        return thread->rpState();
+    }
+    void
+    rpState(const RPStateBase &val) override
+    {
+        DPRINTF(Checker, "Changing PC to %s, old PC %s.\n",
+                         val, thread->rpState());
+        thread->rpState(val);
+    }
     //////////////////////////////////////////
 
     RegVal

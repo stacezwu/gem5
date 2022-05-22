@@ -93,7 +93,11 @@ EmuLinux::syscall(ThreadContext *tc)
     // This will move into the base SEWorkload function at some point.
     process->Process::syscall(tc);
 
-    RegVal num = tc->readIntReg(StraightISA::SyscallNumReg);
+    RegIndex this_rp = tc->rpState().rp();
+
+    RegVal num = tc->readIntReg(this_rp - StraightISA::SyscallNumReg);
+    std::cout << "this_rp: " << this_rp << std::endl;
+    std::cout << "SystemCall num: " << num << std::endl;
     if (dynamic_cast<StraightProcess64 *>(process))
         syscallDescs64.get(num)->doSyscall(tc);
     else

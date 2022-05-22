@@ -29,6 +29,7 @@
 #define __ARCH_GENERIC_DECODER_HH__
 
 #include "arch/generic/pcstate.hh"
+#include "arch/generic/rpstate.hh"
 #include "base/bitfield.hh"
 #include "base/intmath.hh"
 #include "base/types.hh"
@@ -155,6 +156,8 @@ class InstDecoder : public SimObject
      */
     virtual StaticInstPtr decode(PCStateBase &pc) = 0;
     virtual StaticInstPtr decode(PCStateBase &nextPC, Counter numInst) = 0;
+    virtual StaticInstPtr decode(PCStateBase &_next_pc, RPStateBase &_next_rp) = 0;
+    // virtual StaticInstPtr decode(ExtMachInst mach_inst, Addr addr, RPStateBase &_next_rp) = 0;
 };
 
 } // namespace gem5
