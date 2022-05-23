@@ -466,6 +466,9 @@ IEW::squashDueToBranch(const DynInstPtr& inst, ThreadID tid)
         set(toCommit->pc[tid], inst->pcState());
         inst->staticInst->advancePC(*toCommit->pc[tid]);
 
+        set(toCommit->rp[tid], inst->rpState());
+        inst->staticInst->advanceRP(*toCommit->rp[tid]);
+
         toCommit->mispredictInst[tid] = inst;
         toCommit->includeSquashInst[tid] = false;
 

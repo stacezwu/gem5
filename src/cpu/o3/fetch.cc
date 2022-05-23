@@ -806,6 +806,59 @@ Fetch::doSquash(const PCStateBase &new_pc, const DynInstPtr squashInst,
 }
 
 void
+Fetch::doSquash(const PCStateBase &new_pc, const RPStateBase &new_rp,
+        const DynInstPtr squashInst, ThreadID tid)
+{
+    DPRINTF(Fetch, "[tid:%i] Squashing, setting PC to: %s.\n",
+            tid, new_pc);
+    std::cout << "new_pc: " << new_pc.instAddr() << std::endl;
+    std::cout << "new_rp: " << new_rp.rp() << std::endl;
+    set(pc[tid], new_pc);
+    set(rp[tid], new_rp);
+    fetchOffset[tid] = 0;
+    if (squashInst && squashInst->pcState().instAddr() == new_pc.instAddr())
+        macroop[tid] = squashInst->macroop;
+    else
+        macroop[tid] = NULL;
+    decoder[tid]->reset();
+
+    // Clear the icache miss if it's outstanding.
+    if (fetchStatus[tid] == IcacheWaitResponse) {
+        DPRINTF(Fetch, "[tid:%i] Squashing outstanding Icache miss.\n",
+                tid);
+        memReq[tid] = NULL;
+    } else if (fetchStatus[tid] == ItlbWait) {
+        DPRINTF(Fetch, "[tid:%i] Squashing outstanding ITLB miss.\n",
+                tid);
+        memReq[tid] = NULL;
+    }
+
+    // Get rid of the retrying packet if it was from this thread.
+    if (retryTid == tid) {
+        assert(cacheBlocked);
+        if (retryPkt) {
+            delete retryPkt;
+        }
+        retryPkt = NULL;
+        retryTid = InvalidThreadID;
+    }
+
+    fetchStatus[tid] = Squashing;
+
+    // Empty fetch queue
+    fetchQueue[tid].clear();
+
+    // microops are being squashed, it is not known wheather the
+    // youngest non-squashed microop was  marked delayed commit
+    // or not. Setting the flag to true ensures that the
+    // interrupts are not handled when they cannot be, though
+    // some opportunities to handle interrupts may be missed.
+    delayedCommit[tid] = true;
+
+    ++fetchStats.squashCycles;
+}
+
+void
 Fetch::squashFromDecode(const PCStateBase &new_pc, const DynInstPtr squashInst,
         const InstSeqNum seq_num, ThreadID tid)
 {
@@ -882,6 +935,19 @@ Fetch::squash(const PCStateBase &new_pc, const InstSeqNum seq_num,
     // Tell the CPU to remove any instructions that are not in the ROB.
     cpu->removeInstsNotInROB(tid);
 }
+
+void
+Fetch::squash(const PCStateBase &new_pc, const RPStateBase &new_rp, const InstSeqNum seq_num,
+        DynInstPtr squashInst, ThreadID tid)
+{
+    DPRINTF(Fetch, "[tid:%i] Squash from commit.\n", tid);
+
+    doSquash(new_pc, new_rp, squashInst, tid);
+
+    // Tell the CPU to remove any instructions that are not in the ROB.
+    cpu->removeInstsNotInROB(tid);
+}
+
 
 void
 Fetch::tick()
@@ -1006,6 +1072,7 @@ Fetch::checkSignalsAndUpdate(ThreadID tid)
                 "from commit.\n",tid);
         // In any case, squash.
         squash(*fromCommit->commitInfo[tid].pc,
+               *fromCommit->commitInfo[tid].rp,
                fromCommit->commitInfo[tid].doneSeqNum,
                fromCommit->commitInfo[tid].squashInst, tid);
 
@@ -1171,9 +1238,6 @@ Fetch::buildInst(ThreadID tid, StaticInstPtr staticInst,
     instruction->setThreadState(cpu->thread[tid]);
 
     instruction->translateOperands();
-
-    std::cout << "staticInst->numSrcRegs(): " << instruction->staticInst->numSrcRegs() << std::endl;
-    std::cout << "staticInst->numDestRegs(): " << instruction->staticInst->numDestRegs() << std::endl;
 
     DPRINTF(Fetch, "[tid:%i] Instruction PC %s created [sn:%lli].\n",
             tid, this_pc, seq);
@@ -1363,12 +1427,6 @@ Fetch::fetch(bool &status_change)
             if (!(curMacroop || inRom)) {
                 if (dec_ptr->instReady()) {
                     staticInst = dec_ptr->decode(this_pc);
-                    std::cout << "staticInst->getName(): " << staticInst->getName() << std::endl;
-                    // staticInst = dec_ptr->decode(this_pc, this_rp);
-                    std::cout << "staticInst->numSrcRegs(): " << staticInst->numSrcRegs() << std::endl;
-                    std::cout << "staticInst->numDestRegs(): " << staticInst->numDestRegs() << std::endl;
-
-                    std::cout << "hello" << std::endl;
 
                     // Increment stat of fetched instructions.
                     ++fetchStats.insts;
@@ -1398,12 +1456,10 @@ Fetch::fetch(bool &status_change)
                 newMacro |= staticInst->isLastMicroop();
             }
 
-            std::cout << "BEFORE buildInst" << std::endl;
             // DynInstPtr instruction = buildInst(
             //         tid, staticInst, curMacroop, this_pc, *next_pc, true);
             DynInstPtr instruction = buildInst(
                     tid, staticInst, curMacroop, this_pc, *next_pc, this_rp, true);
-            std::cout << "DONE buildInst" << std::endl;
             ppFetch->notify(instruction);
             numInst++;
 

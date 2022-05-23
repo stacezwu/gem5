@@ -96,6 +96,7 @@ struct IEWStruct
     Addr mispredPC[MaxThreads];
     InstSeqNum squashedSeqNum[MaxThreads];
     std::unique_ptr<PCStateBase> pc[MaxThreads];
+    std::unique_ptr<RPStateBase> rp[MaxThreads];
 
     bool squash[MaxThreads];
     bool branchMispredict[MaxThreads];
@@ -176,6 +177,8 @@ struct TimeStruct
         /// instruction for a branch mispredict, but the same instruction for
         /// order violation and the like
         std::unique_ptr<PCStateBase> pc; // *F
+
+        std::unique_ptr<RPStateBase> rp;
 
         /// Provide fetch the instruction that mispredicted, if this
         /// pointer is not-null a misprediction occured

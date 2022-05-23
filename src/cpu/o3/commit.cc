@@ -564,6 +564,7 @@ Commit::squashAll(ThreadID tid)
     toIEW->commitInfo[tid].squashInst = NULL;
 
     set(toIEW->commitInfo[tid].pc, pc[tid]);
+    set(toIEW->commitInfo[tid].rp, rp[tid]);
 }
 
 void
@@ -888,6 +889,7 @@ Commit::commit()
             }
 
             set(toIEW->commitInfo[tid].pc, fromIEW->pc[tid]);
+            set(toIEW->commitInfo[tid].rp, fromIEW->rp[tid]);
         }
 
         if (commitStatus[tid] == ROBSquashing) {

@@ -757,6 +757,8 @@ CPU::insertThread(ThreadID tid)
 
     //Set PC/NPC/NNPC
     pcState(src_tc->pcState(), tid);
+    //Set RP
+    rpState(src_tc->rpState(), tid);
 
     src_tc->setStatus(gem5::ThreadContext::Active);
 

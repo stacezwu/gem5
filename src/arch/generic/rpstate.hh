@@ -194,6 +194,18 @@ set(std::unique_ptr<RPStateBase> &dest, const RPStateBase *src)
 }
 
 inline void
+set(std::unique_ptr<RPStateBase> &dest,
+        const std::unique_ptr<RPStateBase> &src)
+{
+    RPStateBase *dest_ptr = dest.get();
+    const RPStateBase *src_ptr = src.get();
+    set(dest_ptr, src_ptr);
+    if (dest.get() != dest_ptr)
+        dest.reset(dest_ptr);
+}
+
+
+inline void
 set(RPStateBase *&dest, const RPStateBase &src)
 {
     if (GEM5_LIKELY(dest)) {

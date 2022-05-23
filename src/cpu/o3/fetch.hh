@@ -310,6 +310,9 @@ class Fetch
     /** Squashes a specific thread and resets the PC. */
     void doSquash(const PCStateBase &new_pc, const DynInstPtr squashInst,
             ThreadID tid);
+    /** Squashes a specific thread and resets the PC and RP for STRAIGHT */
+    void doSquash(const PCStateBase &new_pc, const RPStateBase &new_rp,
+            const DynInstPtr squashInst, ThreadID tid);
 
     /** Squashes a specific thread and resets the PC. Also tells the CPU to
      * remove any instructions between fetch and decode
@@ -332,6 +335,13 @@ class Fetch
      * squash should be the commit stage.
      */
     void squash(const PCStateBase &new_pc, const InstSeqNum seq_num,
+                DynInstPtr squashInst, ThreadID tid);
+
+    /** Squashes a specific thread and resets the PC and RP for STRAIGHT. Also tells the CPU to
+     * remove any instructions that are not in the ROB. The source of this
+     * squash should be the commit stage.
+     */
+    void squash(const PCStateBase &new_pc, const RPStateBase &new_rp, const InstSeqNum seq_num,
                 DynInstPtr squashInst, ThreadID tid);
 
     /** Ticks the fetch stage, processing all inputs signals and fetching
