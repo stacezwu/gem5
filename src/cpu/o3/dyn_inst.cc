@@ -111,7 +111,6 @@ DynInst::DynInst(const Arrays &arrays, const StaticInstPtr &static_inst,
     set(pc, _pc);
     set(predPC, pred_pc);
     set(rp, _rp);
-    std::cout << "DynInst rp: " << rp->rp() << std::endl;
 }
 
 DynInst::DynInst(const Arrays &arrays, const StaticInstPtr &_staticInst,

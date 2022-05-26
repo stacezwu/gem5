@@ -463,8 +463,12 @@ IEW::squashDueToBranch(const DynInstPtr& inst, ThreadID tid)
         toCommit->squashedSeqNum[tid] = inst->seqNum;
         toCommit->branchTaken[tid] = inst->pcState().branching();
 
+        std::cout << "*toCommit->pc[tid]: " << toCommit->pc[tid]->instAddr() << std::endl;
+
         set(toCommit->pc[tid], inst->pcState());
         inst->staticInst->advancePC(*toCommit->pc[tid]);
+
+        std::cout << "*toCommit->rp[tid]: " << toCommit->rp[tid]->rp() << std::endl;
 
         set(toCommit->rp[tid], inst->rpState());
         inst->staticInst->advanceRP(*toCommit->rp[tid]);

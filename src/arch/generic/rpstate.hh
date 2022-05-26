@@ -226,6 +226,12 @@ set(std::unique_ptr<RPStateBase> &dest, const RPStateBase &src)
         dest.reset(dest_ptr);
 }
 
+inline void
+set(RPStateBase &dest, const RPStateBase &src)
+{
+    dest.update(src);
+}
+
 // inline void
 // set(RPStateBase *&dest, const RPStateBase &src)
 // {

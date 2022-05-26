@@ -1159,9 +1159,14 @@ class DynInst : public ExecContext, public RefCounted
     // storage (which is pretty hard to imagine they would have reason
     // to do).
 
+    // In STRAIGHT reg at RP refer to zero register
     RegVal
     readIntRegOperand(const StaticInst *si, int idx) override
-    {
+    {   
+        PhysRegIdPtr physIdx = renamedSrcIdx(idx);
+        if (physIdx->flatIndex() == rp->rp()) {
+            return 0;
+        }
         return cpu->readIntReg(renamedSrcIdx(idx));
     }
 

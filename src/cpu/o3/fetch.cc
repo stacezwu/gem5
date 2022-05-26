@@ -553,22 +553,25 @@ Fetch::lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc)
     return predict_taken;
 }
 
+
 bool
 Fetch::lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc, RPStateBase &this_rp)
 {
+    // Stacey: if control insruction, advance RP and set target pc to next
     // Do branch prediction check here.
     // A bit of a misnomer...next_PC is actually the current PC until
     // this function updates it.
     bool predict_taken;
 
     if (!inst->isControl()) {
+        std::cout << "inst is not control" << std::endl;
         inst->staticInst->advancePC(next_pc);
         inst->staticInst->advanceRP(this_rp);
         inst->setPredTarg(next_pc);
         inst->setPredTaken(false);
         return false;
     }
-
+    std::cout << "inst is control" << std::endl;
     ThreadID tid = inst->threadNumber;
     predict_taken = branchPred->predict(inst->staticInst, inst->seqNum,
                                         next_pc, tid);
@@ -588,6 +591,7 @@ Fetch::lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc, RPSta
             tid, inst->seqNum, inst->pcState().instAddr(), next_pc);
     inst->setPredTarg(next_pc);
     inst->setPredTaken(predict_taken);
+    inst->staticInst->advanceRP(this_rp);
 
     ++fetchStats.branches;
 
@@ -1174,18 +1178,14 @@ Fetch::buildInst(ThreadID tid, StaticInstPtr staticInst,
 
     instruction->setThreadState(cpu->thread[tid]);
 
-    
-
-    std::cout << "staticInst->numSrcRegs(): " << instruction->staticInst->numSrcRegs() << std::endl;
-    std::cout << "staticInst->numDestRegs(): " << instruction->staticInst->numDestRegs() << std::endl;
-
-    std::cout << "hello" << std::endl;
 
     DPRINTF(Fetch, "[tid:%i] Instruction PC %s created [sn:%lli].\n",
             tid, this_pc, seq);
 
     DPRINTF(Fetch, "[tid:%i] Instruction is: %s\n", tid,
             instruction->staticInst->disassemble(this_pc.instAddr()));
+
+    // printf("instruction->staticInst->getEMI(): %#x\n", instruction->staticInst->getEMI());
 
     instruction->translateOperands();
 
@@ -1244,6 +1244,8 @@ Fetch::buildInst(ThreadID tid, StaticInstPtr staticInst,
 
     DPRINTF(Fetch, "[tid:%i] Instruction is: %s\n", tid,
             instruction->staticInst->disassemble(this_pc.instAddr()));
+
+    // printf("instruction->staticInst->getEMI(): %#x\n", instruction->staticInst->getEMI());
 
 #if TRACING_ON
     if (trace) {
@@ -1361,6 +1363,7 @@ Fetch::fetch(bool &status_change)
     ++fetchStats.cycles;
 
     std::unique_ptr<PCStateBase> next_pc(this_pc.clone());
+    std::unique_ptr<RPStateBase> next_rp(this_rp.clone());
 
     StaticInstPtr staticInst = NULL;
     StaticInstPtr curMacroop = macroop[tid];
@@ -1390,6 +1393,8 @@ Fetch::fetch(bool &status_change)
     // predicted taken
     while (numInst < fetchWidth && fetchQueue[tid].size() < fetchQueueSize
            && !predictedBranch && !quiesce) {
+
+        std::cout << "Inside while() loop, trying to fetch instructions from cache" << std::endl;
         // We need to process more memory if we aren't going to get a
         // StaticInst from the rom, the current macroop, or what's already
         // in the decoder.
@@ -1468,14 +1473,18 @@ Fetch::fetch(bool &status_change)
                 instruction->fetchTick = curTick();
             }
 #endif
-
             set(next_pc, this_pc);
+            set(next_rp, this_rp);
+
+            std::cout << "After setting this_rp to next_rp" << std::endl;
+            printf("next_pc: %#x\n", next_pc->instAddr());
+            std::cout << "next_rp: " << next_rp->rp() << std::endl;
 
             // If we're branching after this instruction, quit fetching
             // from the same block.
             predictedBranch |= this_pc.branching();
             // predictedBranch |= lookupAndUpdateNextPC(instruction, *next_pc);
-            predictedBranch |= lookupAndUpdateNextPC(instruction, *next_pc, this_rp);
+            predictedBranch |= lookupAndUpdateNextPC(instruction, *next_pc, *next_rp);
             if (predictedBranch) {
                 DPRINTF(Fetch, "Branch detected with PC = %s\n", this_pc);
             }
@@ -1484,6 +1493,11 @@ Fetch::fetch(bool &status_change)
 
             // Move to the next instruction, unless we have a branch.
             set(this_pc, *next_pc);
+            set(this_rp, *next_rp);
+            std::cout << "After setting next_rp to this_rp" << std::endl;
+            printf("this_pc: %#x\n", this_pc.instAddr());
+            std::cout << "this_rp: " << this_rp.rp() << std::endl;
+            
             inRom = isRomMicroPC(this_pc.microPC());
 
             if (newMacro) {
@@ -1538,6 +1552,10 @@ Fetch::fetch(bool &status_change)
         fetchStatus[tid] != IcacheWaitRetry &&
         fetchStatus[tid] != QuiescePending &&
         !curMacroop;
+    
+    std::cout << "AT THE END OF FETCH TICK()" << std::endl;
+    printf("this_pc: %#x\n", this_pc.instAddr());
+    std::cout << "this_rp: " << this_rp.rp() << std::endl;
 }
 
 void

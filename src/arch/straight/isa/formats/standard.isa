@@ -406,7 +406,7 @@ def format BOp(code, *opt_flags) {{
                       BIMM12BITS10TO5 << 5 |
                       BIMM12BIT11 << 11    |
                       IMMSIGN << 12;
-                imm = sext<14>(imm << 1);
+                imm = sext<13>imm;
                """
     regs = ['srcRegIdx(0)','srcRegIdx(1)']
     iop = InstObjParams(name, Name, 'ImmOp<int64_t>',
@@ -421,7 +421,7 @@ def format BOp(code, *opt_flags) {{
 def format Jump(code, *opt_flags) {{
     regs = ['srcRegIdx(0)']
     iop = InstObjParams(name, Name, 'ImmOp<int64_t>',
-        {'code': code, 'imm_code': 'imm = sext<13>(IMM12 << 1);',
+        {'code': code, 'imm_code': 'imm = sext<12>IMM12;',
          'regs': ','.join(regs)}, opt_flags)
     header_output = JumpDeclare.subst(iop)
     decoder_output = ImmConstructor.subst(iop)
@@ -446,7 +446,7 @@ def format JOp(code, *opt_flags) {{
                       UJIMMBIT11 << 11      |
                       UJIMMBITS19TO12 << 12 |
                       IMMSIGN << 20;
-                imm = sext<22>(imm << 1);
+                imm = sext<21>imm;
                """
     pc = 'pc.set(pc.pc() + imm);'
     regs = ['destRegIdx(0)']

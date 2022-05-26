@@ -278,9 +278,11 @@ class PhysRegFile
 
         DPRINTF(IEW, "RegFile: Setting int register %i to %#x\n",
                 phys_reg->index(), val);
-
-        if (phys_reg->index() != zeroReg.index())
-            intRegFile[phys_reg->index()] = val;
+        
+        // In STRAIGHT zeroReg is reg at RP
+        intRegFile[phys_reg->index()] = val;
+        // if (phys_reg->index() != zeroReg.index())
+        //     intRegFile[phys_reg->index()] = val;
     }
 
     void
