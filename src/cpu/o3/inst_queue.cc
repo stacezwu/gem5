@@ -1339,9 +1339,12 @@ InstructionQueue::addToDependents(const DynInstPtr &new_inst)
          src_reg_idx < total_src_regs;
          src_reg_idx++)
     {
+        std::cout << "src_reg_idx: " << src_reg_idx << std::endl;
+        std::cout << "src_reg->flatIndex()" << new_inst->renamedSrcIdx(src_reg_idx)->flatIndex() << std::endl;
         // Only add it to the dependency graph if it's not ready.
         if (!new_inst->readySrcIdx(src_reg_idx)) {
             PhysRegIdPtr src_reg = new_inst->renamedSrcIdx(src_reg_idx);
+            
 
             // Check the IQ's scoreboard to make sure the register
             // hasn't become ready while the instruction was in flight
@@ -1387,8 +1390,9 @@ InstructionQueue::addToProducers(const DynInstPtr &new_inst)
          dest_reg_idx < total_dest_regs;
          dest_reg_idx++)
     {
+        std::cout << "dest_reg_idx: " << dest_reg_idx << std::endl;
         PhysRegIdPtr dest_reg = new_inst->renamedDestIdx(dest_reg_idx);
-
+        std::cout << "dest_reg->flatIndex()" << dest_reg->flatIndex()  << std::endl;
         // Some registers have fixed mapping, and there is no need to track
         // dependencies as these instructions must be executed at commit.
         if (dest_reg->isFixedMapping()) {

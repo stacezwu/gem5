@@ -463,12 +463,12 @@ IEW::squashDueToBranch(const DynInstPtr& inst, ThreadID tid)
         toCommit->squashedSeqNum[tid] = inst->seqNum;
         toCommit->branchTaken[tid] = inst->pcState().branching();
 
-        std::cout << "*toCommit->pc[tid]: " << toCommit->pc[tid]->instAddr() << std::endl;
+        // std::cout << "*toCommit->pc[tid]: " << toCommit->pc[tid]->instAddr() << std::endl;
 
         set(toCommit->pc[tid], inst->pcState());
         inst->staticInst->advancePC(*toCommit->pc[tid]);
 
-        std::cout << "*toCommit->rp[tid]: " << toCommit->rp[tid]->rp() << std::endl;
+        // std::cout << "*toCommit->rp[tid]: " << toCommit->rp[tid]->rp() << std::endl;
 
         set(toCommit->rp[tid], inst->rpState());
         inst->staticInst->advanceRP(*toCommit->rp[tid]);
@@ -498,6 +498,7 @@ IEW::squashDueToMemOrder(const DynInstPtr& inst, ThreadID tid)
 
         toCommit->squashedSeqNum[tid] = inst->seqNum;
         set(toCommit->pc[tid], inst->pcState());
+        set(toCommit->rp[tid], inst->rpState());
         toCommit->mispredictInst[tid] = NULL;
 
         // Must include the memory violator in the squash.
@@ -592,7 +593,7 @@ IEW::instToCommit(const DynInstPtr& inst)
         }
     }
 
-    DPRINTF(IEW, "Current wb cycle: %i, width: %i, numInst: %i\nwbActual:%i\n",
+    DPRINTF(IEW, "Current wb cycle: %i, width: %i, numInst: %i, wbActual:%i\n",
             wbCycle, wbWidth, wbNumInst, wbCycle * wbWidth + wbNumInst);
     // Add finished instruction to queue to commit.
     (*iewQueue)[wbCycle].insts[wbNumInst] = inst;

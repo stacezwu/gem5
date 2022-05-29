@@ -128,6 +128,7 @@ class PCStateBase : public Serializable
 
     virtual void advance() = 0;
     virtual bool branching() const = 0;
+    virtual void debug() const {;};
 
     void
     serialize(CheckpointOut &cp) const override
@@ -375,6 +376,7 @@ class SimplePCState : public PCStateWithNext
     void
     advance() override
     {
+        std::cout << "pcstate::advace() instwidth : " << InstWidth << std::endl;
         this->_pc = this->_npc;
         this->_npc += InstWidth;
     }

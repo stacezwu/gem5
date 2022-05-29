@@ -89,7 +89,10 @@ class Decoder : public InstDecoder
 
     void reset() override;
 
-    inline bool compressed(ExtMachInst inst) { return (inst & 0x3) < 0x3; }
+    // inline bool compressed(ExtMachInst inst) { return (inst & 0x3) < 0x3; }
+    // quick fix: since STRAIGHT does not have compressed insruction
+    // it is set as false to avoid side effects 
+    inline bool compressed(ExtMachInst inst) { return false; }
 
     //Use this to give data to the decoder. This should be used
     //when there is control flow.

@@ -564,14 +564,12 @@ Fetch::lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc, RPSta
     bool predict_taken;
 
     if (!inst->isControl()) {
-        std::cout << "inst is not control" << std::endl;
         inst->staticInst->advancePC(next_pc);
         inst->staticInst->advanceRP(this_rp);
         inst->setPredTarg(next_pc);
         inst->setPredTaken(false);
         return false;
     }
-    std::cout << "inst is control" << std::endl;
     ThreadID tid = inst->threadNumber;
     predict_taken = branchPred->predict(inst->staticInst, inst->seqNum,
                                         next_pc, tid);
@@ -972,6 +970,7 @@ Fetch::tick()
         // Check the signals for each thread to determine the proper status
         // for each thread.
         bool updated_status = checkSignalsAndUpdate(tid);
+        std::cout << "stalls[tid].decode: " << stalls[tid].decode << std::endl;
         status_change =  status_change || updated_status;
     }
 
@@ -993,6 +992,7 @@ Fetch::tick()
         fetch(status_change);
     }
 
+    std::cout << "Record number of instructions fetched: " << numInst << std::endl;
     // Record number of instructions fetched this cycle for distribution.
     fetchStats.nisnDist.sample(numInst);
 
@@ -1001,6 +1001,8 @@ Fetch::tick()
         _status = updateFetchStatus();
     }
 
+    std::cout << "AFTER updateFetchStatus()" << std::endl;
+
     // Issue the next I-cache request if possible.
     for (ThreadID i = 0; i < numThreads; ++i) {
         if (issuePipelinedIfetch[i]) {
@@ -1008,23 +1010,31 @@ Fetch::tick()
         }
     }
 
+    std::cout << "AFTER pipelineIcacheAccesses()" << std::endl;
+
     // Send instructions enqueued into the fetch queue to decode.
     // Limit rate by fetchWidth.  Stall if decode is stalled.
     unsigned insts_to_decode = 0;
     unsigned available_insts = 0;
 
     for (auto tid : *activeThreads) {
+        std::cout << "ENTER THE LOOP OF ACTIVE THREADS" << std::endl;
         if (!stalls[tid].decode) {
+            std::cout << "fetchQueue[tid].size(): " << std::endl;
             available_insts += fetchQueue[tid].size();
         }
     }
+
+    std::cout << "AFTER ADDING AVAILABLE INSTS TO FETCHQUEUE" << std::endl;
 
     // Pick a random thread to start trying to grab instructions from
     auto tid_itr = activeThreads->begin();
     std::advance(tid_itr,
             random_mt.random<uint8_t>(0, activeThreads->size() - 1));
 
+    std::cout << "available_insts: " << available_insts << std::endl;
     while (available_insts != 0 && insts_to_decode < decodeWidth) {
+        std::cout << "INSIDE WHILE LOOP" << std::endl;
         ThreadID tid = *tid_itr;
         if (!stalls[tid].decode && !fetchQueue[tid].empty()) {
             const auto& inst = fetchQueue[tid].front();
@@ -1060,6 +1070,7 @@ Fetch::checkSignalsAndUpdate(ThreadID tid)
 {
     // Update the per thread stall statuses.
     if (fromDecode->decodeBlock[tid]) {
+        std::cout << "SETTING stalls[tid].decode TO TRUE" << std::endl;
         stalls[tid].decode = true;
     }
 
@@ -1301,9 +1312,8 @@ Fetch::fetch(bool &status_change)
     // The current PC.
     PCStateBase &this_pc = *pc[tid];
     RPStateBase &this_rp = *rp[tid];
-
+    
     printf("this_pc: %#x\n", this_pc.instAddr());
-    // std::cout << "this_pc: " << this_pc.instAddr() << std::endl;
     std::cout << "this_rp: " << this_rp.rp() << std::endl;
     
     Addr pcOffset = fetchOffset[tid];
@@ -1394,7 +1404,6 @@ Fetch::fetch(bool &status_change)
     while (numInst < fetchWidth && fetchQueue[tid].size() < fetchQueueSize
            && !predictedBranch && !quiesce) {
 
-        std::cout << "Inside while() loop, trying to fetch instructions from cache" << std::endl;
         // We need to process more memory if we aren't going to get a
         // StaticInst from the rom, the current macroop, or what's already
         // in the decoder.
@@ -1460,7 +1469,6 @@ Fetch::fetch(bool &status_change)
                 }
                 newMacro |= staticInst->isLastMicroop();
             }
-
             // DynInstPtr instruction = buildInst(
             //         tid, staticInst, curMacroop, this_pc, *next_pc, true);
             DynInstPtr instruction = buildInst(
@@ -1476,10 +1484,6 @@ Fetch::fetch(bool &status_change)
             set(next_pc, this_pc);
             set(next_rp, this_rp);
 
-            std::cout << "After setting this_rp to next_rp" << std::endl;
-            printf("next_pc: %#x\n", next_pc->instAddr());
-            std::cout << "next_rp: " << next_rp->rp() << std::endl;
-
             // If we're branching after this instruction, quit fetching
             // from the same block.
             predictedBranch |= this_pc.branching();
@@ -1494,9 +1498,6 @@ Fetch::fetch(bool &status_change)
             // Move to the next instruction, unless we have a branch.
             set(this_pc, *next_pc);
             set(this_rp, *next_rp);
-            std::cout << "After setting next_rp to this_rp" << std::endl;
-            printf("this_pc: %#x\n", this_pc.instAddr());
-            std::cout << "this_rp: " << this_rp.rp() << std::endl;
             
             inRom = isRomMicroPC(this_pc.microPC());
 
@@ -1552,10 +1553,6 @@ Fetch::fetch(bool &status_change)
         fetchStatus[tid] != IcacheWaitRetry &&
         fetchStatus[tid] != QuiescePending &&
         !curMacroop;
-    
-    std::cout << "AT THE END OF FETCH TICK()" << std::endl;
-    printf("this_pc: %#x\n", this_pc.instAddr());
-    std::cout << "this_rp: " << this_rp.rp() << std::endl;
 }
 
 void

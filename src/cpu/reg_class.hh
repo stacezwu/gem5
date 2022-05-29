@@ -169,7 +169,8 @@ class RegId
     bool
     isRenameable() const
     {
-        return regClass != MiscRegClass;
+        return false;
+        // return regClass != MiscRegClass;
     }
 
     /** @return true if it is of the specified class. */
@@ -284,6 +285,7 @@ class PhysRegId : private RegId
      * architectural register.
      */
     bool isFixedMapping() const { return !isRenameable(); }
+    // bool isFixedMapping() const { return true; }
 
     /** Flat index accessor */
     const RegIndex& flatIndex() const { return flatIdx; }

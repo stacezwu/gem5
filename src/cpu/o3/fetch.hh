@@ -403,6 +403,9 @@ class Fetch
     /** Profile the reasons of fetch stall. */
     void profileStall(ThreadID tid);
 
+    /** Return size of instruction */
+    int instsize() { return instSize; }
+
   private:
     /** Pointer to the O3CPU. */
     CPU *cpu;

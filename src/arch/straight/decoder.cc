@@ -49,34 +49,37 @@ void
 Decoder::moreBytes(const PCStateBase &pc, Addr fetchPC)
 {
     // The MSB of the upper and lower halves of a machine instruction.
-    constexpr size_t max_bit = sizeof(machInst) * 8 - 1;
-    constexpr size_t mid_bit = sizeof(machInst) * 4 - 1;
+    // constexpr size_t max_bit = sizeof(machInst) * 8 - 1;
+    // constexpr size_t mid_bit = sizeof(machInst) * 4 - 1;
 
+    std::cout << " sizeof(machInst): " <<  sizeof(machInst) << std::endl;
     auto inst = letoh(machInst);
+    emi = inst;
+    instDone = true;
     DPRINTF(Decode, "Requesting bytes 0x%08x from address %#x\n", inst,
             fetchPC);
 
-    bool aligned = pc.instAddr() % sizeof(machInst) == 0;
-    if (aligned) {
-        emi = inst;
-        if (compressed(emi))
-            emi = bits(emi, mid_bit, 0);
-        outOfBytes = !compressed(emi);
-        instDone = true;
-    } else {
-        if (mid) {
-            assert(bits(emi, max_bit, mid_bit + 1) == 0);
-            replaceBits(emi, max_bit, mid_bit + 1, inst);
-            mid = false;
-            outOfBytes = false;
-            instDone = true;
-        } else {
-            emi = bits(inst, max_bit, mid_bit + 1);
-            mid = !compressed(emi);
-            outOfBytes = true;
-            instDone = compressed(emi);
-        }
-    }
+    // bool aligned = pc.instAddr() % sizeof(machInst) == 0;
+    // if (aligned) {
+    //     emi = inst;
+    //     if (compressed(emi))
+    //         emi = bits(emi, mid_bit, 0);
+    //     outOfBytes = !compressed(emi);
+    //     instDone = true;
+    // } else {
+    //     if (mid) {
+    //         assert(bits(emi, max_bit, mid_bit + 1) == 0);
+    //         replaceBits(emi, max_bit, mid_bit + 1, inst);
+    //         mid = false;
+    //         outOfBytes = false;
+    //         instDone = true;
+    //     } else {
+    //         emi = bits(inst, max_bit, mid_bit + 1);
+    //         mid = !compressed(emi);
+    //         outOfBytes = true;
+    //         instDone = compressed(emi);
+    //     }
+    // }
 }
 
 StaticInstPtr
@@ -105,9 +108,11 @@ Decoder::decode(PCStateBase &_next_pc)
     auto &next_pc = _next_pc.as<PCState>();
 
     if (compressed(emi)) {
+        std::cout << "is compressed(emi): maybe this is where the problem is" << std::endl;
         next_pc.npc(next_pc.instAddr() + sizeof(machInst) / 2);
         next_pc.compressed(true);
     } else {
+        std::cout << "not compressed probably correct" << std::endl;
         next_pc.npc(next_pc.instAddr() + sizeof(machInst));
         next_pc.compressed(false);
     }
@@ -126,8 +131,8 @@ Decoder::decode(ExtMachInst mach_inst, Addr addr, RPStateBase &_next_rp)
     //     si = decodeInst(mach_inst);
     StaticInstPtr si = decodeInst(mach_inst);
 
-    si->translateSrcReg(_next_rp);
-    si->translateDestReg(_next_rp);
+    // si->translateSrcReg(_next_rp);
+    // si->translateDestReg(_next_rp);
 
     DPRINTF(Decode, "Decode: Decoded %s instruction: %#x\n",
             si->getName(), mach_inst);

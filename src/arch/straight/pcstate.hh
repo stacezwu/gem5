@@ -50,14 +50,14 @@ namespace gem5
 namespace StraightISA
 {
 
-class PCState : public GenericISA::UPCState<4>
+class PCState : public GenericISA::UPCState<8>
 {
   private:
     bool _compressed = false;
     bool _rv32 = false;
 
   public:
-    using GenericISA::UPCState<4>::UPCState;
+    using GenericISA::UPCState<8>::UPCState;
 
     PCStateBase *clone() const override { return new PCState(*this); }
 
@@ -79,11 +79,20 @@ class PCState : public GenericISA::UPCState<4>
     bool
     branching() const override
     {
+        printf("npc(): %#x\n", npc());
+        printf("pc(): %#x\n", pc());
         if (_compressed) {
             return npc() != pc() + 2 || nupc() != upc() + 1;
         } else {
-            return npc() != pc() + 4 || nupc() != upc() + 1;
+            return nupc() != upc() + 1 || npc() != pc() + 8;
         }
+    }
+
+    void 
+    debug() const override 
+    {
+        printf("npc(): %#x\n", npc());
+        printf("pc(): %#x\n", pc());
     }
 };
 
