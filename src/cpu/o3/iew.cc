@@ -464,11 +464,12 @@ IEW::squashDueToBranch(const DynInstPtr& inst, ThreadID tid)
         toCommit->branchTaken[tid] = inst->pcState().branching();
 
         // std::cout << "*toCommit->pc[tid]: " << toCommit->pc[tid]->instAddr() << std::endl;
-
+        std::cout << "hello" << std::endl;
         set(toCommit->pc[tid], inst->pcState());
+        std::cout << "here" << std::endl;
         inst->staticInst->advancePC(*toCommit->pc[tid]);
-
-        // std::cout << "*toCommit->rp[tid]: " << toCommit->rp[tid]->rp() << std::endl;
+        std::cout << "we go" << std::endl;
+        std::cout << "*toCommit->rp[tid]: " << toCommit->rp[tid]->rp() << std::endl;
 
         set(toCommit->rp[tid], inst->rpState());
         inst->staticInst->advanceRP(*toCommit->rp[tid]);
@@ -477,6 +478,7 @@ IEW::squashDueToBranch(const DynInstPtr& inst, ThreadID tid)
         toCommit->includeSquashInst[tid] = false;
 
         wroteToTimeBuffer = true;
+        std::cout << "finished?" << std::endl;
     }
 
 }
@@ -1329,6 +1331,7 @@ IEW::executeInsts()
                         tid, inst->seqNum, inst->pcState());
                 // If incorrect, then signal the ROB that it must be squashed.
                 squashDueToBranch(inst, tid);
+                std::cout<< "in executeInsts() func " << std::endl;
 
                 ppMispredict->notify(inst);
 

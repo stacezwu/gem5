@@ -88,8 +88,11 @@ StaticInst::printFlags(std::ostream &outs,
 void
 StaticInst::advancePC(ThreadContext *tc) const
 {
+    std::cout << "where" << std::endl;
     std::unique_ptr<PCStateBase> pc(tc->pcState().clone());
+    std::cout << "is" << std::endl;
     advancePC(*pc);
+    std::cout << "segfault" << std::endl;
     tc->pcState(*pc);
 }
 
