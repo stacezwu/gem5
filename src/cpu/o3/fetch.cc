@@ -591,6 +591,9 @@ Fetch::lookupAndUpdateNextPC(const DynInstPtr &inst, PCStateBase &next_pc, RPSta
     inst->setPredTaken(predict_taken);
     inst->staticInst->advanceRP(this_rp);
 
+    std::cout << "inst->staticInst->getName(): " << inst->staticInst->getName() << std::endl;
+    printf("inst predPC: %#x\n", inst->readPredTarg().instAddr());
+
     ++fetchStats.branches;
 
     if (predict_taken) {
@@ -873,6 +876,19 @@ Fetch::squashFromDecode(const PCStateBase &new_pc, const DynInstPtr squashInst,
     cpu->removeInstsUntil(seq_num, tid);
 }
 
+void
+Fetch::squashFromDecode(const PCStateBase &new_pc, const RPStateBase &new_rp, const DynInstPtr squashInst,
+        const InstSeqNum seq_num, ThreadID tid)
+{
+    DPRINTF(Fetch, "[tid:%i] Squashing from decode.\n", tid);
+
+    doSquash(new_pc, new_rp, squashInst, tid);
+
+    // Tell the CPU to remove any instructions that are in flight between
+    // fetch and decode.
+    cpu->removeInstsUntil(seq_num, tid);
+}
+
 bool
 Fetch::checkStall(ThreadID tid) const
 {
@@ -1132,6 +1148,7 @@ Fetch::checkSignalsAndUpdate(ThreadID tid)
                 *fromDecode->decodeInfo[tid].nextPC);
             // Squash unless we're already squashing
             squashFromDecode(*fromDecode->decodeInfo[tid].nextPC,
+                             *fromDecode->decodeInfo[tid].nextRP,
                              fromDecode->decodeInfo[tid].squashInst,
                              fromDecode->decodeInfo[tid].doneSeqNum,
                              tid);

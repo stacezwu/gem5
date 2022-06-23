@@ -295,6 +295,11 @@ Decode::squash(const DynInstPtr &inst, ThreadID tid)
     toFetch->decodeInfo[tid].doneSeqNum = inst->seqNum;
     set(toFetch->decodeInfo[tid].nextPC, *inst->branchTarget());
 
+    // Stacey: unsure if nextrp should be the current squashed inst rp.advance()
+    std::unique_ptr<RPStateBase> next_rp(inst->rpState().clone());
+    next_rp->advance();
+    set(toFetch->decodeInfo[tid].nextRP, next_rp);
+
     // Looking at inst->pcState().branching()
     // may yield unexpected results if the branch
     // was predicted taken but aliased in the BTB

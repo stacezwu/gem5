@@ -71,6 +71,8 @@ const int AMOTempReg = 32;
 // const int SyscallNumReg = 17;
 const int SyscallNumReg = 1;
 
+const int MaxRP = 1024;
+
 // const std::vector<std::string> IntRegNames = {
 //     "zero", "ra", "sp", "gp",
 //     "tp", "t0", "t1", "t2",

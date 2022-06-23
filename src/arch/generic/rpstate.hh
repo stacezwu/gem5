@@ -58,6 +58,7 @@ class RPStateBase : public Serializable
 {
   protected:
     RegIndex _rp = 0;
+    RegIndex max_rp = 1024;
 
     void set(RegIndex val)
     {
@@ -132,7 +133,7 @@ class RPStateBase : public Serializable
     void rp(RegIndex val) { _rp = val; }
 
     void advance() {
-      this->_rp += 1;
+        this->_rp = (this->_rp + 1) % max_rp;
     }
     RegIndex translate(RegIndex rs) {
         return (_rp - rs);

@@ -86,11 +86,11 @@ class Scoreboard
     getReg(PhysRegIdPtr phys_reg) const
     {
         assert(phys_reg->flatIndex() < numPhysRegs);
-
-        if (phys_reg->isFixedMapping()) {
-            // Fixed mapping regs are always ready
-            return true;
-        }
+        // STACEY: remove since STRAIGHT all have fixed mapping but not necessarily ready
+        // if (phys_reg->isFixedMapping()) {
+        //     // Fixed mapping regs are always ready
+        //     return true;
+        // }
 
         bool ready = regScoreBoard[phys_reg->flatIndex()];
 
@@ -106,11 +106,11 @@ class Scoreboard
     {
         assert(phys_reg->flatIndex() < numPhysRegs);
 
-        if (phys_reg->isFixedMapping()) {
-            // Fixed mapping regs are always ready, ignore attempts to change
-            // that
-            return;
-        }
+        // if (phys_reg->isFixedMapping()) {
+        //     // Fixed mapping regs are always ready, ignore attempts to change
+        //     // that
+        //     return;
+        // }
 
         DPRINTF(Scoreboard, "Setting reg %i (%s) as ready\n",
                 phys_reg->index(), phys_reg->className());
@@ -124,11 +124,11 @@ class Scoreboard
     {
         assert(phys_reg->flatIndex() < numPhysRegs);
 
-        if (phys_reg->isFixedMapping()) {
-            // Fixed mapping regs are always ready, ignore attempts to
-            // change that
-            return;
-        }
+        // if (phys_reg->isFixedMapping()) {
+        //     // Fixed mapping regs are always ready, ignore attempts to
+        //     // change that
+        //     return;
+        // }
 
         // zero reg should never be marked unready
         if (phys_reg->is(IntRegClass) && phys_reg->index() == zeroReg)

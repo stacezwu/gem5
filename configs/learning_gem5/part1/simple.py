@@ -49,13 +49,13 @@ system.clk_domain.clock = '1GHz'
 system.clk_domain.voltage_domain = VoltageDomain()
 
 # Set up the system
-system.mem_mode = 'timing'               # Use timing accesses
-# system.mem_mode = 'atomic'
+# system.mem_mode = 'timing'               # Use timing accesses
+system.mem_mode = 'atomic'
 system.mem_ranges = [AddrRange('512MB')] # Create an address range
 
 # Create a simple CPU
-system.cpu = O3CPU()
-# system.cpu = AtomicSimpleCPU()
+# system.cpu = O3CPU()
+system.cpu = AtomicSimpleCPU()
 
 # Create a memory bus, a system crossbar, in this case
 system.membus = SystemXBar()
@@ -92,7 +92,7 @@ isa = 'riscv'
 thispath = os.path.dirname(os.path.realpath(__file__))
 # binary = os.path.join(thispath, '../../../',
 #                     'tests/test-progs/hello/bin/', isa, 'linux/hello')
-binary = os.path.join(thispath, '../../../', 'tests/test-progs/', 'straight', 'new/loop_opt_linked.elf')
+binary = os.path.join(thispath, '../../../', 'tests/test-progs/', 'straight', 'new/fib_tinkered_linked.elf')
 
 system.workload = SEWorkload.init_compatible(binary)
 

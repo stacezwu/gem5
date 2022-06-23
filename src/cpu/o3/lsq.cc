@@ -765,15 +765,21 @@ LSQ::pushRequest(const DynInstPtr& inst, bool isLoad, uint8_t *data,
         unsigned int size, Addr addr, Request::Flags flags, uint64_t *res,
         AtomicOpFunctorPtr amo_op, const std::vector<bool>& byte_enable)
 {
+    printf("pushRequest() ...\n");
+    
     // This comming request can be either load, store or atomic.
     // Atomic request has a corresponding pointer to its atomic memory
     // operation
     [[maybe_unused]] bool isAtomic = !isLoad && amo_op;
+    printf("\tisAtomic = %i\n", isAtomic);
 
     ThreadID tid = cpu->contextToThread(inst->contextId());
     auto cacheLineSize = cpu->cacheLineSize();
     bool needs_burst = transferNeedsBurst(addr, size, cacheLineSize);
     LSQRequest* request = nullptr;
+    printf("\ttid = %i\n", tid);
+    printf("\tcacheLineSize = %u\n", cacheLineSize);
+    printf("\tneeds_burst = %i\n", needs_burst);
 
     // Atomic requests that access data across cache line boundary are
     // currently not allowed since the cache does not guarantee corresponding
@@ -784,11 +790,14 @@ LSQ::pushRequest(const DynInstPtr& inst, bool isLoad, uint8_t *data,
     assert(!isAtomic || (isAtomic && !needs_burst));
 
     const bool htm_cmd = isLoad && (flags & Request::HTM_CMD);
+    printf("\thtm_cmd = %i\n", htm_cmd);
 
     if (inst->translationStarted()) {
+        printf("\ttranslationStarted\n");
         request = inst->savedRequest;
         assert(request);
     } else {
+        printf("\t!translationStarted\n");
         if (htm_cmd) {
             assert(addr == 0x0lu);
             assert(size == 8);
@@ -814,7 +823,9 @@ LSQ::pushRequest(const DynInstPtr& inst, bool isLoad, uint8_t *data,
 
     /* This is the place were instructions get the effAddr. */
     if (request->isTranslationComplete()) {
+        printf("\tisTranslationComplete\n");
         if (request->isMemAccessRequired()) {
+            printf("\tisTranslationComplete && isMemAccessRequired\n");
             inst->effAddr = request->getVaddr();
             inst->effSize = size;
             inst->effAddrValid(true);
@@ -827,6 +838,9 @@ LSQ::pushRequest(const DynInstPtr& inst, bool isLoad, uint8_t *data,
                 fault = read(request, inst->lqIdx);
             else
                 fault = write(request, data, inst->sqIdx);
+
+            printf("germ5 lahhh %i %i\n", isLoad, fault != NoFault);
+
             // inst->getFault() may have the first-fault of a
             // multi-access split request at this point.
             // Overwrite that only if we got another type of fault
@@ -834,6 +848,7 @@ LSQ::pushRequest(const DynInstPtr& inst, bool isLoad, uint8_t *data,
             if (fault != NoFault)
                 inst->getFault() = fault;
         } else if (isLoad) {
+            printf("\t&& isLoad\n");
             inst->setMemAccPredicate(false);
             // Commit will have to clean up whatever happened.  Set this
             // instruction as executed.
@@ -1413,6 +1428,7 @@ LSQ::HtmCmdRequest::finish(const Fault &fault, const RequestPtr &req,
 Fault
 LSQ::read(LSQRequest* request, int load_idx)
 {
+    printf("IN FUNC LSQ::read()\n");
     assert(request->req()->contextId() == request->contextId());
     ThreadID tid = cpu->contextToThread(request->req()->contextId());
 

@@ -364,6 +364,7 @@ AtomicSimpleCPU::readMem(Addr addr, uint8_t *data, unsigned size,
                          Request::Flags flags,
                          const std::vector<bool> &byte_enable)
 {
+    std::cout << "AtomicSimpleCPU::readMem()" << std::endl;
     SimpleExecContext &t_info = *threadInfo[curThread];
     SimpleThread *thread = t_info.thread;
 
@@ -384,18 +385,20 @@ AtomicSimpleCPU::readMem(Addr addr, uint8_t *data, unsigned size,
     Fault fault = NoFault;
 
     while (1) {
+        std::cout << "in while(1)" << std::endl;
         predicate = genMemFragmentRequest(req, frag_addr, size, flags,
                                           byte_enable, frag_size, size_left);
-
+        std::cout << "genMemFragmentRequest()" << std::endl;
         // translate to physical address
         if (predicate) {
             fault = thread->mmu->translateAtomic(req, thread->getTC(),
                                                  BaseMMU::Read);
         }
-
+        std::cout << "thread->mmu->translateAtomic()" << std::endl;
         // Now do the access.
         if (predicate && fault == NoFault &&
             !req->getFlags().isSet(Request::NO_ACCESS)) {
+            std::cout << "accessing memory" << std::endl;
             Packet pkt(req, Packet::makeReadCmd(req));
             pkt.dataStatic(data);
 
@@ -412,11 +415,15 @@ AtomicSimpleCPU::readMem(Addr addr, uint8_t *data, unsigned size,
                 thread->getIsaPtr()->handleLockedRead(req);
             }
         }
+        std::cout << "Finish memory access" << std::endl;
 
         //If there's a fault, return it
-        if (fault != NoFault)
+        if (fault != NoFault){
+            std::cout << "return req->isPrefetch() ? NoFault : fault;" << std::endl;
             return req->isPrefetch() ? NoFault : fault;
-
+        }
+            
+        std::cout << "what is this" << std::endl;
         // If we don't need to access further cache lines, stop now.
         if (size_left == 0) {
             if (req->isLockedRMW() && fault == NoFault) {
@@ -425,7 +432,7 @@ AtomicSimpleCPU::readMem(Addr addr, uint8_t *data, unsigned size,
             }
             return fault;
         }
-
+        std::cout << "Setting up for accessing the next cache line." << std::endl;
         /*
          * Set up for accessing the next cache line.
          */
@@ -680,17 +687,18 @@ AtomicSimpleCPU::tick()
             }
 
             preExecute();
-            if (fault == NoFault) {
-                advanceRP(fault);
-            } else {
-                ;
-            }
-            std::cout << "RP value after advance RP = " << thread->rpState().rp() << std::endl;
+            // if (fault == NoFault) {
+            //     advanceRP(fault);
+            // } else {
+            //     ;
+            // }
+            std::cout << "this_rp: = " << thread->rpState().rp() << std::endl;
 
             Tick stall_ticks = 0;
             if (curStaticInst) {
+                std::cout << "debug" << std::endl;
                 fault = curStaticInst->execute(&t_info, traceData);
-
+                std::cout << "finish execution" << std::endl;
                 // keep an instruction count
                 if (fault == NoFault) {
                     countInst();
@@ -698,6 +706,7 @@ AtomicSimpleCPU::tick()
                 } else if (traceData) {
                     traceFault();
                 }
+                std::cout << "check" << std::endl;
 
 
                 if (fault != NoFault &&
@@ -710,19 +719,20 @@ AtomicSimpleCPU::tick()
                 postExecute();
             }
 
-
+            std::cout << "where" << std::endl;
             // @todo remove me after debugging with legion done
             if (curStaticInst && (!curStaticInst->isMicroop() ||
                         curStaticInst->isFirstMicroop())) {
                 instCnt++;
             }
+            std::cout << "seg" << std::endl;
 
             if (simulate_inst_stalls && icache_access)
                 stall_ticks += icache_latency;
 
             if (simulate_data_stalls && dcache_access)
                 stall_ticks += dcache_latency;
-
+            std::cout << "faulted" << std::endl;
             if (stall_ticks) {
                 // the atomic cpu does its accounting in ticks, so
                 // keep counting in ticks but round to the clock
@@ -732,8 +742,14 @@ AtomicSimpleCPU::tick()
             }
 
         }
-        if (fault != NoFault || !t_info.stayAtPC)
+        std::cout << "advancing counters" << std::endl;
+
+        if (fault != NoFault || !t_info.stayAtPC){
             advancePC(fault);
+            advanceRP(fault);
+        }
+        std::cout << "finish" << std::endl;
+
     }
 
     if (tryCompleteDrain())

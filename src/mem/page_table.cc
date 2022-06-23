@@ -69,6 +69,7 @@ EmulationPageTable::map(Addr vaddr, Addr paddr, int64_t size, uint64_t flags)
         vaddr += _pageSize;
         paddr += _pageSize;
     }
+    std::cout << "MAPPING DONE" << std::endl;
 }
 
 void
@@ -143,10 +144,20 @@ bool
 EmulationPageTable::translate(Addr vaddr, Addr &paddr)
 {
     const Entry *entry = lookup(vaddr);
+    printf("vaddr: %#x\n", vaddr);
     if (!entry) {
         DPRINTF(MMU, "Couldn't Translate: %#x\n", vaddr);
-        return false;
+        printf("_pageSize: %#x\n", _pageSize);
+        Addr new_page = vaddr - pageOffset(vaddr);
+        printf("new_page: %#x\n", new_page);
+        map(new_page, new_page, _pageSize, 0b011);
+        entry = lookup(vaddr);
+        // return false;
     }
+    std::cout << "check for seg fault?" << std::endl;
+    printf("vaddr: %#x\n", vaddr);
+    printf("pageOffset(vaddr) %#x\n", pageOffset(vaddr));
+    // flush here
     paddr = pageOffset(vaddr) + entry->paddr;
     DPRINTF(MMU, "Translating: %#x->%#x\n", vaddr, paddr);
     return true;
@@ -158,6 +169,8 @@ EmulationPageTable::translate(const RequestPtr &req)
     Addr paddr;
     assert(pageAlign(req->getVaddr() + req->getSize() - 1) ==
            pageAlign(req->getVaddr()));
+    printf("req->getVaddr(): %#x\n", req->getVaddr());
+    printf("paddr: %#x\n", paddr);
     if (!translate(req->getVaddr(), paddr))
         return Fault(new GenericPageTableFault(req->getVaddr()));
     req->setPaddr(paddr);

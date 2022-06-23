@@ -291,9 +291,10 @@ BaseSimpleCPU::setupFetchRequest(const RequestPtr &req)
 
     // set up memory request for instruction fetch
     DPRINTF(Fetch, "Fetch: Inst PC:%08p, Fetch PC:%08p\n", instAddr, fetchPC);
-
+    std::cout << "decoder->moreBytesSize(): " << decoder->moreBytesSize() << std::endl;
     req->setVirt(fetchPC, decoder->moreBytesSize(), Request::INST_FETCH,
                  instRequestorId(), instAddr);
+    
 }
 
 void
@@ -382,6 +383,7 @@ BaseSimpleCPU::preExecute()
         if (predict_taken)
             ++t_info.execContextStats.numPredictedBranches;
     }
+    std::cout << curStaticInst->getName() << std::endl;
 }
 
 void
@@ -503,11 +505,14 @@ BaseSimpleCPU::advanceRP(const Fault &fault)
     SimpleExecContext &t_info = *threadInfo[curThread];
     SimpleThread* thread = t_info.thread;
 
-    thread->setIntReg(thread->rpState().rp(), 0);
+    
 
     if (fault == NoFault) {
         curStaticInst->advanceRP(thread);
-    } 
+    }
+
+    // SET RP to 0 at end of each loop
+    thread->setIntReg(0, 0); 
 
 }
 

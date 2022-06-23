@@ -50,7 +50,7 @@ namespace gem5
 namespace StraightISA
 {
 
-typedef uint32_t MachInst;
+typedef uint64_t MachInst;
 typedef uint64_t ExtMachInst;
 
 } // namespace StraightISA

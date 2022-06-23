@@ -122,6 +122,7 @@ struct TimeStruct
     struct DecodeComm
     {
         std::unique_ptr<PCStateBase> nextPC;
+        std::unique_ptr<RPStateBase> nextRP;
         DynInstPtr mispredictInst;
         DynInstPtr squashInst;
         InstSeqNum doneSeqNum;
@@ -178,7 +179,7 @@ struct TimeStruct
         /// order violation and the like
         std::unique_ptr<PCStateBase> pc; // *F
 
-        std::unique_ptr<RPStateBase> rp;
+        std::unique_ptr<RPStateBase> rp; // *F
 
         /// Provide fetch the instruction that mispredicted, if this
         /// pointer is not-null a misprediction occured

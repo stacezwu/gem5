@@ -538,8 +538,14 @@ class DynInst : public ExecContext, public RefCounted
     bool
     mispredicted()
     {
+        std::cout << "check misprediction" << std::endl;
+        std::cout << "inst->staticInst->getName(): " << staticInst->getName() << std::endl;
+
         std::unique_ptr<PCStateBase> next_pc(pc->clone());
         staticInst->advancePC(*next_pc);
+        printf("rp: %#x\n", rp->rp());
+        printf("next_pc: %#x\n", next_pc->instAddr());
+        printf("predPC: %#x\n", predPC->instAddr());
         return *next_pc != *predPC;
     }
 
@@ -1265,9 +1271,10 @@ class DynInst : public ExecContext, public RefCounted
 
     void
     translateOperands(){
-        // translate src operands
+        // translate src operands with wrap around behaviour 
+        RegIndex max_rp = 1024;
         for (int i = 0; i < staticInst->numSrcRegs(); i++){
-            staticInst->setSrcRegIdx(i, RegId(IntRegClass,rp->rp() - staticInst->srcRegIdx(i).index()));
+            staticInst->setSrcRegIdx(i, RegId(IntRegClass, (RegIndex) (rp->rp() - staticInst->srcRegIdx(i).index()) % max_rp));
         }
         
         //translate dest operand

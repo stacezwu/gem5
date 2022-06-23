@@ -337,9 +337,11 @@ TLB::translate(const RequestPtr &req, ThreadContext *tc,
                BaseMMU::Translation *translation, BaseMMU::Mode mode,
                bool &delayed)
 {
+    std::cout << "in TLB::translate()" << std::endl;
     delayed = false;
 
     if (FullSystem) {
+        std::cout << "FULL SYSTEM?" << std::endl;
         PrivilegeMode pmode = getMemPriv(tc, mode);
         SATP satp = tc->readMiscReg(MISCREG_SATP);
         if (pmode == PrivilegeMode::PRV_M || satp.mode == AddrXlateMode::BARE)
@@ -381,6 +383,7 @@ TLB::translate(const RequestPtr &req, ThreadContext *tc,
 
         return fault;
     } else {
+        std::cout << "SE?" << std::endl;
         // In the O3 CPU model, sometimes a memory access will be speculatively
         // executed along a branch that will end up not being taken where the
         // address is invalid.  In that case, return a fault rather than trying
@@ -389,11 +392,13 @@ TLB::translate(const RequestPtr &req, ThreadContext *tc,
         // length is long enough to wrap around from the end of the memory to
         // the start.
         assert(req->getSize() > 0);
-        if (req->getVaddr() + req->getSize() - 1 < req->getVaddr())
+        if (req->getVaddr() + req->getSize() - 1 < req->getVaddr()){
             return std::make_shared<GenericPageTableFault>(req->getVaddr());
+        }
+            
 
         Process * p = tc->getProcessPtr();
-
+        std::cout << "p->pTable->translate()" << std::endl;
         Fault fault = p->pTable->translate(req);
         if (fault != NoFault)
             return fault;

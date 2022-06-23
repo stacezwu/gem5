@@ -1007,11 +1007,11 @@ InstructionQueue::wakeDependents(const DynInstPtr &completed_inst)
 
         // Special case of uniq or control registers.  They are not
         // handled by the IQ and thus have no dependency graph entry.
-        if (dest_reg->isFixedMapping()) {
-            DPRINTF(IQ, "Reg %d [%s] is part of a fix mapping, skipping\n",
-                    dest_reg->index(), dest_reg->className());
-            continue;
-        }
+        // if (dest_reg->isFixedMapping()) {
+        //     DPRINTF(IQ, "Reg %d [%s] is part of a fix mapping, skipping\n",
+        //             dest_reg->index(), dest_reg->className());
+        //     continue;
+        // }
 
         // Avoid waking up dependents if the register is pinned
         dest_reg->decrNumPinnedWritesToComplete();
@@ -1246,8 +1246,9 @@ InstructionQueue::doSquash(ThreadID tid)
                     // overwritten.  The only downside to this is it
                     // leaves more room for error.
 
-                    if (!squashed_inst->readySrcIdx(src_reg_idx) &&
-                        !src_reg->isFixedMapping()) {
+                    // if (!squashed_inst->readySrcIdx(src_reg_idx) &&
+                    //     !src_reg->isFixedMapping()) {
+                    if (!squashed_inst->readySrcIdx(src_reg_idx)){
                         dependGraph.remove(src_reg->flatIndex(),
                                            squashed_inst);
                     }
@@ -1309,9 +1310,9 @@ InstructionQueue::doSquash(ThreadID tid)
         {
             PhysRegIdPtr dest_reg =
                 squashed_inst->renamedDestIdx(dest_reg_idx);
-            if (dest_reg->isFixedMapping()){
-                continue;
-            }
+            // if (dest_reg->isFixedMapping()){
+            //     continue;
+            // }
             assert(dependGraph.empty(dest_reg->flatIndex()));
             dependGraph.clearInst(dest_reg->flatIndex());
         }
@@ -1350,19 +1351,33 @@ InstructionQueue::addToDependents(const DynInstPtr &new_inst)
             // hasn't become ready while the instruction was in flight
             // between stages.  Only if it really isn't ready should
             // it be added to the dependency graph.
-            if (src_reg->isFixedMapping()) {
-                continue;
-            } else if (!regScoreboard[src_reg->flatIndex()]) {
+            // if (src_reg->isFixedMapping()) {
+            //     continue;
+            // } else 
+            // if (!dependGraph.empty(src_reg->flatIndex())) {
+            //     printf("")
+            //     continue;
+            // }
+
+            if (!regScoreboard[src_reg->flatIndex()]) {
                 DPRINTF(IQ, "Instruction PC %s has src reg %i (%s) that "
                         "is being added to the dependency chain.\n",
                         new_inst->pcState(), src_reg->index(),
                         src_reg->className());
+                if (src_reg->flatIndex() != new_inst->rpState().rp()){
+                    dependGraph.insert(src_reg->flatIndex(), new_inst);
+                    // Change the return value to indicate that something
+                    // was added to the dependency graph.
+                    return_val = true;
+                } else {
+                    DPRINTF(IQ, "Instruction PC %s has src reg %i (%s) that "
+                    "is the current RP, aka zero reg.\n",
+                    new_inst->pcState(), src_reg->index(),
+                    src_reg->className());
+                    // Mark a register ready within the instruction.
+                    new_inst->markSrcRegReady(src_reg_idx);
+                }
 
-                dependGraph.insert(src_reg->flatIndex(), new_inst);
-
-                // Change the return value to indicate that something
-                // was added to the dependency graph.
-                return_val = true;
             } else {
                 DPRINTF(IQ, "Instruction PC %s has src reg %i (%s) that "
                         "became ready before it reached the IQ.\n",
@@ -1395,11 +1410,12 @@ InstructionQueue::addToProducers(const DynInstPtr &new_inst)
         std::cout << "dest_reg->flatIndex()" << dest_reg->flatIndex()  << std::endl;
         // Some registers have fixed mapping, and there is no need to track
         // dependencies as these instructions must be executed at commit.
-        if (dest_reg->isFixedMapping()) {
-            continue;
-        }
+        // if (dest_reg->isFixedMapping()) {
+        //     continue;
+        // }
 
         if (!dependGraph.empty(dest_reg->flatIndex())) {
+            // printf("doggy we skipp itttt....\n");
             dependGraph.dump();
             panic("Dependency graph %i (%s) (flat: %i) not empty!",
                   dest_reg->index(), dest_reg->className(),

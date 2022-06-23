@@ -59,7 +59,7 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 # grab the specific path to the binary
 thispath = os.path.dirname(os.path.realpath(__file__))
 default_binary = os.path.join(thispath, '../../../',
-    'tests/test-progs/hello/bin/', isa, 'linux/hello')
+    'tests/test-progs/', 'straight', 'new/stupid_mmultiply_linked.elf')
 
 # Binary to execute
 SimpleOpts.add_option("binary", nargs='?', default=default_binary)
@@ -80,7 +80,8 @@ system.mem_mode = 'timing'               # Use timing accesses
 system.mem_ranges = [AddrRange('512MB')] # Create an address range
 
 # Create a simple CPU
-system.cpu = TimingSimpleCPU()
+# system.cpu = TimingSimpleCPU()
+system.cpu = O3CPU()
 
 # Create an L1 instruction and data cache
 system.cpu.icache = L1ICache(args)

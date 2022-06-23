@@ -388,6 +388,7 @@ DynInst::completeAcc(PacketPtr pkt)
     // when using the TC during an instruction's execution
     // (specifically for instructions that have side-effects that use
     // the TC).  Fix this.
+    printf("DynInst::completeAcc()\n");
     bool no_squash_from_TC = thread->noSquashFromTC;
     thread->noSquashFromTC = true;
 
@@ -396,6 +397,7 @@ DynInst::completeAcc(PacketPtr pkt)
             reqToVerify->setExtraData(pkt->req->getExtraData());
         }
     }
+    printf("PLEASE ENTER:{\n");
 
     fault = staticInst->completeAcc(pkt, this, traceData);
 

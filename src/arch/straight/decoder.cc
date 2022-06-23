@@ -53,11 +53,14 @@ Decoder::moreBytes(const PCStateBase &pc, Addr fetchPC)
     // constexpr size_t mid_bit = sizeof(machInst) * 4 - 1;
 
     std::cout << " sizeof(machInst): " <<  sizeof(machInst) << std::endl;
+    printf("moreBytes machInst: 0x%16x", machInst);
+    printf("moreBytes emi: 0x%16x", emi);
     auto inst = letoh(machInst);
     emi = inst;
     instDone = true;
     DPRINTF(Decode, "Requesting bytes 0x%08x from address %#x\n", inst,
             fetchPC);
+    printf("Instruction fetched: %#x", emi);
 
     // bool aligned = pc.instAddr() % sizeof(machInst) == 0;
     // if (aligned) {

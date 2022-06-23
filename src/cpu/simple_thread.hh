@@ -578,7 +578,8 @@ class SimpleThread : public ThreadState, public ThreadContext
 
     RegIndex translateRegIdx(RegIndex reg_idx) const
     {
-        return _rpState->rp() - reg_idx;
+        RegIndex max_rp = 1024;
+        return (RegIndex)(_rpState->rp() - reg_idx) % max_rp;
     }
 
 };

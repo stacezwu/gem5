@@ -600,12 +600,20 @@ LSQUnit::executeLoad(const DynInstPtr &inst)
 
     load_fault = inst->initiateAcc();
 
+    printf("load_fault == NoFault: %i, !inst->readMemAccPredicate(): %i\n", load_fault == NoFault, !inst->readMemAccPredicate());
+
     if (load_fault == NoFault && !inst->readMemAccPredicate()) {
+        printf("... assert\n");
         assert(inst->readPredicate());
+        printf("... readPred\n");
         inst->setExecuted();
+        printf("... setExwecuted\n");
         inst->completeAcc(nullptr);
+        printf("... completeAcc\n");
         iewStage->instToCommit(inst);
+        printf("... instToCommit\n");
         iewStage->activityThisCycle();
+        printf("... activityYhitSycle\n");
         return NoFault;
     }
 
@@ -615,6 +623,7 @@ LSQUnit::executeLoad(const DynInstPtr &inst)
     if (load_fault != NoFault && inst->translationCompleted() &&
             inst->savedRequest->isPartialFault()
             && !inst->savedRequest->isComplete()) {
+        printf("load_fault != NoFault && inst->translationCompleted()\n");
         assert(inst->savedRequest->isSplit());
         // If we have a partial fault where the mem access is not complete yet
         // then the cache must have been blocked. This load will be re-executed
@@ -625,11 +634,13 @@ LSQUnit::executeLoad(const DynInstPtr &inst)
 
     // If the instruction faulted or predicated false, then we need to send it
     // along to commit without the instruction completing.
+    printf("!inst->readPredicate(): %i\n", !inst->readPredicate());
     if (load_fault != NoFault || !inst->readPredicate()) {
         // Send this instruction to commit, also make sure iew stage
         // realizes there is activity.  Mark it as executed unless it
         // is a strictly ordered load that needs to hit the head of
         // commit.
+        printf("load_fault != NoFault || !inst->readPredicate()\n");
         if (!inst->readPredicate())
             inst->forwardOldRegs();
         DPRINTF(LSQUnit, "Load [sn:%lli] not executed from %s\n",
@@ -642,6 +653,7 @@ LSQUnit::executeLoad(const DynInstPtr &inst)
         iewStage->instToCommit(inst);
         iewStage->activityThisCycle();
     } else {
+        printf("WHY?!\n");
         if (inst->effAddrValid()) {
             auto it = inst->lqIt;
             ++it;
@@ -1078,15 +1090,18 @@ LSQUnit::writeback(const DynInstPtr &inst, PacketPtr pkt)
 
     // Squashed instructions do not need to complete their access.
     if (inst->isSquashed()) {
+        printf("inst->isSquashed()\n");
         assert (!inst->isStore() || inst->isStoreConditional());
         ++stats.ignoredResponses;
         return;
     }
 
     if (!inst->isExecuted()) {
+        printf("!inst->isExecuted()\n");
         inst->setExecuted();
 
         if (inst->fault == NoFault) {
+            printf("POSSIBLY WHERE completeAcc() is called\n");
             // Complete access to copy data to proper place.
             inst->completeAcc(pkt);
         } else {
@@ -1123,8 +1138,8 @@ LSQUnit::writeback(const DynInstPtr &inst, PacketPtr pkt)
                     "due to pending fault.\n", inst->seqNum);
         }
     }
-
-    // Need to insert instruction into queue to commit
+        
+     // Need to insert instruction into queue to commit
     iewStage->instToCommit(inst);
 
     iewStage->activityThisCycle();
@@ -1235,6 +1250,7 @@ LSQUnit::trySendPacket(bool isLoad, PacketPtr data_pkt)
             " %ssent (cache is blocked: %d, cache_got_blocked: %d)\n",
             data_pkt->print(), request->instruction()->seqNum,
             ret ? "": "not ", lsq->cacheBlocked(), cache_got_blocked);
+    printf("IN FUNC trySendPacket()\n");
     return ret;
 }
 
@@ -1284,6 +1300,7 @@ LSQUnit::cacheLineSize()
 Fault
 LSQUnit::read(LSQRequest *request, int load_idx)
 {
+    printf("IN FUNC LSQUnit::read()\n");
     LQEntry& load_entry = loadQueue[load_idx];
     const DynInstPtr& load_inst = load_entry.instruction();
 

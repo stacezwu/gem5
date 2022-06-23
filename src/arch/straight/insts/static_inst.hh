@@ -114,6 +114,7 @@ class StraightStaticInst : public StaticInst
     void
     advancePC(PCStateBase &pc) const override
     {
+        std::cout << "sad i m sad" << std::endl;
         pc.as<PCState>().advance();
     }
 
